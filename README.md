@@ -7,3 +7,6 @@ cd backend
 pipenv shell
 pipenv install
 ```
+
+## Running Frontend
+....
