@@ -5,8 +5,14 @@ from typing import Optional
 
 class LoginCredentials(BaseModel):
     # this has to be the same name (and type (?)) as it's in the ajax request's body
-    username: str
+    email: str
     password: str
+
+class RegisterCredentials(BaseModel):
+    # this has to be the same name (and type (?)) as it's in the ajax request's body
+    email: str
+    password: str
+    confirm_password: str
 
 
 app = FastAPI()
@@ -34,13 +40,30 @@ async def root():
 
 @app.post("/api/login")
 async def user_login(loginCredentials: LoginCredentials):
-    print(loginCredentials)
+    """ User login with the credentials given by AJAX request. """
+
+    print("login credentials:", loginCredentials)
     # check, validate, etc..
+
     # template/example return value
     if True:
         return "okay"
     else:
         return "not okay (invalid email and/or password)"
+
+
+@app.post("/api/register")
+async def user_register(registerCredentials: RegisterCredentials):
+    """ User register with the credentials given by AJAX request. """
+    print("register credentials:", registerCredentials)
+    # check, validate, etc..
+
+    # template/example return value
+    if True:
+        return "okay"
+    else:
+        return "not okay (invalid email and/or password)"
+
 
 # @app.get("/items/{item_id}")
 # def read_item(item_id: int, q: Optional[str] = None):

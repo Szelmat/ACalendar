@@ -46,7 +46,7 @@ submitLoginBtn.addEventListener("click", e => {
     // we can move on only if there was no error during the validation
     if(! error) {
         sendAjaxPostRequest(`${apiServerUri}/api/login`, {
-            username: loginEmail,
+            email: loginEmail,
             password: loginPw
         })
         .then(result => {
