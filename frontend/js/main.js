@@ -1,3 +1,5 @@
+import { sendAjaxPostRequest } from "./functions";
+
 const submitLoginBtn = document.querySelector("#submitLoginForm");
 const submitRegisterBtn = document.querySelector("#submitRegisterForm");
 
@@ -94,16 +96,19 @@ function registerUser(e) {
         error = true;
     }
 
+    const pwRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,64}$/
     // validate password (only the syntax)
-    // TODO: charset for password
     if(registerPw.trim() === "") {
         insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", "The password field can not be empty!");
+        error = true;
+    } else if(! pwRegex.exec(registerPw)) {
+        insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", `The password most contain english letters, numbers, and special characters (!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?)!`);
         error = true;
     }
 
     // validate confirm password (only that wether it's the same as the password)
     if(confirmPw !== registerPw) {
-        insertInvalidMsg(confirmPwDiv, "invalidPasswordFeedback", "The given passwords must be the same!");
+        insertInvalidMsg(confirmPwDiv, "invalidConfirmPasswordFeedback", "The given passwords must be the same!");
         error = true;
     }
 
