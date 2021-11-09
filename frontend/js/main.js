@@ -21,8 +21,16 @@ const confirmPwInput = document.querySelector("#confirmPw");
 const apiServerUri = "http://127.0.0.1:8000";
 
 
-/* register event listeners */
-submitLoginBtn.addEventListener("click", e => {
+/* register all the event listeners */
+submitLoginBtn.addEventListener("click", e => loginUser(e));
+
+/* implement all the event listeners */
+
+/**
+ * User login.
+ * @param {Event} e 
+ */
+function loginUser(e) {
     let error = false;
     const loginEmail = loginEmailInput.value;
     const loginPw = loginPwInput.value;
@@ -61,12 +69,7 @@ submitLoginBtn.addEventListener("click", e => {
         })
         .catch(error => console.log(error));
     }
-
-
-
-})
-
-/* implement event listeners */
+}
 
 
 /* validators */
