@@ -110,18 +110,5 @@
     <script src="frontend/js/functions.js"></script>
     <script src="frontend/js/materialize.min.js"></script>
     <script src="frontend/js/main.js"></script>
-    <script>
-        fetch("http://127.0.0.1:8000/")
-            .then(response => response.json())
-            .then(data => {
-                // let title = document.querySelector("#title");
-                // let resultDiv = document.createElement("div");
-                // resultDiv.className = "card-panel teal lighten-2";
-                // resultDiv.innerHTML = "The Message: " + data["message"];
-                console.log(data);
-                // title.parentElement.appendChild(resultDiv);
-            })
-            .catch(error => console.log(error))
-    </script>
 </body>
 </html>
