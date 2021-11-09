@@ -13,8 +13,9 @@ app = FastAPI()
 
 origins = [
     # the fronted is running on this URI
-    # the port 3000 is the default value in case of simple-server
-    "http://127.0.0.1:3000",
+    # the port 3500 is the default value in case of simple-server
+    "http://127.0.0.1:3500",
+    "http://localhost:3500",
 ]
 
 app.add_middleware(
