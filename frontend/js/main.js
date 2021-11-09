@@ -23,11 +23,12 @@ const apiServerUri = "http://127.0.0.1:8000";
 
 /* register all the event listeners */
 submitLoginBtn.addEventListener("click", e => loginUser(e));
+submitRegisterBtn.addEventListener("click", e => registerUser(e));
 
 /* implement all the event listeners */
 
 /**
- * User login.
+ * Login user.
  * @param {Event} e 
  */
 function loginUser(e) {
@@ -65,6 +66,62 @@ function loginUser(e) {
                 window.open("/auth/monthly.html");
             } else {
                 alert("hehe, invalid login credentials");
+            }
+        })
+        .catch(error => console.log(error));
+    }
+}
+
+
+/**
+ * Register user.
+ * @param {Event} e 
+ */
+function registerUser(e) {
+    let error = false;
+    const registerEmail = registerEmailInput.value;
+    const registerPw = registerPwInput.value;
+    const confirmPw = confirmPwInput.value;
+
+    // remove the feedback for invalid credentials if they are presented
+    removeInvalidMsg(registerEmailDiv, "invalidEmailFeedback", "border-red");
+    removeInvalidMsg(registerPwDiv, "invalidPasswordFeedback", "border-red");
+    removeInvalidMsg(confirmPwDiv, "invalidConfirmPasswordFeedback", "border-red");
+    
+    // validate email
+    if(! emailValidator(registerEmail)) {
+        insertInvalidMsg(registerEmailDiv, "invalidEmailFeedback", "The given email address is not valid!");
+        error = true;
+    }
+
+    // validate password (only the syntax)
+    // TODO: charset for password
+    if(registerPw.trim() === "") {
+        insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", "The password field can not be empty!");
+        error = true;
+    }
+
+    // validate confirm password (only that wether it's the same as the password)
+    if(confirmPw !== registerPw) {
+        insertInvalidMsg(confirmPwDiv, "invalidPasswordFeedback", "The given passwords must be the same!");
+        error = true;
+    }
+
+    // we can move on only if there was no error during the validation
+    if(! error) {
+        sendAjaxPostRequest(`${apiServerUri}/api/register`, {
+            email: registerEmail,
+            password: registerPw,
+            confirm_password: confirmPw
+        })
+        .then(result => {
+            if(result === "okay") {
+                // JWT token
+                // etc..
+                // check continuously if in the "auth" folder there are only authenticated users
+                alert("Successful registration!");
+            } else {
+                alert("hehe, invalid register credentials");
             }
         })
         .catch(error => console.log(error));
