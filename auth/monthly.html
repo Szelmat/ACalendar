@@ -5,8 +5,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACalendar</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../frontend/css/materialize.min.css">
+    <link rel="stylesheet" href="../frontend/css/custom.css">
+    
+    <!-- Materialize Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Set favicon -->
+    <link rel="icon" type="image/png" href="../ACalendar_logo.png"/>
 </head>
 <body>
-    <h1>ACalendar Monthly view: Logged in</h1>
+
+    <!-- Navbar for all authorized pages  -->
+    <nav>
+        <div class="nav-wrapper secondary-bg">
+            <a href="./monthly.html" class="brand-logo center">ACalendar</a>
+            <a href="#" data-target="views_links" class="sidenav-trigger ml-3"><i class="material-icons">menu</i></a>
+            
+            <!-- Content of hamburger icon when the page (navbar) is NOT minimized  -->
+            <ul class="left hide-on-med-and-down">
+                <li><a href="./monthly.html">Monthly view</a></li>
+                <li><a href="#">Weekly view</a></li>
+                <li><a href="#">Daily view</a></li>
+            </ul>
+
+            <a href="#" class="right"><i class="material-icons mr-3">logout</i></a>
+        </div>
+    </nav> <!-- End of navbar -->
+    
+    <!-- Content of hamburger icon when the page (navbar) is minimized  -->
+    <ul class="sidenav" id="views_links">
+        <li><a href="./monthly.html">Monthly view</a></li>
+        <li><a href="#">Weekly view</a></li>
+        <li><a href="#">Daily view</a></li>
+    </ul>
+    
+    
+
+    <script src="frontend/js/materialize.min.js"></script>
+    <script src="frontend/js/functions.js"></script>
+    <script src="frontend/js/monthly.js"></script>
+    
 </body>
 </html>
