@@ -69,15 +69,17 @@ table#eventsInSelectedDate td i {
     color: #8190e0;
     text-align: center;
 }
+.week li button {color: #8190e0 !important;}
+
 
 #eventsInSelectedDateDiv tr {border-style: none;}
 
-/* Today's events time and upcoming events time*/
+/* Selected day's events time and upcoming events time*/
 .coming-event-time {
     color: #5E35B1;
 }
 
-/* Today's events title and upcoming events title*/
+/* Selected day's events title and upcoming events title*/
 .coming-event-title {
     color: #651FFF;
 }
