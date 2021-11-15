@@ -16,7 +16,7 @@
     <!-- Set favicon -->
     <link rel="icon" type="image/png" href="../ACalendar_logo.png"/>
 </head>
-<body>
+<body class="blue-grey lighten-1">
     <!-- Navbar for all authorized pages  -->
     <nav>
         <div class="nav-wrapper secondary-bg">
@@ -42,6 +42,7 @@
     </ul>
 
     <div class="container">
+        
         <!-- Monthly calendar -->
         <div class="row mb-0 pb-0">
             <div class="col s12 m8 l8 xl8 offset-m2 offset-l2 offset-xl2">
@@ -152,7 +153,7 @@
                             2021 September 25
                         </div>
                         <div class="">
-                            <button class="btn-small white text-primary ml-5" id="addEventToToday">
+                            <button class="btn-small white ml-5 primary-bg" id="addEventToToday">
                                 NEW
                                 <i class="material-icons left">add</i>
                             </button>
@@ -161,8 +162,9 @@
                     <div id="eventsInSelectedDateDiv" class="">
                         <table id="eventsInSelectedDateTable" class="mt-3">
                             <tbody>
+                                
                               <tr>
-                                <td class="coming-event-time ml-4">10:00</td>
+                                <td class="coming-event-time ml-5 pl-3">10:00</td>
                                 <td class="center coming-event-title">GERMAN LESSON</td>
                                 <td>
                                     <a href class="">
@@ -178,7 +180,7 @@
                               </tr>
 
                               <tr>
-                                <td class="coming-event-time ml-4">11:30</td>
+                                <td class="coming-event-time ml-5 pl-3">11:30</td>
                                 <td class="center coming-event-title">COFFEE WITH SARAH</td>
                                 <td>
                                     <a href class="">
@@ -192,7 +194,7 @@
                               </tr>
 
                               <tr>
-                                <td class="coming-event-time ml-4">17:00</td>
+                                <td class="coming-event-time ml-5 pl-3">17:00</td>
                                 <td class="center coming-event-title">FOOTBALL PRACTICE</td>
                                 <td>
                                     <a href class="">
@@ -210,7 +212,92 @@
                     </div>
                 </dv>
             </div>
-        </div>
+        </div> <!-- End of Selected days's events or todays' events-->
+
+        <!-- Other upcoming events -->
+        <div class="row">
+            <div class="col s12 m8 l8 xl8 offset-m2 offset-l2 offset-xl2">
+                <div class="card center-align">
+                    <div class="pt-3 div-content-inline valign-wrapper">
+                        <div class="" id="selectedDate">
+                            Other upcoming events
+                        </div>
+                        <div class="">
+                            <button class="btn-small white ml-5 primary-bg" id="addEventToUpcoming">
+                                NEW
+                                <i class="material-icons left">add</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="eventsInSelectedDateDiv" class="">
+                        <table id="upcomingEventsTable" class="mt-3">
+                            <tbody>
+                                
+                              <tr>
+                                <td class="coming-event-time ml-5 pl-3">2021.09.30 10:00</td>
+                                <td class="center coming-event-title">MATH TEST</td>
+                                <td>
+                                    <a href class="">
+                                        <i class="material-icons color-grey">edit</i>
+                                    </a>
+                                </td>
+                                
+                                <td>
+                                    <a href class="">
+                                        <i class="material-icons color-red">delete</i>
+                                    </a>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td class="coming-event-time ml-5 pl-3">2021.09.30 11:00</td>
+                                <td class="center coming-event-title">PIANO LESSON</td>
+                                <td>
+                                    <a href class="">
+                                        <i class="material-icons color-grey">edit</i>
+                                    </a>
+                                <td>
+                                    <a href class="">
+                                        <i class="material-icons color-red">delete</i>
+                                    </a>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td class="coming-event-time ml-5 pl-3">2021.09.30 17:00</td>
+                                <td class="center coming-event-title">DRIVING LESSON</td>
+                                <td>
+                                    <a href class="">
+                                        <i class="material-icons color-grey">edit</i>
+                                    </a>
+                                <td>
+                                    <a href class="">
+                                        <i class="material-icons color-red">delete</i>
+                                    </a>
+                                </td>
+                              </tr>
+
+                            <tr>
+                                <td class="coming-event-time ml-5 pl-3">2021.09.30 20:00</td>
+                                <td class="center coming-event-title">DENTIST'S</td>
+                                <td>
+                                    <a href class="">
+                                        <i class="material-icons color-grey">edit</i>
+                                    </a>
+                                <td>
+                                    <a href class="">
+                                        <i class="material-icons color-red">delete</i>
+                                    </a>
+                                </td>
+                              </tr>
+
+                            </tbody>
+                          </table>
+                    </div>
+                </dv>
+            </div>
+        </div> <!-- End of Other upcoming events -->
+
     </div> <!-- End of Container -->
 
     <script src="../frontend/js/jquery-3.6.0.min.js"></script>
