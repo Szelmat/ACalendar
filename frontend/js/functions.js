@@ -4,7 +4,7 @@
  * @param {Object<any>} data Object
  * @returns Promise
  */
- export async function sendAjaxPostRequest(uri, data) {
+ async function sendAjaxPostRequest(uri, data) {
     const response = await fetch(uri, {
         method: "POST",
         headers: {

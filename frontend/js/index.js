@@ -1,4 +1,3 @@
-import { sendAjaxPostRequest } from "./functions";
 
 const submitLoginBtn = document.querySelector("#submitLoginForm");
 const submitRegisterBtn = document.querySelector("#submitRegisterForm");
@@ -65,7 +64,7 @@ function loginUser(e) {
                 alert("ok, now you are logged in");
                 // JWT token
                 // check continuously if in the "auth" folder there are only authenticated users
-                window.open("/auth/monthly.html");
+                window.location.href = "/auth/monthly.html";
             } else {
                 alert("hehe, invalid login credentials");
             }
