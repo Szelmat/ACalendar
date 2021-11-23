@@ -1,26 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>ACalendar</title>
-    
-        <!-- CSS -->
-        <link rel="stylesheet" href="../frontend/css/materialize.min.css">
-        <link rel="stylesheet" href="../frontend/css/custom.css">
-        
-        <!-- Materialize Icons -->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <!-- Set favicon -->
-        <link rel="icon" type="image/png" href="../ACalendar_logo.png"/>
-        
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACalendar</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../frontend/css/materialize.min.css">
+    <link rel="stylesheet" href="../frontend/css/custom.css">
+
+    <!-- Materialize Icons -->
+    <!-- https://fonts.google.com/icons?selected=Material+Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Set favicon -->
+    <link rel="icon" type="image/png" href="../ACalendar_logo.png" />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
 
 <body>
- 
-    
-    <script src="../frontend/js/materialize.min.js"></script>
+    <!-- Main countainer -->
+    <div class="countainer">
+        <!-- Title -->
+        <div class="row center ">
+            <div id="homeTitle"
+                class="waves-effect waves-dark btn mt-0 pt-1 col s1 m1 l1 xl1 offset-s2 offset-m2 offset-l2 offset-xl2">
+                <span class="material-icons"> menu</span></div>
+            <div id="homeTitle" class=" col s6 m6 l6 xl6 "><span class="flow-text mt-0 pt-2">Add/Edit an event</span></div>
+            <div id="homeTitle" class="waves-effect waves-dark btn mt-0  pt-1 col s1 m1 l1 xl1"><span
+                    class="material-icons">logout</span></div>
+        </div>
+
+        <!-- Beginning date and time countainer -->
+        <div class="countainer">
+
+            <div class="row">
+                <div class="col s8 m8 l8 xl8 offset-s2 offset-m2 offset-l2 offset-xl2">
+                    <h4 class="mt-5 mb-4">Beginning date and time</h4>
+                </div>
+                
+            </div>
+
+            <div class="row ">
+                <div class="col s2 m2 l2 xl2 offset-s2 offset-m2 offset-l2 offset-xl2">
+                    <div>
+                        <h6 style="font-size:1vw">Event start date</h6>
+                    </div>
+                </div>
+
+                <div class="col s6 m6 l6 xl6 ">
+                    <div>
+                        <input type="date" id="start" name="trip-start" value="2021-12-01" min="2021-01-01" max="2099-12-31">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row ">
+
+                <div class="col s2 m2 l2 xl2 offset-s2 offset-m2 offset-l2 offset-xl2">
+                    <div>
+                        <h6 style="font-size:1vw">Event start time</h6>
+                    </div>
+                </div>
+
+                <div class="col s6 m6 l6 xl6 ">
+                    <div>
+                        <input type="time" required>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- The end of Beginning date and time countainer -->
+
+        <!-- End date and time countainer -->
+        <div class="countainer">
+
+            <div class="row">
+                <div class="col s8 m8 l8 xl8 offset-s2 offset-m2 offset-l2 offset-xl2">
+                    <h4 class="mt-5 mb-4">End date and time</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s2 m2 l2 xl2 offset-s2 offset-m2 offset-l2 offset-xl2">
+                    <div>
+                        <h6 style="font-size:1vw">Event end date</h6>
+                    </div>
+                </div>
+
+                <div class="col s6 m6 l6 xl6 ">
+                    <div>
+                        <input type="date" id="start" name="trip-start" value="2021-12-01" min="2021-01-01"
+                            max="2099-12-31">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col s2 m2 l2 xl2 offset-s2 offset-m2 offset-l2 offset-xl2">
+                    <div>
+                        <h6 style="font-size:1vw">Event end time</h6> 
+                    </div>
+                </div>
+
+                <div class="col s6 m6 l6 xl6 ">
+                    <div>
+                        <input type="time" required>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- The end of end date and time countainer -->
+
+        <div class="row center">
+            <div class="col s8 m8 l8 xl8 offset-s2 offset-m2 offset-l2 offset-xl2">
+
+                <div class="rounded-1">
+                    <div class="input-field">
+                        <input id="enevtTiltle" type="text">
+                        <label for="enevtTiltle">Event Title</label>
+                    </div>
+                </div>
+
+                <div class="rounded-1 mt-5">
+                    <div class="input-field">
+                        <input id="enevtDesc" type="text">
+                        <label for="enevtDesc">Event Description</label>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class = "grey col s8 m8 l8 xl8 offset-s2 offset-m2 offset-l2 offset-xl2"> 
+                <ul id="dropdown" class="dropdown-content">
+                    <li><a href="#">One</a></li>
+                    <li><a href="#">Two</a></li>
+                    <li><a href="#">Three</a></li>
+                </ul>
+                <ul class="dds ">
+                    <li>
+                        <a class="dropdown-trigger" data-target="dropdown" style="color:black;"> Priority 
+                        <i class="material-icons right">arrow_drop_down</i></a></li>
+                </ul>
+            </div> 
+        </div>
+
+        <div class="row mb-0 mt-0">
+            <form action="#" class = "col s4 m4 l4 xl4 offset-s2 offset-m2 offset-l2 offset-xl2">
+                <p>
+                  <label>
+                    <input type="checkbox" class="filled-in" checked="checked" />
+                    <span>Notification</span>
+                  </label>
+                </p>
+              </form>
+                <!-- Switch -->
+                <div class="switch col s4 m4 l4 xl4">
+                    <label>
+                        <span style="color:black;">Habit</span>
+                        <input type="checkbox">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+
+            
+        </div>
+
+        <div class="row center mt-3 mb-5 ">
+            <button id="saveEvent" type="submit" class="waves-effect waves-dark btn primary-bg col s8 m8 l8 xl8 offset-s2 offset-m2 offset-l2 offset-xl2">
+                <span class="medium-sized-text">SAVE</span>
+            </button>
+        </div>
+        
+
+
+
+    </div>
+    <!-- The end of the Main countainer -->
 </body>
 </html>
