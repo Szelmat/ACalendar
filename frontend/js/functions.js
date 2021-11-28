@@ -15,3 +15,24 @@
     const result = await response.json();
     return result;
 }
+
+
+/**
+ * Get the string format of the given date like "yyyy-mm-dd hh:mm"
+ * @param {Date} date 
+ */
+function formatDate(date) {
+    const year = date.getFullYear();
+    // The months are 0-based (0 is January, 1 is February, etc..),
+    // therefore we need to increment its value by 1
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+
+    return year + '-' +
+        (month >= 10 ? month : '0' + month) + '-' +
+        (day >= 10 ? day : '0' + day) + ' ' +
+        (hour >= 10 ? hour : '0' + hour) + ':' +
+        (minute >= 10 ? minute : '0' + minute);
+}

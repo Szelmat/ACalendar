@@ -57,7 +57,6 @@
                             </i>
                         </button>
                         <div id="selectedMonth" class="pt-1 pb-1 mt-0 mb-0 pl-2 pr-2 mr-3 ml-3 ">
-                            2021 September
                         </div>
                         <button class="btn btn-small left-align primary-bg">
                             <i id="monthStepForward" class="material-icons">
@@ -69,154 +68,17 @@
                     <!-- Calendar -->
                     <div>
                         <div id="daysOfWeekContainer">
-                            <ul class="weekdays mb-0">
-                                <li class="pt-3 pb-3">MON</li>
-                                <li class="pt-3 pb-3">TUE</li>
-                                <li class="pt-3 pb-3">WED</li>
-                                <li class="pt-3 pb-3">THU</li>
-                                <li class="pt-3 pb-3">FRI</li>
-                                <li class="pt-3 pb-3">SAT</li>
-                                <li class="pt-3 pb-3">SUN</li>
+                            <ul id="weekdaysUl" class="weekdays mb-0">
+                                <li class="weekday pt-2 pb-2 mt-2 mb-2 rounded-1 z-depth-1"></li>
+                                <li class="weekday pt-2 pb-2 mt-2 mb-2 rounded-1 z-depth-1"></li>
+                                <li class="weekday pt-2 pb-2 mt-2 mb-2 rounded-1 z-depth-1 is-today"></li>
+                                <li class="weekday pt-2 pb-2 mt-2 mb-2 rounded-1 z-depth-1"></li>
+                                <li class="weekday pt-2 pb-2 mt-2 mb-2 rounded-1 z-depth-1"></li>
+                                <li class="weekday pt-2 pb-2 mt-2 mb-2 rounded-1 z-depth-1"></li>
+                                <li class="weekday pt-2 pb-2 mt-2 mb-2 rounded-1 z-depth-1"></li>
                             </ul>
                         </div>
                         <div id="calendarContainer">
-                            <ul id="week-0" class="week mt-0 pt-3">
-                                <li id="week_day-0:0">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">30</button>
-                                </li>
-                                <li id="week_day-0:1">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">31</button>
-                                </li>
-                                <li id="week_day-0:2">
-                                    <button class="btn-small pl-2 pr-2 white is-today">01</button>
-                                <li id="week_day-0:3">
-                                    <button class="btn-small pl-2 pr-2 white">02</button>
-                                </li>
-                                <li id="week_day-0:4">
-                                    <button class="btn-small pl-2 pr-2 white">03</button>
-                                </li>
-                                <li id="week_day-0:5">
-                                    <button class="btn-small pl-2 pr-2 white">04</button>
-                                </li>
-                                <li id="week_day-0:6">
-                                    <button class="btn-small pl-2 pr-2 white">05</button>
-                                </li>
-                            </ul>
-                            <ul id="week-1" class="week">
-                                <li id="week_day-1:0">
-                                    <button class="btn-small pl-2 pr-2 white">06</button>
-                                </li>
-                                <li id="week_day-1:1">
-                                    <button class="btn-small pl-2 pr-2 white">07</button>
-                                </li>
-                                <li id="week_day-1:2">
-                                    <button class="btn-small pl-2 pr-2 white">08</button>
-                                </li>
-                                <li id="week_day-1:3">
-                                    <button class="btn-small pl-2 pr-2 white">09</button>
-                                </li>
-                                <li id="week_day-1:4">
-                                    <button class="btn-small pl-2 pr-2 white">10</button>
-                                </li>
-                                <li id="week_day-1:5">
-                                    <button class="btn-small pl-2 pr-2 white">11</button>
-                                </li>
-                                <li id="week_day-1:6">
-                                    <button class="btn-small pl-2 pr-2 white">12</button>
-                                </li>
-                            </ul>
-                            <ul id="week-2" class="week">
-                                <li id="week_day-2:0">
-                                    <button class="btn-small pl-2 pr-2 white">13</button>
-                                </li>
-                                <li id="week_day-2:1">
-                                    <button class="btn-small pl-2 pr-2 white">14</button>
-                                </li>
-                                <li id="week_day-2:2">
-                                    <button class="btn-small pl-2 pr-2 white">15</button>
-                                </li>
-                                <li id="week_day-2:3">
-                                    <button class="btn-small pl-2 pr-2 white">16</button>
-                                </li>
-                                <li id="week_day-2:4">
-                                    <button class="btn-small pl-2 pr-2 white">17</button>
-                                </li>
-                                <li id="week_day-2:5">
-                                    <button class="btn-small pl-2 pr-2 white">18</button>
-                                </li>
-                                <li id="week_day-2:6">
-                                    <button class="btn-small pl-2 pr-2 white">19</button>
-                                </li>
-                            </ul>
-                            <ul id="week-3" class="week">
-                                <li id="week_day-3:0">
-                                    <button class="btn-small pl-2 pr-2 white">20</button>
-                                </li>
-                                <li id="week_day-3:1">
-                                    <button class="btn-small pl-2 pr-2 white">21</button>
-                                </li>
-                                <li id="week_day-3:2">
-                                    <button class="btn-small pl-2 pr-2 white">22</button>
-                                </li>
-                                <li id="week_day-3:3">
-                                    <button class="btn-small pl-2 pr-2 white">23</button>
-                                </li>
-                                <li id="week_day-3:4">
-                                    <button class="btn-small pl-2 pr-2 white">24</button>
-                                </li>
-                                <li id="week_day-3:5">
-                                    <button class="btn-small pl-2 pr-2 white">25</button>
-                                </li>
-                                <li id="week_day-3:6">
-                                    <button class="btn-small pl-2 pr-2 white">26</button>
-                                </li>
-                            </ul>
-                            <ul id="week-4" class="week">
-                                <li id="week_day-4:0">
-                                    <button class="btn-small pl-2 pr-2 white">27</button>
-                                </li>
-                                <li id="week_day-4:1">
-                                    <button class="btn-small pl-2 pr-2 white">28</button>
-                                </li>
-                                <li id="week_day-4:2">
-                                    <button class="btn-small pl-2 pr-2 white">29</button>
-                                </li>
-                                <li id="week_day-4:3">
-                                    <button class="btn-small pl-2 pr-2 white">30</button>
-                                </li>
-                                <li id="week_day-4:4">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">01</button>
-                                </li>
-                                <li id="week_day-4:5">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">02</button>
-                                </li>
-                                <li id="week_day-4:6">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">03</button>
-                                </li>
-                            </ul>
-                            <ul id="week-5" class="week mb-0 pb-3">
-                                <li id="week_day-5:0">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">04</button>
-                                </li>
-                                <li id="week_day-5:1">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">05</button>
-                                </li>
-                                <li id="week_day-5:2">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">06</button>
-                                </li>
-                                <li id="week_day-5:3">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">07</button>
-                                </li>
-                                <li id="week_day-5:4">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">08</button>
-                                </li>
-                                <li id="week_day-5:5">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">09</button>
-                                </li>
-                                <li id="week_day-5:6">
-                                    <button class="btn-small pl-2 pr-2 white notInSelectedMonth">10</button>
-                                </li>
-                            </ul>
                         </div>
                     </div> <!-- End of Calendar -->
                 
