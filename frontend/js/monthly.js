@@ -3,6 +3,8 @@ const weekdaysUl = document.querySelector("#weekdaysUl");
 const weekdaysLIs = document.querySelectorAll(".weekday");
 const selectedMonthDiv = document.querySelector("#selectedMonth");
 const calendarContainerDiv = document.querySelector("#calendarContainer");
+const monthStepBack = document.querySelector("#monthStepBack");
+const monthStepForward = document.querySelector("#monthStepForward");
 
 const weekdaysLIsArray = Array.from(weekdaysLIs);
 const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -19,10 +21,64 @@ const febMonth = 2; // February, which can have 28 or 29 days (depends on the le
 // Day of the week which is related to today
 let todayWeekDayLi = null;
 
+// represents the currently selected month in the calendar (by default it's the current date)
+let calendarMonth = new Date();
+
 document.addEventListener("DOMContentLoaded", e => {
     fillDaysOfWeek();
-    fillCalendar();
+    fillCalendar(calendarMonth);
+    registerEventListeners();
+    // fillCalendar();
 });
+
+
+/**
+ * Register all the event listeners.
+ */
+function registerEventListeners() {
+    monthStepBack.addEventListener("click", stepBackInMonths);
+    monthStepForward.addEventListener("click", stepForwardInMonths);
+}
+
+
+/**
+ * Get the subsequent date of the given date.
+ * @param {Date} date 
+ */
+function getNextMonth(date) {
+    let normalizedDate = normalizeDate(date);
+    let normalizedDateUnix = normalizedDate.getTime() / 1000;
+
+    
+    let maxDays = this.getCountOfDays(date.getFullYear(), date.getMonth() + 1);
+    // Calculate the seconds for adding 1 month to the given month
+    let seconds = maxDays * 24 * 60 * 60;
+    // add +5 days just to be sure we'll get into the next month (the clock adjustment could case some problem)
+    seconds += 5 * 24 * 60 * 60;
+
+    return new Date((normalizedDateUnix + seconds) * 1000);
+}
+
+/**
+ * Get the preceding date of the given date.
+ * @param {Date} date 
+ */
+ function getPreviousMonth(date) {
+    let normalizedDate = normalizeDate(date);
+    let normalizedDateUnix = normalizedDate.getTime() / 1000;
+    
+    let maxDays = this.getCountOfDays(date.getFullYear(), date.getMonth() + 1);
+    // Calculate the seconds for subtracting 1 month to the given month
+    let seconds = maxDays * 24 * 60 * 60;
+    // subtract 5 days just to be sure we'll get into the previous month 
+    // (the clock adjustment or the month february  could case some problem)
+    seconds -= 5 * 24 * 60 * 60;
+
+    console.log(new Date((normalizedDateUnix - seconds) * 1000));
+
+    return new Date((normalizedDateUnix - seconds) * 1000);
+}
+
 
 
 /**
@@ -31,49 +87,64 @@ document.addEventListener("DOMContentLoaded", e => {
 function fillDaysOfWeek() {
 
     for(let i = 0; i < 7; i++) {
-        // let weekdayName = Object.values(weekdays)[i];
         let weekdayName = weekdays[i];
         weekdaysLIsArray[i].innerHTML = weekdayName;
     }
 }
 
 
-function fillCalendar() {
-    let currentDate = new Date();
-    let currentMonth = currentDate.getMonth();
-    let currentMonthName = monthNames[currentMonth];
-    let currentYear = currentDate.getFullYear();
+/**
+ * Fill the calendar with the days of the given/selected month, by default it is the current date.
+ * @param {Date} date 
+ */
+function fillCalendar(date = new Date()) {
+    let givenDate = date;
+    let givenMonth = givenDate.getMonth();
+    let givenMonthName = monthNames[givenMonth];
+    let givenYear = givenDate.getFullYear();
     
-    // set the selected month (the format is: yyyy Month_name)
-    selectedMonthDiv.innerHTML = `${currentDate.getFullYear()} ${currentMonthName}`;
+    let today = new Date();
+    let todayDay = today.getDate();
+    let todayWeek = getDayOfWeek(today);
+    
+    // if the today's date (year, month) is the given 'date', then, just in this case
+    // we should mark the today's day
+    let currentDateIsTheGivenDate = today.getFullYear() === date.getFullYear() 
+        && today.getMonth() === date.getMonth();
 
-    let maxDays = getCountOfDays(currentYear, currentMonth);
+    // set the selected month (the format is: yyyy Month_name)
+    selectedMonthDiv.innerHTML = `${givenDate.getFullYear()} ${givenMonthName}`;
+
+    calendarContainerDiv.innerHTML = "";
+
+    let maxDays = getCountOfDays(givenYear, givenMonth + 1);
     
     // first day of the given month
-    let firstDay = new Date(`${currentYear}.${currentMonth + 1}.1`);
+    let firstDay = new Date(`${givenYear}.${givenMonth + 1}.1`);
     // get the day-of-the-week of the first day of given month
     let dayOfTheWeek = getDayOfWeek(firstDay);
-    let day = weekdays[dayOfTheWeek];
 
     for(let i = 0; i < 7; i++) {
-        if(weekdaysLIsArray[i].innerHTML === day) {
+        if(currentDateIsTheGivenDate && weekdaysLIsArray[i].innerHTML === weekdays[todayWeek]) {
             todayWeekDayLi = weekdaysLIsArray[i];
             todayWeekDayLi.classList.add("is-today");
         }
     }
 
-    // get previous month 
-    let currentDateUnix = currentDate.getTime() / 1000;
+    // let's get previous month 
+    
+    let givenDateNormalized = normalizeDate(givenDate);
+    let givenDateUnix = givenDateNormalized.getTime() / 1000;
     // subtract 2 days (just to be sure) to step into the prevoius month to get its maxDays
-    let previousMonthUnix = currentDateUnix - 2 * 24 * 60 * 60
-    let previousMonth = new Date(previousMonthUnix * 1000);
-    let prevMonthMaxDays = getCountOfDays(previousMonth.getFullYear(), previousMonth.getMonth())
-
+    let previousMonthUnix = givenDateUnix - 2 * 24 * 60 * 60
+    const previousMonth = new Date(previousMonthUnix * 1000);
+    const prevMonthMaxDays = getCountOfDays(previousMonth.getFullYear(), previousMonth.getMonth() + 1)
 
 
     let dayOfTheMonth = 1;  
-    let dayOfThePrevMonth = prevMonthMaxDays;
+    // let dayOfThePrevMonth = prevMonthMaxDays;
     let dayOfTheNextMonth = 0;
+    let tempCounter = dayOfTheWeek;
     // Fill the days
     // In some cases (e.g. 2021.05) the calendar needs 6 rows (which represent 6 weeks)
     // This means we need 6 ULs
@@ -100,16 +171,20 @@ function fillCalendar() {
                 if(j >= dayOfTheWeek) {
                 // these are the days which are in the selected month
                     btn.innerText = dayOfTheMonth < 10 ? "0" + dayOfTheMonth : dayOfTheMonth;
-
                     dayOfTheMonth++;
                 } else {
-                    btn.innerText = dayOfThePrevMonth;
-                    dayOfThePrevMonth--;
+                    btn.innerText = prevMonthMaxDays - tempCounter + 1;
+                    tempCounter--;
                     btn.className += " notInSelectedMonth"
                 }
+                
+                if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
+                    btn.className += " is-today";
+                }
             } else {
-                if(dayOfTheMonth == maxDays && dayOfTheNextMonth === 0) {
+                if(dayOfTheMonth > maxDays && dayOfTheNextMonth === 0) {
                     dayOfTheNextMonth += 1;
+                    // console.log(dayOfTheMonth, maxDays, dayOfTheNextMonth);
                 }
                 
                 if(dayOfTheNextMonth != 0) {
@@ -121,6 +196,10 @@ function fillCalendar() {
                     btn.innerText = dayOfTheMonth < 10 ? "0" + dayOfTheMonth : dayOfTheMonth;
     
                     dayOfTheMonth++;
+                }
+                
+                if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
+                    btn.className += " is-today";
                 }
             }
             
@@ -215,4 +294,27 @@ function getDayOfWeek(firstDay) {
         result = 5;
 
     return result;
+}
+
+
+/**
+ * Normalize date (e.g.: return the first day of the given month)
+ * @param {Date} date 
+ * @returns {Date}
+ */
+function normalizeDate(date) {
+    return new Date(`${date.getFullYear()}.${date.getMonth() + 1}.1`);
+}
+
+
+// Implement all the event listeners
+
+function stepBackInMonths() {
+    calendarMonth = getPreviousMonth(calendarMonth);
+    fillCalendar(calendarMonth);
+}
+
+function stepForwardInMonths() {
+    calendarMonth = getNextMonth(calendarMonth);
+    fillCalendar(calendarMonth);
 }
