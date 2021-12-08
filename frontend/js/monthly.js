@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", e => {
     fillDaysOfWeek();
     fillCalendar(calendarMonth);
     registerEventListeners();
-    // fillCalendar();
+
 });
 
 
@@ -179,6 +179,7 @@ function fillCalendar(date = new Date()) {
 
                     if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
                         btn.className += " is-today";
+                        btn.className += " day-selected";
                     }
                 }
 
@@ -206,7 +207,11 @@ function fillCalendar(date = new Date()) {
             li.appendChild(btn);
             ul.appendChild(li);
 
-            btn.addEventListener("click", e => calendarDayClicked(e))
+            btn.addEventListener("click", e => calendarDayClicked(e.target))
+            if(btn.classList.contains("is-today")) {
+            // fire the click event manually to fill the selected day's div/table
+                calendarDayClicked(btn);
+            }
 
         }
         calendarContainerDiv.appendChild(ul);
@@ -322,34 +327,25 @@ function getWeekDayMatrix(input) {
 }
 
 
-// Implement all the event listeners
-
-function stepBackInMonths() {
-    calendarMonth = getPreviousMonth(calendarMonth);
-    fillCalendar(calendarMonth);
-}
-
-function stepForwardInMonths() {
-    calendarMonth = getNextMonth(calendarMonth);
-    fillCalendar(calendarMonth);
-}
-
-function calendarDayClicked(e) {
-    let weekDayMatrix = getWeekDayMatrix(e.target.id);
+/**
+ * Get the selected date (the day which was clicked in the calendar) as a full Date object. The input is a button from the calendar.
+ * @param {Button} btn 
+ * @returns Date
+ */
+function getSelectedDayAsDate(btn) {
+    let weekDayMatrix = getWeekDayMatrix(btn.id);
 
     let week = Number.parseInt(weekDayMatrix[0]);
-    let day = Number.parseInt(weekDayMatrix[2]);
+    // let day = Number.parseInt(weekDayMatrix[2]);
 
     // get the date parameters corresponding to currently selected month (calendarMonth)
     let givenYear = calendarMonth.getFullYear();
     let givenMonth = calendarMonth.getMonth();
 
-    // console.log("givenYear", givenYear, "givenMonth", givenMonth, "week", week, "day", day);
-
-    let selectedDay = e.target.innerText;
+    let selectedDay = btn.innerText;
     let selectedDate;
 
-    if (e.target.classList.contains("notInSelectedMonth")) {
+    if (btn.classList.contains("notInSelectedMonth")) {
         if(week === 0) {
         // so the selected date belongs to the previous month
             let prevDate = getPreviousMonth(calendarMonth);
@@ -366,11 +362,165 @@ function calendarDayClicked(e) {
     } else {
     // selected date belongs to current month
         // let selectedDay = week * 7 + day - 1;
-        
         selectedDate = new Date(`${givenYear}.${givenMonth + 1}.${selectedDay}`);
     }
 
-    console.log(`${selectedDate.getFullYear()} ${monthNames[selectedDate.getMonth()]} ${selectedDate.getDate()}`);
-    console.log(selectedDate);
+    return selectedDate;
+}
 
+
+/**
+ * Create the table which contains the events related to the selected day. 
+ */
+function createSelEventsTable(eventsToDisplay) {
+    let container = document.querySelector("#eventsInSelectedDateDiv");
+    
+    let contentHTML = `
+        <table id="eventsInSelectedDateTable" class="mt-3">
+            <tbody>`;
+
+    eventsToDisplay.forEach(eventToDisplay => {
+        let startTime = eventToDisplay["start_time"];
+        let startTimeDate = new Date(startTime);
+        
+        let eventHours = startTimeDate.getHours();
+        let eventMinutes = startTimeDate.getMinutes();
+
+        let displayH = eventHours < 10 ? "0" + eventHours : eventHours;
+        let displayM = eventMinutes < 10 ? "0" + eventMinutes : eventMinutes;
+
+        let displayText = eventToDisplay["event_title"].toUpperCase();
+        
+        let trHTML = `
+        <tr>
+            <td class="coming-event-time ml-5 pl-3">${displayH}:${displayM}</td>
+            <td class="center coming-event-title">${displayText}</td>
+            <td>
+                <a href class="">
+                    <i class="material-icons color-grey">edit</i>
+                </a>
+            <td>
+                <a href class="">
+                    <i class="material-icons color-red">delete</i>
+                </a>
+            </td>
+        </tr>
+        `;
+
+        contentHTML += "\n" + trHTML + "\n";
+    });
+
+    contentHTML += "\n</tbody></table>"
+
+    container.innerHTML = contentHTML;
+
+}
+
+
+
+/**
+ * 
+ * @param {Date} selectedDate 
+ */
+function fillSelectedDaysDiv(selectedDate) {
+    let selectedDaysTitleDiv = document.querySelector("#selectedDate");
+
+    // this will come from the backend
+    let events = [
+        {
+        "start_time": "2021.12.08 10:00",
+        "event_title": "Computer Security practice assignment"
+        }, 
+        {
+        "start_time": "2021.12.08 12:30",
+        "event_title": "Submit project work"
+        }, 
+        {
+        "start_time": "2021.12.08 14:40",
+        "event_title": "Start working"
+        },
+        {
+        "start_time": "2021.12.10 8:05",
+        "event_title": "Go to work"
+        },
+        {
+        "start_time": "2021.12.10 16:25",
+        "event_title": "Stop working"
+        },
+        {
+        "start_time": "2021.12.12 12:30",
+        "event_title": "Study to Software technology"
+        },
+    ];
+
+    let year = selectedDate.getFullYear();
+    let month = selectedDate.getMonth() + 1;
+    let day = selectedDate.getDate();
+    let hours = selectedDate.getHours();
+    let minutes = selectedDate.getMinutes();
+    
+
+    selectedDaysTitleDiv.innerText = `${year} ${monthNames[month - 1]} ${day}`;
+    // selectedDaysTitleDiv.style.color = "crimson";
+
+    let eventsToDisplay = [];
+
+    events.forEach(calendarEvent => {
+        let startTime = calendarEvent["start_time"];
+        let startTimeDate = new Date(startTime);
+        
+        let eventYear = startTimeDate.getFullYear();
+        let eventMonth = startTimeDate.getMonth() + 1;
+        let eventDay = startTimeDate.getDate();;
+
+        if(year === eventYear && month === eventMonth && day === eventDay) {
+        // if today is the selected day
+            // let timeFormat = `${eventHours < 10 ? "0" + eventHours : eventHours}:${eventMinutes < 10 ? "0" + eventMinutes : eventMinutes}`;
+            // let eventTitle = `${calendarEvent["event_title"]}`;
+            // console.log(timeFormat, eventTitle);
+            eventsToDisplay.push(calendarEvent)
+        }
+        
+    });
+
+    if(eventsToDisplay.length === 0) {
+        document.querySelector("#eventsInSelectedDateDiv").innerHTML = `
+            <div class="mt-4 pt-3 pb-3 grey lighten-3">
+                <i>There is no event created yet
+                </i>
+            </div>
+        `;
+    } else {
+        createSelEventsTable(eventsToDisplay);
+    }
+
+}
+
+
+// Implement all the event listeners
+
+function stepBackInMonths() {
+    calendarMonth = getPreviousMonth(calendarMonth);
+    fillCalendar(calendarMonth);
+}
+
+function stepForwardInMonths() {
+    calendarMonth = getNextMonth(calendarMonth);
+    fillCalendar(calendarMonth);
+}
+
+function calendarDayClicked(btn) {
+    let selectedDate = getSelectedDayAsDate(btn);
+
+    // remove the selection from a day
+    let prevSelectedDay = document.querySelector(".day-selected");
+    if(prevSelectedDay !== null) {
+        prevSelectedDay.classList.remove("day-selected");
+    }
+
+    // add selection to a day
+    btn.className += " day-selected";
+    
+    
+    fillSelectedDaysDiv(selectedDate);
 }

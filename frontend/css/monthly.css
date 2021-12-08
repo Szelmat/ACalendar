@@ -48,7 +48,12 @@ button.notInSelectedMonth {
 
 .is-today {
     /* box-shadow: 3px 3px 5px rgba(0, 0, 255, 0.9) !important; */
-    background-color: khaki !important;
+    background-color: rgba(240, 230, 140, 0.7) !important;
+}
+
+.day-selected {
+    background-color: crimson !important;
+    color: white !important
 }
 
 
