@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", e => {
 
 
 /**
- * Register all the event listeners.
+ * Register event listeners.
  */
 function registerEventListeners() {
     monthStepBack.addEventListener("click", stepBackInMonths);
@@ -74,8 +74,6 @@ function getNextMonth(date) {
     // (the clock adjustment or the month february  could case some problem)
     seconds -= 5 * 24 * 60 * 60;
 
-    console.log(new Date((normalizedDateUnix - seconds) * 1000));
-
     return new Date((normalizedDateUnix - seconds) * 1000);
 }
 
@@ -112,6 +110,7 @@ function fillCalendar(date = new Date()) {
     let currentDateIsTheGivenDate = today.getFullYear() === date.getFullYear() 
         && today.getMonth() === date.getMonth();
 
+
     // set the selected month (the format is: yyyy Month_name)
     selectedMonthDiv.innerHTML = `${givenDate.getFullYear()} ${givenMonthName}`;
 
@@ -128,6 +127,9 @@ function fillCalendar(date = new Date()) {
         if(currentDateIsTheGivenDate && weekdaysLIsArray[i].innerHTML === weekdays[todayWeek]) {
             todayWeekDayLi = weekdaysLIsArray[i];
             todayWeekDayLi.classList.add("is-today");
+        } else {
+            todayWeekDayLi = weekdaysLIsArray[i];
+            todayWeekDayLi.classList.remove("is-today");
         }
     }
 
@@ -142,7 +144,6 @@ function fillCalendar(date = new Date()) {
 
 
     let dayOfTheMonth = 1;  
-    // let dayOfThePrevMonth = prevMonthMaxDays;
     let dayOfTheNextMonth = 0;
     let tempCounter = dayOfTheWeek;
     // Fill the days
@@ -163,7 +164,6 @@ function fillCalendar(date = new Date()) {
             let li = document.createElement("li");
             let btn = document.createElement("button");
             btn.id = `week_day-${i}:${j}`;
-            // btn.className = "weekday pt-2 pb-2 mt-2 mb-2 rounded-1 z-depth-1"
             btn.className = "btn-small pl-2 pr-2 white";
             
             if(i === 0) {
@@ -175,16 +175,16 @@ function fillCalendar(date = new Date()) {
                 } else {
                     btn.innerText = prevMonthMaxDays - tempCounter + 1;
                     tempCounter--;
-                    btn.className += " notInSelectedMonth"
+                    btn.className += " notInSelectedMonth";
+
+                    if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
+                        btn.className += " is-today";
+                    }
                 }
-                
-                if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
-                    btn.className += " is-today";
-                }
+
             } else {
                 if(dayOfTheMonth > maxDays && dayOfTheNextMonth === 0) {
                     dayOfTheNextMonth += 1;
-                    // console.log(dayOfTheMonth, maxDays, dayOfTheNextMonth);
                 }
                 
                 if(dayOfTheNextMonth != 0) {
@@ -196,15 +196,18 @@ function fillCalendar(date = new Date()) {
                     btn.innerText = dayOfTheMonth < 10 ? "0" + dayOfTheMonth : dayOfTheMonth;
     
                     dayOfTheMonth++;
-                }
-                
-                if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
-                    btn.className += " is-today";
+
+                    if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
+                        btn.className += " is-today";
+                    }
                 }
             }
             
             li.appendChild(btn);
             ul.appendChild(li);
+
+            btn.addEventListener("click", e => calendarDayClicked(e))
+
         }
         calendarContainerDiv.appendChild(ul);
     }
@@ -307,6 +310,18 @@ function normalizeDate(date) {
 }
 
 
+/**
+ * Returns the week day matrix (e.g.: 2:3 means its the 3rd row (3rd week) in the calendar
+ * and the 4th day of the week (THU)))
+ * @param {String} input 
+ * @returns 
+ */
+function getWeekDayMatrix(input) {
+    let indexOfSeparator = input.indexOf(":");
+    return input.substr(indexOfSeparator - 1);
+}
+
+
 // Implement all the event listeners
 
 function stepBackInMonths() {
@@ -317,4 +332,45 @@ function stepBackInMonths() {
 function stepForwardInMonths() {
     calendarMonth = getNextMonth(calendarMonth);
     fillCalendar(calendarMonth);
+}
+
+function calendarDayClicked(e) {
+    let weekDayMatrix = getWeekDayMatrix(e.target.id);
+
+    let week = Number.parseInt(weekDayMatrix[0]);
+    let day = Number.parseInt(weekDayMatrix[2]);
+
+    // get the date parameters corresponding to currently selected month (calendarMonth)
+    let givenYear = calendarMonth.getFullYear();
+    let givenMonth = calendarMonth.getMonth();
+
+    // console.log("givenYear", givenYear, "givenMonth", givenMonth, "week", week, "day", day);
+
+    let selectedDay = e.target.innerText;
+    let selectedDate;
+
+    if (e.target.classList.contains("notInSelectedMonth")) {
+        if(week === 0) {
+        // so the selected date belongs to the previous month
+            let prevDate = getPreviousMonth(calendarMonth);
+            let prevYear = prevDate.getFullYear();
+            let prevMonth = prevDate.getMonth() + 1;
+            selectedDate = new Date(`${prevYear}.${prevMonth}.${selectedDay}`);
+        } else {
+        // so the selected date belongs to the next month
+            let nextDate = getNextMonth(calendarMonth)
+            let nextYear = nextDate.getFullYear();
+            let nextMonth = nextDate.getMonth() + 1;
+            selectedDate = new Date(`${nextYear}.${nextMonth}.${selectedDay}`);
+        }
+    } else {
+    // selected date belongs to current month
+        // let selectedDay = week * 7 + day - 1;
+        
+        selectedDate = new Date(`${givenYear}.${givenMonth + 1}.${selectedDay}`);
+    }
+
+    console.log(`${selectedDate.getFullYear()} ${monthNames[selectedDate.getMonth()]} ${selectedDate.getDate()}`);
+    console.log(selectedDate);
+
 }
