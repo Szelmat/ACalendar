@@ -27,6 +27,7 @@ let calendarMonth = new Date();
 document.addEventListener("DOMContentLoaded", e => {
     fillDaysOfWeek();
     fillCalendar(calendarMonth);
+    fillUpcomingEvents();
     registerEventListeners();
 
 });
@@ -38,6 +39,11 @@ document.addEventListener("DOMContentLoaded", e => {
 function registerEventListeners() {
     monthStepBack.addEventListener("click", stepBackInMonths);
     monthStepForward.addEventListener("click", stepForwardInMonths);
+    
+    // register the click event to all the buttons in the calendar
+    Array.from(document.querySelectorAll("div#calendarContainer button")).forEach(btn => { 
+        btn.addEventListener("click", e => calendarDayClicked(e.target))
+    });
 }
 
 
@@ -83,7 +89,6 @@ function getNextMonth(date) {
  * Fill the days of week part (header) of the calendar with the name of the days.
  */
 function fillDaysOfWeek() {
-
     for(let i = 0; i < 7; i++) {
         let weekdayName = weekdays[i];
         weekdaysLIsArray[i].innerHTML = weekdayName;
@@ -207,7 +212,6 @@ function fillCalendar(date = new Date()) {
             li.appendChild(btn);
             ul.appendChild(li);
 
-            btn.addEventListener("click", e => calendarDayClicked(e.target))
             if(btn.classList.contains("is-today")) {
             // fire the click event manually to fill the selected day's div/table
                 calendarDayClicked(btn);
@@ -215,8 +219,97 @@ function fillCalendar(date = new Date()) {
 
         }
         calendarContainerDiv.appendChild(ul);
-    }
+    }    
+}
 
+
+/**
+ * Fill the Other Upcoming Events div with the nearest events related to today.
+ * This functions receives the event values from the backend through an API call.
+ */
+function fillUpcomingEvents() {
+    let today = new Date();
+    let todayFormatted = formatDate(today, true, true);
+
+    // TODO: this must come from the backend
+    let events = [
+        {
+        "start_time": "2021.12.20 10:00",
+        "event_title": "Computer Security practice assignment"
+        }, 
+        {
+        "start_time": "2021.12.20 12:30",
+        "event_title": "Submit project work"
+        }, 
+        {
+        "start_time": "2021.12.20 21:40",
+        "event_title": "Start working"
+        },
+        {
+        "start_time": "2021.12.21 8:05",
+        "event_title": "Go to work"
+        },
+        {
+        "start_time": "2021.12.30 16:00",
+        "event_title": "Get drunk"
+        },
+        {
+        "start_time": "2022.01.02 12:00",
+        "event_title": "Sobriety"
+        },
+        {
+        "start_time": "2022.01.03 05:30",
+        "event_title": "Go to wooork again"
+        },
+    ];
+
+    // TODO: refactor getGivenDaysEvent() function because this is very similar to that function
+    // TODO: do this in the backend with SQL query, WHERE _date_ > today ORDER BY _date_ ASC LIMIT = 5(?)
+
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+    let hours = today.getHours();
+    let minutes = today.getMinutes();
+
+    let eventsToDisplay = [];
+
+    events.forEach(calendarEvent => {
+        let startTime = calendarEvent["start_time"];
+        let startTimeDate = new Date(startTime);
+        
+        let eventYear = startTimeDate.getFullYear();
+        let eventMonth = startTimeDate.getMonth() + 1;
+        let eventDay = startTimeDate.getDate();
+        let eventHours = startTimeDate.getHours();
+        let eventMinutes = startTimeDate.getMinutes();
+
+        if(year <= eventYear && month <= eventMonth && day <= eventDay) {
+        // if today is the selected day
+            // let timeFormat = `${eventHours < 10 ? "0" + eventHours : eventHours}:${eventMinutes < 10 ? "0" + eventMinutes : eventMinutes}`;
+            // let eventTitle = `${calendarEvent["event_title"]}`;
+            // console.log(timeFormat, eventTitle);
+
+            eventsToDisplay.push(calendarEvent)
+        }
+
+        if(eventsToDisplay.length === 0) {
+            document.querySelector("#upcomingEventsDiv").innerHTML = `
+                <table id="upcomingEventsTable" class="mt-3">
+                    <tbody>
+                        <tr>
+                            <td class="center pb-4">
+                                <i>There are no upcoming events yet!</i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        } else {
+            createUpcomingEventsTable(eventsToDisplay);
+        }
+        
+    });
 
     
 }
@@ -323,7 +416,7 @@ function normalizeDate(date) {
  */
 function getWeekDayMatrix(input) {
     let indexOfSeparator = input.indexOf(":");
-    return input.substr(indexOfSeparator - 1);
+    return input.substring(indexOfSeparator - 1);
 }
 
 
@@ -371,6 +464,7 @@ function getSelectedDayAsDate(btn) {
 
 /**
  * Create the table which contains the events related to the selected day. 
+ * @param {Date} eventsToDisplay
  */
 function createSelEventsTable(eventsToDisplay) {
     let container = document.querySelector("#eventsInSelectedDateDiv");
@@ -394,10 +488,6 @@ function createSelEventsTable(eventsToDisplay) {
         let elementPadding = 1;
         let lastElementPadding = 3;
         let isLastElement = (eventsToDisplay.length - 1 === index);
-
-        console.log("isLastElement", isLastElement);
-        console.log("eventsToDisplay.length - 1", eventsToDisplay.length - 1);
-        console.log("index", index);
 
         let trHTML = `
         <tr>
@@ -425,15 +515,109 @@ function createSelEventsTable(eventsToDisplay) {
 }
 
 
+/**
+ * Create the table which contains the upcoming events.
+ * @param {Date} eventsToDisplay 
+ */
+function createUpcomingEventsTable(eventsToDisplay) {
+    let container = document.querySelector("#upcomingEventsDiv");
+    
+    let contentHTML = `
+        <table id="upcomingEventsTable" class="mt-3">
+            <tbody>`;
+
+    eventsToDisplay.forEach((eventToDisplay, index) => {
+        let startTime = eventToDisplay["start_time"];
+        let startTimeDate = new Date(startTime);
+        
+        let eventHours = startTimeDate.getHours();
+        let eventMinutes = startTimeDate.getMinutes();
+
+        let displayH = eventHours < 10 ? "0" + eventHours : eventHours;
+        let displayM = eventMinutes < 10 ? "0" + eventMinutes : eventMinutes;
+
+        let formattedStartTimeDate = formatDate(startTimeDate, true, true, separator='.')
+
+        let displayText = eventToDisplay["event_title"].toUpperCase();
+        
+        let elementPadding = 1;
+        let lastElementPadding = 3;
+        let isLastElement = (eventsToDisplay.length - 1 === index);
+
+        let trHTML = `
+        <tr>
+            <td class="center coming-event-time ml-5 pl-1 pb-${isLastElement ? lastElementPadding : elementPadding}">${formattedStartTimeDate}</td>
+            <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}">${displayText}</td>
+            <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
+                <a href class="">
+                    <i class="material-icons color-grey">edit</i>
+                </a>
+            <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
+                <a href class="">
+                    <i class="material-icons color-red">delete</i>
+                </a>
+            </td>
+        </tr>
+        `;
+
+        contentHTML += "\n" + trHTML + "\n";
+    });
+
+    contentHTML += "\n</tbody></table>"
+
+    container.innerHTML = contentHTML;
+}
+
+
 
 /**
- * 
+ * Fill the selected (clicked in the calendar) days' div with the full date of the selected day
+ * and the events belong to that date. The latest data comes from the backend through an API.
  * @param {Date} selectedDate 
  */
 function fillSelectedDaysDiv(selectedDate) {
     let selectedDaysTitleDiv = document.querySelector("#selectedDate");
 
-    // this will come from the backend
+
+    let events = getGivenDaysEvent(selectedDate);
+
+    let year = selectedDate.getFullYear();
+    let month = selectedDate.getMonth();
+    let day = selectedDate.getDate();
+    
+
+    selectedDaysTitleDiv.innerText = `${year} ${monthNames[month]} ${day}`;
+
+
+    if(events.length === 0) {
+        document.querySelector("#eventsInSelectedDateDiv").innerHTML = `
+            <table class="mt-3">
+                <tbody>
+                    <tr>
+                        <td class="center pb-4">
+                            <i>There is no event created yet</i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+    } else {
+        createSelEventsTable(events);
+    }
+
+}
+
+
+/**
+ * Get the corresponding events from the backend's database based on the given day.
+ * Those events will be returned whose date has the same value for year, month, day as the given date.
+ * @param {Date} selectedDate 
+ */
+function getGivenDaysEvent(selectedDate) {
+    
+    // TODO: this will come from the backend
+    // TODO: the API call should return only the events of a given day? 
+    //       After that I don't have to filter
     let events = [
         {
         "start_time": "2021.12.08 10:00",
@@ -460,16 +644,10 @@ function fillSelectedDaysDiv(selectedDate) {
         "event_title": "Study to Software technology"
         },
     ];
-
+    
     let year = selectedDate.getFullYear();
     let month = selectedDate.getMonth() + 1;
     let day = selectedDate.getDate();
-    let hours = selectedDate.getHours();
-    let minutes = selectedDate.getMinutes();
-    
-
-    selectedDaysTitleDiv.innerText = `${year} ${monthNames[month - 1]} ${day}`;
-    // selectedDaysTitleDiv.style.color = "crimson";
 
     let eventsToDisplay = [];
 
@@ -479,40 +657,20 @@ function fillSelectedDaysDiv(selectedDate) {
         
         let eventYear = startTimeDate.getFullYear();
         let eventMonth = startTimeDate.getMonth() + 1;
-        let eventDay = startTimeDate.getDate();;
+        let eventDay = startTimeDate.getDate();
 
         if(year === eventYear && month === eventMonth && day === eventDay) {
         // if today is the selected day
             // let timeFormat = `${eventHours < 10 ? "0" + eventHours : eventHours}:${eventMinutes < 10 ? "0" + eventMinutes : eventMinutes}`;
             // let eventTitle = `${calendarEvent["event_title"]}`;
             // console.log(timeFormat, eventTitle);
+
             eventsToDisplay.push(calendarEvent)
         }
         
     });
 
-    if(eventsToDisplay.length === 0) {
-        // document.querySelector("#eventsInSelectedDateDiv").innerHTML = `
-        //     <div class="mt-4 pt-3 pb-3 grey lighten-3">
-        //         <i>There is no event created yet
-        //         </i>
-        //     </div>
-        // `;
-        document.querySelector("#eventsInSelectedDateDiv").innerHTML = `
-            <table class="mt-3">
-                <tbody>
-                    <tr>
-                        <td class="center pb-4">
-                            <i>There is no event created yet</i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        `;
-    } else {
-        createSelEventsTable(eventsToDisplay);
-    }
-
+    return eventsToDisplay;
 }
 
 

@@ -18,10 +18,10 @@
 
 
 /**
- * Get the string format of the given date like "yyyy-mm-dd hh:mm"
+ * Get the string format of the given date like "yyyy-mm-dd [hh:mm]" (the horus and the minutes are optional)
  * @param {Date} date 
  */
-function formatDate(date, hours = false, minutes = false) {
+function formatDate(date, hours = false, minutes = false, separator="-") {
     const year = date.getFullYear();
     // The months are 0-based (0 is January, 1 is February, etc..),
     // therefore we need to increment its value by 1
@@ -30,8 +30,8 @@ function formatDate(date, hours = false, minutes = false) {
     const hour = date.getHours();
     const minute = date.getMinutes();
 
-    let result = year + '-' +
-        (month >= 10 ? month : '0' + month) + '-' +
+    let result = year + separator +
+        (month >= 10 ? month : '0' + month) + separator +
         (day >= 10 ? day : '0' + day);
     
     if(hours === true) {

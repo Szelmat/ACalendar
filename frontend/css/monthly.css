@@ -58,6 +58,8 @@ button.notInSelectedMonth {
 
 
 #eventsInSelectedDateDiv tr {border-style: none;}
+#upcomingEventsDiv tr {border-style: none;}
+
 
 /* Selected day's events time and upcoming events time*/
 .coming-event-time {
