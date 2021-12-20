@@ -137,7 +137,7 @@ function fillCalendar(date = new Date()) {
     
     let givenDateNormalized = normalizeDate(givenDate);
     let givenDateUnix = givenDateNormalized.getTime() / 1000;
-    // subtract 2 days (just to be sure) to step into the prevoius month to get its maxDays
+    // subtract 2 days (just to be sure) to step into the previous month to get its maxDays
     let previousMonthUnix = givenDateUnix - 2 * 24 * 60 * 60
     const previousMonth = new Date(previousMonthUnix * 1000);
     const prevMonthMaxDays = getCountOfDays(previousMonth.getFullYear(), previousMonth.getMonth() + 1)
@@ -379,7 +379,7 @@ function createSelEventsTable(eventsToDisplay) {
         <table id="eventsInSelectedDateTable" class="mt-3">
             <tbody>`;
 
-    eventsToDisplay.forEach(eventToDisplay => {
+    eventsToDisplay.forEach((eventToDisplay, index) => {
         let startTime = eventToDisplay["start_time"];
         let startTimeDate = new Date(startTime);
         
@@ -391,15 +391,23 @@ function createSelEventsTable(eventsToDisplay) {
 
         let displayText = eventToDisplay["event_title"].toUpperCase();
         
+        let elementPadding = 1;
+        let lastElementPadding = 3;
+        let isLastElement = (eventsToDisplay.length - 1 === index);
+
+        console.log("isLastElement", isLastElement);
+        console.log("eventsToDisplay.length - 1", eventsToDisplay.length - 1);
+        console.log("index", index);
+
         let trHTML = `
         <tr>
-            <td class="coming-event-time ml-5 pl-3">${displayH}:${displayM}</td>
-            <td class="center coming-event-title">${displayText}</td>
-            <td>
+            <td class="coming-event-time ml-5 pl-3 pb-${isLastElement ? lastElementPadding : elementPadding}">${displayH}:${displayM}</td>
+            <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}">${displayText}</td>
+            <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
                 <a href class="">
                     <i class="material-icons color-grey">edit</i>
                 </a>
-            <td>
+            <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
                 <a href class="">
                     <i class="material-icons color-red">delete</i>
                 </a>
@@ -484,11 +492,22 @@ function fillSelectedDaysDiv(selectedDate) {
     });
 
     if(eventsToDisplay.length === 0) {
+        // document.querySelector("#eventsInSelectedDateDiv").innerHTML = `
+        //     <div class="mt-4 pt-3 pb-3 grey lighten-3">
+        //         <i>There is no event created yet
+        //         </i>
+        //     </div>
+        // `;
         document.querySelector("#eventsInSelectedDateDiv").innerHTML = `
-            <div class="mt-4 pt-3 pb-3 grey lighten-3">
-                <i>There is no event created yet
-                </i>
-            </div>
+            <table class="mt-3">
+                <tbody>
+                    <tr>
+                        <td class="center pb-4">
+                            <i>There is no event created yet</i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         `;
     } else {
         createSelEventsTable(eventsToDisplay);
