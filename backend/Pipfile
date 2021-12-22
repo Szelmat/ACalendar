@@ -10,6 +10,7 @@ fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 sqlalchemy = "*"
 pymysql = "*"
+pydantic = "*"
 
 [requires]
 python_version = "3.8"
