@@ -1,16 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
+
+from sqlalchemy import create_engine
 
 class LoginCredentials(BaseModel):
     # this has to be the same name (and type (?)) as it's in the ajax request's body
-    email: str
+    email: EmailStr
     password: str
 
 class RegisterCredentials(BaseModel):
     # this has to be the same name (and type (?)) as it's in the ajax request's body
-    email: str
+    email: EmailStr
     password: str
     confirm_password: str
 
