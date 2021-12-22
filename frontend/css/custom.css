@@ -1,14 +1,3 @@
-/* home page */
-#homeTitle {
-    background-color: #6900ff;
-    box-shadow: 0 10px 10px rgb(105, 0, 255);
-    color: white;
-    text-shadow: 3px 2px 4px #000000
-}
-
-hr#loginRegisterSep {
-    border: 1px solid rgb(105, 0, 255);
-}
 
 /* label focus color */
 .input-field input:focus + label {
@@ -36,53 +25,6 @@ https://stackoverflow.com/questions/58626071/give-background-to-i-tag-when-input
     border-width: thin;
 }
 
-#selectedMonth {
-    /* color: white; */
-    border-radius: 2px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-
-#daysOfWeekContainer {
-    background-color: #e7e9f9;
-}
-#calendarContainer {
-    background-color: #fbfbfe;
-}
-
-table#eventsInSelectedDate td i {
-
-}
-
-/* set equal space between the name of the days */
-.weekdays li {
-    display: inline-block;
-    width: 12.5% !important;
-    color: #1e2d7b;
-    text-align: center;
-}
-
-/* set equal space between the date of the days */
-.week li {
-    display: inline-block;
-    width: 12.5% !important;
-    color: #8190e0;
-    text-align: center;
-}
-.week li button {color: #8190e0 !important;}
-
-
-#eventsInSelectedDateDiv tr {border-style: none;}
-
-/* Selected day's events time and upcoming events time*/
-.coming-event-time {
-    color: #5E35B1;
-}
-
-/* Selected day's events title and upcoming events title*/
-.coming-event-title {
-    color: #651FFF;
-}
 
 .color-grey {color: grey !important;}
 .color-red {color: red !important;}
