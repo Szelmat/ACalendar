@@ -9,6 +9,7 @@ verify_ssl = true
 fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 sqlalchemy = "*"
+pymysql = "*"
 
 [requires]
 python_version = "3.8"
