@@ -4,7 +4,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 from sqlalchemy import create_engine
-
+#asd
 class LoginCredentials(BaseModel):
     # this has to be the same name (and type (?)) as it's in the ajax request's body
     email: EmailStr
