@@ -23,18 +23,34 @@
 </head>
 
 <body>
+    <!-- Navbar for all authorized pages  -->
+    <nav>
+        <div class="nav-wrapper secondary-bg">
+            <a href="./monthly.html" class="brand-logo center">ACalendar</a>
+            <a href="#" data-target="views_links" class="sidenav-trigger ml-3"><i class="material-icons">menu</i></a>
+            
+            <!-- Content of hamburger icon when the page (navbar) is NOT minimized  -->
+            <ul class="left hide-on-med-and-down">
+                <li><a href="#">Monthly view</a></li>
+                <li><a href="#">Weekly view</a></li>
+                <li><a href="#">Daily view</a></li>
+            </ul>
+
+            <a href="#" class="right"><i class="material-icons mr-3">logout</i></a>
+        </div>
+    </nav> <!-- End of navbar -->
+    
+    <!-- Content of hamburger icon when the page (navbar) is minimized  -->
+    <ul class="sidenav" id="views_links">
+        <li><a href="#">Monthly view</a></li>
+        <li><a href="#">Weekly view</a></li>
+        <li><a href="#">Daily view</a></li>
+    </ul>
+
+
+
     <!-- Main countainer -->
     <div class="countainer">
-        <!-- Title -->
-        <div class="row center ">
-            <div id="homeTitle"
-                class="waves-effect waves-dark btn mt-0 pt-1 col s1 m1 l1 xl1 offset-s2 offset-m2 offset-l2 offset-xl2">
-                <span class="material-icons"> menu</span></div>
-            <div id="homeTitle" class=" col s6 m6 l6 xl6 "><span class="flow-text mt-0 pt-2">Add/Edit an event</span></div>
-            <div id="homeTitle" class="waves-effect waves-dark btn mt-0  pt-1 col s1 m1 l1 xl1"><span
-                    class="material-icons">logout</span></div>
-        </div>
-
         <!-- Beginning date and time countainer -->
         <div class="countainer">
 
