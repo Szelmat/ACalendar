@@ -256,30 +256,37 @@ function fillUpcomingEvents() {
     // TODO: this must come from the backend
     let events = [
         {
+        "id": 1,
         "start_time": "2021.12.20 10:00",
         "event_title": "Computer Security practice assignment"
         }, 
         {
+        "id": 2,
         "start_time": "2021.12.20 12:30",
         "event_title": "Submit project work"
         }, 
         {
+        "id": 3,
         "start_time": "2021.12.20 21:40",
         "event_title": "Start working"
         },
         {
+        "id": 4,
         "start_time": "2021.12.21 8:05",
         "event_title": "Go to work"
         },
         {
+        "id": 5,
         "start_time": "2021.12.30 16:00",
         "event_title": "Get drunk"
         },
         {
+        "id": 6,
         "start_time": "2022.01.02 12:00",
         "event_title": "Sobriety"
         },
         {
+        "id": 7,
         "start_time": "2022.01.03 05:30",
         "event_title": "Go to wooork again"
         },
@@ -329,6 +336,27 @@ function fillUpcomingEvents() {
             `;
         } else {
             createUpcomingEventsTable(eventsToDisplay);
+            
+            // register click event listener to the EDIT ICONS and DELETE ICONS for the events in selected date's div
+            let upcomingEventTableRows = Array.from(document.querySelectorAll(".upcomingEventTableRow"));
+
+            upcomingEventTableRows.forEach(upcomingEventTableRow => {
+                let editEventLinkTag = upcomingEventTableRow.lastElementChild.previousElementSibling.firstElementChild;
+
+                editEventLinkTag.addEventListener("click", e => {
+                    e.preventDefault();
+
+                    editEvent(upcomingEventTableRow.id);
+                });
+
+                let deleteEventLinkTag = upcomingEventTableRow.lastElementChild.firstElementChild;
+                deleteEventLinkTag.addEventListener("click", e => {
+                    e.preventDefault();
+
+                    deleteEvent(upcomingEventTableRow.id);
+                });
+
+            });
         }
         
     });
@@ -512,7 +540,7 @@ function createSelEventsTable(eventsToDisplay) {
         let isLastElement = (eventsToDisplay.length - 1 === index);
 
         let trHTML = `
-        <tr>
+        <tr id="${eventToDisplay.id}" class="eventTableRow">
             <td class="coming-event-time ml-5 pl-3 pb-${isLastElement ? lastElementPadding : elementPadding}">${displayH}:${displayM}</td>
             <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}">${displayText}</td>
             <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
@@ -567,7 +595,7 @@ function createUpcomingEventsTable(eventsToDisplay) {
         let isLastElement = (eventsToDisplay.length - 1 === index);
 
         let trHTML = `
-        <tr>
+        <tr id="${eventToDisplay.id}" class="upcomingEventTableRow">
             <td class="center coming-event-time ml-5 pl-1 pb-${isLastElement ? lastElementPadding : elementPadding}">${formattedStartTimeDate}</td>
             <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}">${displayText}</td>
             <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
@@ -625,9 +653,54 @@ function fillSelectedDaysDiv(selectedDate) {
         `;
     } else {
         createSelEventsTable(events);
+        
+        // register click event listener to the EDIT ICONS and DELETE ICONS for the events in selected date's div
+        let eventTableRows = Array.from(document.querySelectorAll(".eventTableRow"));
+
+        eventTableRows.forEach(eventTableRow => {
+            let editEventLinkTag = eventTableRow.lastElementChild.previousElementSibling.firstElementChild;
+            editEventLinkTag.addEventListener("click", e => {
+                e.preventDefault();
+
+                editEvent(eventTableRow.id);
+            });
+
+            let deleteEventLinkTag = eventTableRow.lastElementChild.firstElementChild;
+            deleteEventLinkTag.addEventListener("click", e => {
+                e.preventDefault();
+
+                deleteEvent(eventTableRow.id);
+            });
+
+        });
+
     }
 
 }
+
+
+/**
+ * Click event listener of the edit icons belong to given events.
+ * The parameter eventId is the id of the event in the corresponding database table.
+ * @param {Number} eventId 
+ */
+function editEvent(eventId) {
+    // TODO: redirect to /user/edit/2...
+    console.log(`redirect to [..]/edit/${eventId}[/..]`);
+}
+
+
+/**
+ * Click event listener of the delete icons belong to given events.
+ * The parameter eventId is the id of the event in the corresponding database table.
+ * @param {Number} eventId 
+ */
+function deleteEvent(eventId) {
+    // TODO: redirect to /user/edit/2...
+    console.log(`somehow delete the event with id of: ${eventId}`);
+}
+
+
 
 
 /**
@@ -642,26 +715,32 @@ function getGivenDaysEvent(selectedDate) {
     //       After that I don't have to filter
     let events = [
         {
+        "id": 10,
         "start_time": "2021.12.08 10:00",
         "event_title": "Computer Security practice assignment"
         }, 
         {
+        "id": 23,
         "start_time": "2021.12.08 12:30",
         "event_title": "Submit project work"
         }, 
         {
+        "id": 31,
         "start_time": "2021.12.08 14:40",
         "event_title": "Start working"
         },
         {
+        "id": 41,
         "start_time": "2021.12.10 8:05",
         "event_title": "Go to work"
         },
         {
+        "id": 45,
         "start_time": "2021.12.10 16:25",
         "event_title": "Stop working"
         },
         {
+        "id": 63,
         "start_time": "2021.12.12 12:30",
         "event_title": "Study to Software technology"
         },
@@ -709,8 +788,6 @@ function stepForwardInMonths() {
 }
 
 function calendarDayClicked(btn) {
-    console.log("clicked", btn);
-    
     let selectedDate = getSelectedDayAsDate(btn);
 
     // remove the selection from a day
