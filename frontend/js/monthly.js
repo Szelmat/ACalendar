@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", e => {
     fillCalendar(calendarMonth);
     fillUpcomingEvents();
     registerEventListeners();
-
 });
 
 
@@ -41,9 +40,6 @@ document.addEventListener("DOMContentLoaded", e => {
 function registerEventListeners() {
     monthStepBack.addEventListener("click", stepBackInMonths);
     monthStepForward.addEventListener("click", stepForwardInMonths);
-    
-    // register the click event to all the buttons in the calendar
-    registerDateClickEvents();
 
     addEventToSelectedDay.addEventListener("click", addNewEventToSelectedDate);
     addEventToUpcoming.addEventListener("click", addNewEventToUpcoming);
@@ -54,6 +50,7 @@ function registerEventListeners() {
  * Register click events to all the days/dates in the calendar.
  * This separate function is needed in order to register the click event to the day/dates of
  * the calendar after stepping forward/backward in time.
+ * This function is called within the fillCalendar() function.
  */
 function registerDateClickEvents() {
     Array.from(document.querySelectorAll("div#calendarContainer button")).forEach(btn => { 
@@ -232,7 +229,6 @@ function fillCalendar(date = new Date()) {
 
             if(btn.classList.contains("is-today")) {
                 todayBtn = btn;
-                console.log(todayBtn);
             }
 
         }
@@ -713,6 +709,8 @@ function stepForwardInMonths() {
 }
 
 function calendarDayClicked(btn) {
+    console.log("clicked", btn);
+    
     let selectedDate = getSelectedDayAsDate(btn);
 
     // remove the selection from a day
