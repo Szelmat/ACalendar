@@ -5,6 +5,8 @@ const selectedMonthDiv = document.querySelector("#selectedMonth");
 const calendarContainerDiv = document.querySelector("#calendarContainer");
 const monthStepBack = document.querySelector("#monthStepBack");
 const monthStepForward = document.querySelector("#monthStepForward");
+const addEventToSelectedDay = document.querySelector("#addEventToSelectedDay");
+const addEventToUpcoming = document.querySelector("#addEventToUpcoming");
 
 const weekdaysLIsArray = Array.from(weekdaysLIs);
 const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
@@ -41,9 +43,23 @@ function registerEventListeners() {
     monthStepForward.addEventListener("click", stepForwardInMonths);
     
     // register the click event to all the buttons in the calendar
+    registerDateClickEvents();
+
+    addEventToSelectedDay.addEventListener("click", addNewEventToSelectedDate);
+    addEventToUpcoming.addEventListener("click", addNewEventToUpcoming);
+}
+
+
+/**
+ * Register click events to all the days/dates in the calendar.
+ * This separate function is needed in order to register the click event to the day/dates of
+ * the calendar after stepping forward/backward in time.
+ */
+function registerDateClickEvents() {
     Array.from(document.querySelectorAll("div#calendarContainer button")).forEach(btn => { 
         btn.addEventListener("click", e => calendarDayClicked(e.target))
     });
+    
 }
 
 
@@ -151,6 +167,8 @@ function fillCalendar(date = new Date()) {
     let dayOfTheMonth = 1;  
     let dayOfTheNextMonth = 0;
     let tempCounter = dayOfTheWeek;
+    let todayBtn = null;
+
     // Fill the days
     // In some cases (e.g. 2021.05) the calendar needs 6 rows (which represent 6 weeks)
     // This means we need 6 ULs
@@ -213,13 +231,21 @@ function fillCalendar(date = new Date()) {
             ul.appendChild(li);
 
             if(btn.classList.contains("is-today")) {
-            // fire the click event manually to fill the selected day's div/table
-                calendarDayClicked(btn);
+                todayBtn = btn;
+                console.log(todayBtn);
             }
 
         }
         calendarContainerDiv.appendChild(ul);
-    }    
+    }
+
+    registerDateClickEvents();
+
+    if(todayBtn !== null) {
+    // the calendar's selected date contains the today's day
+        // fire the click event manually to fill the selected day's div/table
+        calendarDayClicked(todayBtn);
+    }
 }
 
 
@@ -674,7 +700,7 @@ function getGivenDaysEvent(selectedDate) {
 }
 
 
-// Implement all the event listeners
+// Implement the registered event listeners
 
 function stepBackInMonths() {
     calendarMonth = getPreviousMonth(calendarMonth);
@@ -700,4 +726,12 @@ function calendarDayClicked(btn) {
     
     
     fillSelectedDaysDiv(selectedDate);
+}
+
+function addNewEventToSelectedDate() {
+    window.location.href = "/auth/new_edit_event.html";
+}
+
+function addNewEventToUpcoming() {
+    window.location.href = "/auth/new_edit_event.html";
 }
