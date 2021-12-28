@@ -25,7 +25,6 @@ https://stackoverflow.com/questions/58626071/give-background-to-i-tag-when-input
     border-width: thin;
 }
 
-
 .color-grey {color: grey !important;}
 .color-red {color: red !important;}
 
@@ -40,6 +39,10 @@ https://stackoverflow.com/questions/58626071/give-background-to-i-tag-when-input
 .rounded-1 {border-radius: 5px;}
 
 .w-100 {width: 100%;}
+
+.active-view {
+    font-weight: bold !important;
+}
 
 .mt-0 {margin-top: 0 !important;}
 .mt-1 {margin-top: 0.25rem !important;}
