@@ -8,55 +8,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import null
 from sqlalchemy.sql.sqltypes import SmallInteger
 
-# class User(Base):
-#     __tablename__ = "users"
-
-#     id = Column(Integer(11), primary_key=True, index=True)
-#     email = Column(String(255), unique=True, index=True)
-#     password = Column(String(255))
-
-# class Color(Base):
-#     id = Column(Integer(1))
-#     name = Column(String(100))
-
-# class Event(Base):
-#     __tablename__ = "events"
-
-#     id = Column(Integer(11), primary_key=True, index=True)
-#     user_id = Column(Integer(11), ForeignKey('users.id'))
-#     color_id = Column(Integer(1), ForeignKey('colors.id'))
-#     title = Column(String(255))
-#     description = Column(String(16383), nullable=True)
-#     start_time = Column(DateTime)
-#     end_time = Column(DateTime)
-#     created_at = Column(DateTime, default=datetime.datetime.utcnow())
-
-# class Habit(Base):
-#     __tablename__ = "habits"
-
-#     id = Column(Integer(11), primary_key=True, index=True)
-#     user_id = Column(Integer(11), ForeignKey('users.id'))
-#     color_id = Column(Integer(1), ForeignKey('colors.id'))
-#     title = Column(String(255), nullable=True)
-#     description = Column(String(16383))
-#     day_of_the_week = Column(Integer(1))
-
-# class Notification_type(Base):
-#     __tablename__ = 'notification_types'
-
-#     id  = Column(Integer(1), primary_key=True)
-#     name = Column(String(100))
-    
-# class Notification(Base):
-#     __tablename__ = 'notifications'
-
-#     id = Column(Integer(11), primary_key=True, index=True)
-#     event_id = Column(Integer(11), ForeignKey('events.id'))
-#     type_id = Column(Integer(1), ForeignKey('notification_types.id'))
-#     trigger_time = Column(DateTime)
-
-
-
 
 if __name__ == '__main__':
     print('Database creation started')
