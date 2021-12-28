@@ -12,7 +12,7 @@
     font-weight: normal;
 }
 
-.days {
+.day {
     padding: 0 !important;
     width: 11.5% !important;
     text-align: center;
@@ -20,14 +20,6 @@
 .empty {
     padding: 0 !important;
     width: 6% !important;
-}
-
-th.blank, th.empty, th.days, th.weekday {
-    border-top-color: darkblue !important;
-    border-bottom-color: darkblue !important;
-    border-top-width: 0 !important;
-    border-bottom-width: 0 !important;
-    border: 0 !important;
 }
 
 td {
@@ -43,11 +35,7 @@ th, td {
 .event-component {
     width: 11.5% !important;
     color: rgb(0, 0, 130) !important;
-    background-color: #b1da9f;
+    background-color: crimson;
     text-align: center;
     font-weight: normal;
-}
-
-#mainEventTable {
-    border-spacing: 30px !important;
 }
