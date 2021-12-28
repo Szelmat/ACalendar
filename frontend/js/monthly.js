@@ -406,45 +406,6 @@ function checkIfLeapYear(year) {
 
 
 /**
- * Get the day-of-the-week belongs to the given date.
- * @param {Date} firstDay 
- */
-function getDayOfWeek(firstDay) {
-    // By default the Date.getDay() method works like this:
-    // 0: Sunday
-    // 1: Monday
-    // ...
-    // 6: Saturday
-
-    // Reworked system:
-    // 0: Monday
-    // 1: Tuesday
-    // ...
-    // 6: Sunday
-
-    let temp = firstDay.getDay(); // day of week (0: Sunday, 1: Monday, ..., 6: Saturday)
-    let result;
-
-    if (temp === 0)
-        result = 6;
-    else if (temp === 1)
-        result = 0;
-    else if (temp === 2)
-        result = 1;
-    else if (temp === 3)
-        result = 2;
-    else if (temp === 4)
-        result = 3;
-    else if (temp === 5)
-        result = 4;
-    else
-        result = 5;
-
-    return result;
-}
-
-
-/**
  * Normalize date (e.g.: return the first day of the given month)
  * @param {Date} date 
  * @returns {Date}

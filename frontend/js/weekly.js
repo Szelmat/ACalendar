@@ -7,6 +7,7 @@ const mainEventTable = document.querySelector("#mainEventTable");
 const eventTableContainer = document.querySelector("#eventTableContainer");
 const weekdaysTableRow = document.querySelector("#weekdays");
 const dayTableRows = document.querySelectorAll(".day");
+const selectedMonthDiv = document.querySelector("#selectedMonth");
 
 const dayTableRowsArray = Array.from(dayTableRows);
 const weekdaysLIsArray = Array.from(weekdaysLIs);
@@ -18,10 +19,13 @@ let currentDate = new Date();
 document.addEventListener("DOMContentLoaded", e => {
     completeMainEventTable();
     fillWeekdays();
+
+    currentDate = getFirstDayOfWeek(currentDate);
+
     fillDays(currentDate);
 
-    // weekStepBack.addEventListener("click", stepBackInWeeks);
-    // weekStepForward.addEventListener("click", stepForwardInWeeks);
+    weekStepBack.addEventListener("click", stepBackInWeeks);
+    weekStepForward.addEventListener("click", stepForwardInWeeks);
 })
 
 
@@ -38,17 +42,38 @@ document.addEventListener("DOMContentLoaded", e => {
 
 /**
  * Fill the table row which contains the days/dates of the selected week.
- * @param {Date} Date 
+ * @param {Date} date 
  */
 function fillDays(date) {
 
-    let counter = 0;
-    dayTableRowsArray.forEach(dayTR => {
-        counter += 1;
-        if(dayTR) {
-            dayTR.innerHTML = counter;
-        }
-    });
+    week = getWeek(date)
+
+    let givenMonth = date.getMonth();
+    let givenMonthName = monthNames[givenMonth];
+    // let givenYear = date.getFullYear();
+    
+    // let today = new Date();
+    // let todayDay = today.getDate();
+    // let todayWeek = getDayOfWeek(today);
+
+    // if the today's date (year, month) is the given 'date', then, just in this case
+    // we should mark the today's day
+    // let currentDateIsTheGivenDate = today.getFullYear() === date.getFullYear() 
+    //     && today.getMonth() === date.getMonth();
+    
+    // set the selected month (the format is: yyyy Month_name)
+    setSelectedWeekDate(date, week, givenMonthName);
+
+    for(let i = 0; i < 7; i++) {
+        dayTableRowsArray[i].innerHTML = date.getDate();
+        
+        // add some hours to the given date in order to step into the next day
+        let nextDayUnixSeconds = moment(date.getTime()).add(1, "day").unix();
+        date = new Date(nextDayUnixSeconds * 1000);
+    }
+
+    // TODO: get the events for the days/dates
+    // TODO: "display" the events
 
 }
 
@@ -78,18 +103,83 @@ function completeMainEventTable() {
 }
 
 
+/**
+ * Set the content of selectedDate related to the given date (and week).
+ * @param {Number} week 
+ * @param {Date} date
+ * @param {String} givenMonthName
+ */
+function setSelectedWeekDate(date, week, givenMonthName) {
+    selectedMonthDiv.innerHTML = `${date.getFullYear()} ${givenMonthName}: Week ${week}`;
+}
 
+
+/**
+ * Get the given date's previous week's first day as date object.
+ * @param {Date} date 
+ */
+function getPreviousWeek(date) {
+    // let temp = moment().subtract(1, 'weeks').startOf('isoWeek').format('YYYY-MM-DD');
+    // let temp2 = moment().subtract(1, 'weeks').endOf('isoWeek').format('YYYY-MM-DD')
+    // console.log(dateToMoment(date));
+    let temp = moment(date.getTime()).subtract(1, 'weeks').startOf('isoWeek');
+    // let temp2 = moment().subtract(1, 'weeks').endOf('isoWeek')
+    // return momentToDate(temp);
+    return new Date(temp);
+}
+
+
+/**
+ * Get the given date's next week's first day as date object.
+ * @param {Date} date 
+ */
+function getNextWeek(date) {
+    let temp = moment(date.getTime()).add(1, 'weeks').startOf('isoWeek');
+    return new Date(temp);
+}
+
+
+
+// /**
+//  * Convert moment date object into Date object.
+//  * @param {} moment 
+//  */
+// function momentToDate(moment) {
+//     let result = new Date(moment.unix() * 1000);
+//     return result;
+// }
+
+
+// /**
+//  * Convert Date object into moment object.
+//  * @param {Date} date 
+//  */
+// function dateToMoment(date) {
+//     let result = moment().unix(date.getTime());
+//     return result;
+// }
+
+
+/**
+ * Returns the first day of the given date's week as Date.
+ * @param {Date} date 
+ * @returns 
+ */
+function getFirstDayOfWeek(date) {
+    let temp = moment(date.getTime()).startOf('isoWeek');
+    return new Date(temp);
+}
 
 // Implement registered event listeners
 
-// function stepBackInWeeks() {
-//     calendarMonth = getPreviousMonth(calendarMonth);
-//     fill 
-//     fillCalendar(calendarMonth);
-// }
+function stepBackInWeeks() {
+    currentDate = getPreviousWeek(currentDate);
+    fillDays(currentDate);
+}
 
-// function stepForwardInWeeks() {
-//     calendarMonth = getNextMonth(calendarMonth);
-//     fillCalendar(calendarMonth);
-// }
+function stepForwardInWeeks() {
+    currentDate = getNextWeek(currentDate);
+    fillDays(currentDate);
+}
+
 
