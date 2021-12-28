@@ -44,6 +44,9 @@ https://stackoverflow.com/questions/58626071/give-background-to-i-tag-when-input
     font-weight: bold !important;
 }
 
+.border-top-none {border-top: none !important;}
+.border-bottom-none {border-bottom: none !important;}
+
 .mt-0 {margin-top: 0 !important;}
 .mt-1 {margin-top: 0.25rem !important;}
 .mt-2 {margin-top: 0.5rem !important;}

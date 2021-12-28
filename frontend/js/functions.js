@@ -44,3 +44,29 @@ function formatDate(date, hours = false, minutes = false, separator="-") {
 
     return result;
 }
+
+
+/**
+ * Returns the weekdays.
+ * @returns Array
+ */
+function getWeekdays() {
+    const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+    
+    return weekdays;
+}
+
+
+/**
+ * Returns the month names.
+ * @returns Array
+ */
+function getMonthNames() {
+    const monthNames = [
+        "January", "February", "March", "April", 
+        "May", "June", "July", "August", 
+        "September", "October", "November", "December"
+    ];
+
+    return monthNames;
+}

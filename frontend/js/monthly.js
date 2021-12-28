@@ -9,12 +9,8 @@ const addEventToSelectedDay = document.querySelector("#addEventToSelectedDay");
 const addEventToUpcoming = document.querySelector("#addEventToUpcoming");
 
 const weekdaysLIsArray = Array.from(weekdaysLIs);
-const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-const monthNames = [
-    "January", "February", "March", "April", 
-    "May", "June", "July", "August", 
-    "September", "October", "November", "December"
-];
+const weekdays = getWeekdays();
+const monthNames = getMonthNames();
 
 const longMonths = [1, 3, 5, 7, 8, 10, 12]; // 1: January, 3: March, etc... They have 31 days
 const shortMonths = [4, 6, 9, 11]; // 4: April, 6: June, etc... They have 30 days

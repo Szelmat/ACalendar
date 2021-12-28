@@ -1,0 +1,53 @@
+#selectedMonth {
+    border-radius: 2px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* set equal space between the name of the days */
+.weekday {
+    width: 11.5% !important;
+    color: rgb(0, 0, 130) !important;
+    background-color: #9fa8da;
+    text-align: center;
+    font-weight: normal;
+}
+
+.days {
+    padding: 0 !important;
+    width: 11.5% !important;
+    text-align: center;
+}
+.empty {
+    padding: 0 !important;
+    width: 6% !important;
+}
+
+th.blank, th.empty, th.days, th.weekday {
+    border-top-color: darkblue !important;
+    border-bottom-color: darkblue !important;
+    border-top-width: 0 !important;
+    border-bottom-width: 0 !important;
+    border: 0 !important;
+}
+
+td {
+    border: 0;
+    padding: 10px !important;
+}
+
+th, td {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.event-component {
+    width: 11.5% !important;
+    color: rgb(0, 0, 130) !important;
+    background-color: #b1da9f;
+    text-align: center;
+    font-weight: normal;
+}
+
+#mainEventTable {
+    border-spacing: 30px !important;
+}

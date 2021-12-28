@@ -9,7 +9,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../frontend/css/materialize.min.css">
     <link rel="stylesheet" href="../frontend/css/custom.css">
-    <link rel="stylesheet" href="../frontend/css/monthly.css">
+    <link rel="stylesheet" href="../frontend/css/weekly.css">
     
     <!-- Materialize Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -44,7 +44,87 @@
     </ul>
 
     <div class="container">
+        
+        <!-- Month and days container -->
+        <div class="row mb-0 pb-0">
+            <div class="col s12 m10 l8 xl8 offset-m1 offset-l2 offset-xl2">
+                <div class="card center-align mt-3">
 
+                    <!-- Week stepper -->
+                    <div class="div-content-inline valign-wrapper mt-3 mb-1">
+                        <button id="weekStepBack" class="btn btn-small primary-bg waves-effect waves-purple">
+                            <i class="material-icons">
+                                keyboard_arrow_left
+                            </i>
+                        </button>
+                        <div id="selectedMonth" class="pt-1 pb-1 mt-0 mb-0 pl-2 pr-2 mr-3 ml-3">
+                            2021 September: week 1
+                        </div>
+                        <button id="weekStepForward" class="btn btn-small left-align primary-bg waves-effect waves-purple">
+                            <i class="material-icons">
+                                keyboard_arrow_right
+                            </i>
+                        </button>
+                    </div> <!-- End of Week stepper -->
+
+                    <!-- Days (week) -->
+                    <div>
+                        <div id="eventTableContainer" class="ml-2 mr-2 mt-5">
+                            <table id="mainEventTable" style="border-spacing: 20px !important;">
+                                <tbody>
+                                    <tr id="weekdays">
+                                        <th class="blank"></th>
+                                        <th class="weekday pt-2 pb-2 rounded-1 z-depth-1"></th>
+                                        <th class="weekday pt-2 pb-2 rounded-1 z-depth-1"></th>
+                                        <th class="weekday pt-2 pb-2 rounded-1 z-depth-1"></th>
+                                        <th class="weekday pt-2 pb-2 rounded-1 z-depth-1"></th>
+                                        <th class="weekday pt-2 pb-2 rounded-1 z-depth-1"></th>
+                                        <th class="weekday pt-2 pb-2 rounded-1 z-depth-1"></th>
+                                        <th class="weekday pt-2 pb-2 rounded-1 z-depth-1"></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="empty"></th>
+                                        <th class="days">1</th>
+                                        <th class="days">2</th>
+                                        <th class="days">3</th>
+                                        <th class="days">4</th>
+                                        <th class="days">5</th>
+                                        <th class="days">6</th>
+                                        <th class="days">7</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="event-time">00:00</td>
+                                        <td class="event-component d1"></td>
+                                        <td class="event-component d2"></td>
+                                        <td class="event-component d3"></td>
+                                        <td class="event-component d4"></td>
+                                        <td class="event-component d5"></td>
+                                        <td class="event-component d6"></td>
+                                        <td class="event-component d7"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>01:00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>02:00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>03:00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>04:00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>05:00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- End of Days (week) -->
+                
+                </div>
+            </div>
+        </div> <!-- End of Month and days container -->
     </div> <!-- End of Container -->
     
 
