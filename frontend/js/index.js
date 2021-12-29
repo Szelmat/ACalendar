@@ -34,61 +34,65 @@ submitRegisterBtn.addEventListener("click", e => registerUser(e));
  */
 function loginUser(e) {
 
-    let JWTheader = {
-        "alg": "HS256",
-        "typ": "JWT"
-    };
+    // let temp = new Date().getTime() / 1000 + 10;
 
-    let JWTpayload = {
-        "sub": "1234567890",
-        "name": "John Doe",
-        "admin": true
-    };
+    // let JWTheader = {
+    //     "alg": "HS256",
+    //     "typ": "JWT"
+    //     // "exp": temp
+    // };
 
-    let JWTsecret = "secret";
+    // let JWTpayload = {
+    //     "sub": "1234567890",
+    //     "name": "John Doe",
+    //     "admin": true
+    // };
+
+    // let JWTsecret = "secret";
     
-    let resultJWT = createJWT(JWTheader, JWTpayload, JWTsecret);
+    // let resultJWT = createJWT(JWTheader, JWTpayload, JWTsecret);
 
-    console.log(resultJWT);
+    // console.log(resultJWT);
 
-    // let error = false;
-    // const loginEmail = loginEmailInput.value;
-    // const loginPw = loginPwInput.value;
+    let error = false;
+    const loginEmail = loginEmailInput.value;
+    const loginPw = loginPwInput.value;
 
-    // // remove the feedback for invalid credentials if they are presented
-    // removeInvalidMsg(loginEmailDiv, "invalidEmailFeedback", "border-red");
-    // removeInvalidMsg(loginPwDiv, "invalidPasswordFeedback", "border-red");
+    // remove the feedback for invalid credentials if they are presented
+    removeInvalidMsg(loginEmailDiv, "invalidEmailFeedback", "border-red");
+    removeInvalidMsg(loginPwDiv, "invalidPasswordFeedback", "border-red");
     
-    // // validate email
-    // if(! emailValidator(loginEmail)) {
-    //     insertInvalidMsg(loginEmailDiv, "invalidEmailFeedback", "The given email address is not valid!");
-    //     error = true;
-    // }
+    // validate email
+    if(! emailValidator(loginEmail)) {
+        insertInvalidMsg(loginEmailDiv, "invalidEmailFeedback", "The given email address is not valid!");
+        error = true;
+    }
 
-    // // validate password (only the syntax)
-    // if(loginPw.trim() === "") {
-    //     insertInvalidMsg(loginPwDiv, "invalidPasswordFeedback", "The password field can not be empty!");
-    //     error = true;
-    // }
+    // validate password (only the syntax)
+    if(loginPw.trim() === "") {
+        insertInvalidMsg(loginPwDiv, "invalidPasswordFeedback", "The password field can not be empty!");
+        error = true;
+    }
 
-    // // we can move on only if there was no error during the validation
-    // if(! error) {
-    //     sendAjaxPostRequest(`${apiServerUri}/api/login`, {
-    //         email: loginEmail,
-    //         password: loginPw
-    //     })
-    //     .then(result => {
-    //         if(result === "okay") {
-    //             alert("ok, now you are logged in");
-    //             // JWT token
-    //             // check continuously if in the "auth" folder there are only authenticated users
-    //             window.location.href = "/auth/monthly.html";
-    //         } else {
-    //             alert("hehe, invalid login credentials");
-    //         }
-    //     })
-    //     .catch(error => console.log(error));
-    // }
+    // we can move on only if there was no error during the validation
+    if(! error) {
+        sendAjaxPostRequest(`${apiServerUri}/api/login`, {
+            email: loginEmail,
+            password: loginPw
+        })
+        .then(result => {
+            if("jwt" in result) {
+                alert("ok, now you are logged in");
+                console.log(result["jwt"]);
+                // JWT token
+                // check continuously if in the "auth" folder there are only authenticated users
+                // window.location.href = "/auth/monthly.html";
+            } else {
+                alert("hehe, invalid login credentials");
+            }
+        })
+        .catch(error => console.log(error));
+    }
 }
 
 
