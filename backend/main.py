@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from typing import Optional
@@ -29,7 +29,11 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: Optional[str] = None
+    email: Optional[str] = None
+
+
+class UserInDB(User):
+    password: str
 
 
 app = FastAPI()
@@ -56,14 +60,32 @@ regex = '^[a-z0-9]+[\._]?[ a-z0-9]+[@]\w+[. ]\w{2,3}$'
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
+
 def get_password_hash(password):
     return pwd_context.hash(password)
+
+
+def get_user(db, email: str):
+    if email in db:
+        user_dict = db[email]
+        return UserInDB(**user_dict)
+
+
+def authenticate_user(db, email: str, password: str):
+    user = get_user(db, email)
+    if not user:
+        return False
+    if not verify_password(password, user.password):
+        return False
+    return user
+
 
 def check(email):
     if(re.search(regex, email)):
         return False
     else:
         return True
+
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
@@ -74,6 +96,19 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def get_users_as_dict():
+    users_list = conn.execute(users.select()).fetchall()
+    users_dict = {}
+    for user in users_list:
+        name = user[1]
+        users_dict[name] = {
+            "id": user[0],
+            "email": name,
+            "password": user[2]
+        }
+    return users_dict
 
 
 # For the password validation
@@ -93,7 +128,7 @@ async def read_user_data(id: int):
 @app.put("/api/users/{id}")
 async def update_password(id: int, user: User):
     conn.execute(users.update().values(
-        password = get_password_hash(user.password)
+        password=get_password_hash(user.password)
     ).where(users.c.id == id))
     return conn.execute(users.select()).fetchall()
 
@@ -163,8 +198,6 @@ async def read_user_habits(id: int):
     return conn.execute(habits.select().where(habits.c.user_id == id)).fetchall()
 
 # Add a new habit for a given id's user
-
-
 @app.post("/api/users/{id}/habits")
 async def add_user_habit(habit: Habit):
     conn.execute(habits.insert().values(
@@ -222,8 +255,8 @@ async def register_user(email_reg: str, password_reg: str, conf_password_reg: st
     mat = re.search(pat, password_reg)
     if (mat):
         conn.execute(users.insert().values(
-            email = email_reg,
-            password = get_password_hash(password_reg),
+            email=email_reg,
+            password=get_password_hash(password_reg),
         ))
     else:
         return {
@@ -232,36 +265,20 @@ async def register_user(email_reg: str, password_reg: str, conf_password_reg: st
     return {"message": "Successful registration!"}
 
 # Login with a given user
-
-
-@app.post("/api/login")
-async def login_user(email_log: str, password_log: str):
-    if check(email_log):
-        return {
-            "message": "Invalid Email!"
-        }
-    if(password_log == ""):
-        return {
-            "message": "The password field can not be empty!"
-        }
-    mat = re.search(pat, password_log)
-    if (mat == None):
-        return {
-            "message": "Invalid password!"
-        }
-    registered = conn.execute(users.select()).fetchall()
-    for i in range(len(registered)):
-        if registered[i][1] == email_log:
-            print("Valid user!")
-            if (verify_password(password_log, registered[i][2])):
-                return {"message": "Successful login!"}
-            else:
-                return {
-                    "message": "Incorrect password!"
-                }
-    return {
-        "message": "They have not registered with this email yet!"
-    }
+@app.post("/login", response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(get_users_as_dict(), form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 '''
