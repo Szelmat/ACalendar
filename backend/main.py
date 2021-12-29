@@ -92,11 +92,6 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-# For the password validation
-reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,64}$"
-pat = re.compile(reg)
-
-
 #Show all the data of a given id's user
 @app.get("/api/users/{id}")
 async def read_user_data(id: int):
@@ -188,5 +183,65 @@ async def update_habit(user_id: int, habit_id: int, habit: Habit):
     ).where(habits.c.user_id == user_id).where(habits.c.id == habit_id))
     return conn.execute(habits.select().where(habits.c.user_id == user_id).where(habits.c.id == habit_id)).fetchall()
 
+#Register a new user
+@app.post("/api/register")
+async def register_user(user: RegisterCredentials):
+    if check(user.email_reg):
+        return {
+        "message": "Invalid Email!"
+        }
+    registered = conn.execute(users.select()).fetchall()
+    for i in range(len(registered)):
+        if registered[i][1] == user.email_reg:
+            return {
+            "message": "They have already registered with this email!"
+            }
+    if (user.password_reg != user.conf_password_reg):
+        return {
+        "message": "The passwords you entered are not the same!"
+        }
+    if(user.password_reg =="" or user.conf_password_reg ==""):
+        return {
+        "message": "The password fields can not be empty!"
+        }
+    #mat = re.search(pat, password_reg)
+    if re.fullmatch(r'[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]{8,64}', user.password_reg):
+        conn.execute(users.insert().values(
+            email = user.email_reg,
+            password = user.password_reg,
+        ))
+    else:
+        return {
+        "message": "The password must contain english letters, optional numbers, and/or special characters!"
+        }
+    return {"message": "Successful registration!"}
 
-
+#Login with a given user
+@app.post("/api/login")
+async def login_user(user: LoginCredentials):
+    if check(user.email_log):
+        return {
+        "message": "Invalid Email!"
+        }
+    if(user.password_log ==""):
+        return {
+        "message": "The password field can not be empty!"
+        }
+    
+    if not re.fullmatch(r'[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]{8,64}', user.password_log):
+        return {
+        "message": "Invalid password!"
+        }
+    registered = conn.execute(users.select()).fetchall()
+    for i in range(len(registered)):
+        if registered[i][1] == user.email_log:
+            print("Valid user!")
+            if registered[i][2] == user.password_log:
+                return {"message": "Successful login!"}
+            else:
+                return {
+                "message": "Incorrect password!"
+                }
+    return {
+    "message": "They have not registered with this email yet!"
+    }
