@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var dates = document.querySelectorAll(".datepicker");
   M.Datepicker.init(dates, {
     autoClose: true,
-    format: "d-m-yyyy",
+    format: "yyyy-mm-dd",
   });
 });
 document.addEventListener("DOMContentLoaded", function () {
