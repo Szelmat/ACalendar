@@ -194,14 +194,5 @@ function createJWT(header, payload, secret) {
 
     let jwt = base64Header + "." + base64Payload + "." + base64signature;
 
-    // console.log("---------------------------");
-    // console.log(header, payload, secret);
-    // console.log(base64Header); 
-    // console.log(base64Payload);
-    // // console.log(signature);
-    // // console.log(base64signature);
-    // // console.log(jwt);
-    // console.log("---------------------------");
-    
     return jwt;
 }
