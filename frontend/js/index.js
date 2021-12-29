@@ -33,6 +33,27 @@ submitRegisterBtn.addEventListener("click", e => registerUser(e));
  * @param {Event} e 
  */
 function loginUser(e) {
+
+    // let temp = new Date().getTime() / 1000 + 10;
+
+    // let JWTheader = {
+    //     "alg": "HS256",
+    //     "typ": "JWT"
+    //     // "exp": temp
+    // };
+
+    // let JWTpayload = {
+    //     "sub": "1234567890",
+    //     "name": "John Doe",
+    //     "admin": true
+    // };
+
+    // let JWTsecret = "secret";
+    
+    // let resultJWT = createJWT(JWTheader, JWTpayload, JWTsecret);
+
+    // console.log(resultJWT);
+
     let error = false;
     const loginEmail = loginEmailInput.value;
     const loginPw = loginPwInput.value;
@@ -60,11 +81,12 @@ function loginUser(e) {
             password: loginPw
         })
         .then(result => {
-            if(result === "okay") {
+            if("jwt" in result) {
                 alert("ok, now you are logged in");
+                console.log(result["jwt"]);
                 // JWT token
                 // check continuously if in the "auth" folder there are only authenticated users
-                window.location.href = "/auth/monthly.html";
+                // window.location.href = "/auth/monthly.html";
             } else {
                 alert("hehe, invalid login credentials");
             }
@@ -101,7 +123,7 @@ function registerUser(e) {
         insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", "The password field can not be empty!");
         error = true;
     } else if(! pwRegex.exec(registerPw)) {
-        insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", `The password most contain english letters, numbers, and special characters (!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?)!`);
+        insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", `The password must contain english letters, numbers, and special characters (!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?)!`);
         error = true;
     }
 

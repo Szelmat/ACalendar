@@ -9,12 +9,8 @@ const addEventToSelectedDay = document.querySelector("#addEventToSelectedDay");
 const addEventToUpcoming = document.querySelector("#addEventToUpcoming");
 
 const weekdaysLIsArray = Array.from(weekdaysLIs);
-const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-const monthNames = [
-    "January", "February", "March", "April", 
-    "May", "June", "July", "August", 
-    "September", "October", "November", "December"
-];
+const weekdays = getWeekdays();
+const monthNames = getMonthNames();
 
 const longMonths = [1, 3, 5, 7, 8, 10, 12]; // 1: January, 3: March, etc... They have 31 days
 const shortMonths = [4, 6, 9, 11]; // 4: April, 6: June, etc... They have 30 days
@@ -406,45 +402,6 @@ function checkIfLeapYear(year) {
             return false;
         }
     }
-}
-
-
-/**
- * Get the day-of-the-week belongs to the given date.
- * @param {Date} firstDay 
- */
-function getDayOfWeek(firstDay) {
-    // By default the Date.getDay() method works like this:
-    // 0: Sunday
-    // 1: Monday
-    // ...
-    // 6: Saturday
-
-    // Reworked system:
-    // 0: Monday
-    // 1: Tuesday
-    // ...
-    // 6: Sunday
-
-    let temp = firstDay.getDay(); // day of week (0: Sunday, 1: Monday, ..., 6: Saturday)
-    let result;
-
-    if (temp === 0)
-        result = 6;
-    else if (temp === 1)
-        result = 0;
-    else if (temp === 2)
-        result = 1;
-    else if (temp === 3)
-        result = 2;
-    else if (temp === 4)
-        result = 3;
-    else if (temp === 5)
-        result = 4;
-    else
-        result = 5;
-
-    return result;
 }
 
 
