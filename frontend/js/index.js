@@ -101,7 +101,7 @@ function registerUser(e) {
         insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", "The password field can not be empty!");
         error = true;
     } else if(! pwRegex.exec(registerPw)) {
-        insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", `The password most contain english letters, numbers, and special characters (!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?)!`);
+        insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", `The password must contain english letters, numbers, and special characters (!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?)!`);
         error = true;
     }
 
