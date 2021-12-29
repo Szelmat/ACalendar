@@ -141,13 +141,14 @@ function registerUser(e) {
             confirm_password: confirmPw
         })
         .then(result => {
-            if(result === "okay") {
+            if(result["message"] === "Successful registration!") {
                 // JWT token
                 // etc..
                 // check continuously if in the "auth" folder there are only authenticated users
                 alert("Successful registration!");
             } else {
-                alert("hehe, invalid register credentials");
+                console.log(result["message"]);
+                alert("hehe, invalid register credentials, more details in the console");
             }
         })
         .catch(error => console.log(error));
