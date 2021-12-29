@@ -235,7 +235,7 @@ async def login_user(user: LoginCredentials):
     registered = conn.execute(users.select()).fetchall()
     for i in range(len(registered)):
         if registered[i][1] == user.email_log:
-            print("Valid user!")
+            #print("Valid user!")
             if registered[i][2] == user.password_log:
                 return {"message": "Successful login!"}
             else:
