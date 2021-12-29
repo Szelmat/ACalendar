@@ -11,6 +11,7 @@ uvicorn = {extras = ["standard"], version = "*"}
 sqlalchemy = "*"
 pymysql = "*"
 pydantic = {extras = ["email"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [requires]
 python_version = "3.8"
