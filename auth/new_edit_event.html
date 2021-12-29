@@ -75,14 +75,7 @@
 
           <div class="col s6 m6 l6 xl6">
             <div>
-              <input
-                type="date"
-                id="start"
-                name="trip-start"
-                value="2021-12-01"
-                min="2021-01-01"
-                max="2099-12-31"
-              />
+              <input type="text" class="datepicker" id="startDate" />
             </div>
           </div>
         </div>
@@ -98,7 +91,7 @@
 
           <div class="col s6 m6 l6 xl6">
             <div>
-              <input type="time" required />
+              <input type="text" class="timepicker" id="startTime" />
             </div>
           </div>
         </div>
@@ -126,14 +119,7 @@
 
           <div class="col s6 m6 l6 xl6">
             <div>
-              <input
-                type="date"
-                id="start"
-                name="trip-start"
-                value="2021-12-01"
-                min="2021-01-01"
-                max="2099-12-31"
-              />
+              <input type="text" class="datepicker" id="endDate" />
             </div>
           </div>
         </div>
@@ -149,7 +135,7 @@
 
           <div class="col s6 m6 l6 xl6">
             <div>
-              <input type="time" required />
+              <input type="text" class="timepicker" id="endTime" />
             </div>
           </div>
         </div>
@@ -208,7 +194,7 @@
       <div class="row">
         <form
           action="#"
-          class="col s4 m4 l4 xl4 offset-s1 offset-m2 offset-l2 offset-xl2"
+          class="col s4 m4 l4 xl4 offset-s1 offset-m1 offset-l2 offset-xl2"
         >
           <label>
             <input type="checkbox" class="filled-in" checked="checked" />
@@ -251,5 +237,6 @@
     <script src="../frontend/js/init_navbar.js"></script>
     <script src="../frontend/js/materialize.min.js"></script>
     <script src="../frontend/js/functions.js"></script>
+    <script src="../frontend/js/newEvent.js"></script>
   </body>
 </html>
