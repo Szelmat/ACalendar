@@ -162,7 +162,7 @@ async def register_user(user: RegisterCredentials):
         ))
     else:
         return {
-        "message": "The password must contain at least one uppercase letter, one lowercase letter, numbers, and special characters, and the minimum lenght is 8 character, max. is 64 char!"
+        "message": "The password must contain english letters, optional numbers, and/or special characters!"
         }
     return {"message": "Successful registration!"}
 
