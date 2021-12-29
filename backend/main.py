@@ -128,7 +128,6 @@ async def update_habit(user_id: int, habit_id: int, habit: Habit):
     ).where(habits.c.user_id == user_id).where(habits.c.id == habit_id))
     return conn.execute(habits.select().where(habits.c.user_id == user_id).where(habits.c.id == habit_id)).fetchall()
 
-
 #Register a new user
 @app.post("/api/register")
 async def register_user(email_reg: str, password_reg: str, conf_password_reg: str):
@@ -162,7 +161,36 @@ async def register_user(email_reg: str, password_reg: str, conf_password_reg: st
         }
     return {"message": "Successful registration!"}
 
-
+#Login with a given user
+@app.post("/api/login")
+async def login_user(email_log: str, password_log: str):
+    if check(email_log):
+        return {
+        "message": "Invalid Email!"
+        }
+    if(password_log ==""):
+        return {
+        "message": "The password field can not be empty!"
+        }
+    mat = re.search(pat, password_log)
+    if (mat == None):
+        return {
+        "message": "Invalid password!"
+        }
+    registered = conn.execute(users.select()).fetchall()
+    for i in range(len(registered)):
+        if registered[i][1] == email_log:
+            print("Valid user!")
+            if registered[i][2] == password_log:
+                return {"message": "Successful login!"}
+            else:
+                return {
+                "message": "Incorrect password!"
+                }
+    return {
+    "message": "They have not registered with this email yet!"
+    }
+    
 
 
 
@@ -171,9 +199,6 @@ async def register_user(email_reg: str, password_reg: str, conf_password_reg: st
 @app.get("/")
 async def read_data():
     return conn.execute(users.select()).fetchall()
-
-
-
 
 
 #asd
