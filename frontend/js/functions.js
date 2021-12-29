@@ -146,3 +146,62 @@ function getWeek(givenDate, dowOffset) {
     }
     return weeknum;
 };
+
+
+/**
+ * Get the base64 representation of the given string.
+ * @param {String} rawString
+ * @returns String
+ */
+function getBase64Encode(rawString) {
+    let wordArray = CryptoJS.enc.Utf8.parse(rawString);
+    let result = CryptoJS.enc.Base64url.stringify(wordArray);
+
+    return result;
+}
+
+
+/**
+ * Get the string representation of Base64 encoded string.
+ * @param {String} encodedString 
+ * @returns String
+ */
+ function getBase64Decode(encodedString) {
+    let wordArray = CryptoJS.enc.Base64url.parse(encodedString);
+    let result = wordArray.toString(CryptoJS.enc.Utf8);
+
+    return result;
+}
+
+
+/**
+ * Create JWT token;
+ * @param {String} header 
+ * @param {String} payload 
+ * @param {String} secret 
+ * @returns String
+ */
+function createJWT(header, payload, secret) {
+    
+    // get the base64 encoded header and payload
+    let base64Header = getBase64Encode(JSON.stringify(header));
+    let base64Payload = getBase64Encode(JSON.stringify(payload));
+
+    // get the signature of the hash
+    let signature = CryptoJS.HmacSHA256(base64Header + "." + base64Payload, secret);
+    // convert the signature to base64
+    let base64signature = CryptoJS.enc.Base64url.stringify(signature);
+
+    let jwt = base64Header + "." + base64Payload + "." + base64signature;
+
+    // console.log("---------------------------");
+    // console.log(header, payload, secret);
+    // console.log(base64Header); 
+    // console.log(base64Payload);
+    // // console.log(signature);
+    // // console.log(base64signature);
+    // // console.log(jwt);
+    // console.log("---------------------------");
+    
+    return jwt;
+}
