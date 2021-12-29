@@ -64,12 +64,14 @@ function fillDays(date) {
     // set the selected month (the format is: yyyy Month_name)
     setSelectedWeekDate(date, week, givenMonthName);
 
+    let weekDayDate = date;
+
     for(let i = 0; i < 7; i++) {
-        dayTableRowsArray[i].innerHTML = date.getDate();
+        dayTableRowsArray[i].innerHTML = weekDayDate.getDate();
         
         // add some hours to the given date in order to step into the next day
-        let nextDayUnixSeconds = moment(date.getTime()).add(1, "day").unix();
-        date = new Date(nextDayUnixSeconds * 1000);
+        let nextDayUnixSeconds = moment(weekDayDate.getTime()).add(1, "day").unix();
+        weekDayDate = new Date(nextDayUnixSeconds * 1000);
     }
 
     // TODO: get the events for the days/dates
