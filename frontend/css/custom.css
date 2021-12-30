@@ -257,3 +257,37 @@ https://stackoverflow.com/questions/58626071/give-background-to-i-tag-when-input
 .timepicker-digital-display {
   background-color: #673ab7 !important;
 }
+
+.dropdown-content {
+  background-color: #ffffff;
+  display: none;
+  min-width: 64%; /* Changed this to accomodate content width */
+  max-height: auto;
+  overflow: hidden; /* Changed this from overflow-y:auto; to overflow:hidden; */
+  opacity: 0;
+  position: absolute;
+  white-space: nowrap;
+  will-change: width, height;
+}
+.span {
+  color: black !important;
+  background-color: white;
+}
+input {
+  color: black;
+}
+
+.select-dropdown {
+  color: black !important;
+}
+
+.dropdown-content li > a,
+.dropdown-content li > span {
+  color: black !important;
+}
+
+.checkbox-blue-grey[type="checkbox"].filled-in:checked
+  + span:not(.lever):after {
+  border: 2px solid #673ab7;
+  background-color: #673ab7;
+}

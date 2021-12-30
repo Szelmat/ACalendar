@@ -160,54 +160,49 @@
       </div>
 
       <div class="row">
-        <div
-          class="
-            grey
-            col
-            s10
-            m8
-            l8
-            xl8
-            offset-s1 offset-m2 offset-l2 offset-xl2
-          "
+        <form
+          class="col s10 m8 l8 xl8 offset-s1 offset-m2 offset-l2 offset-xl2"
         >
-          <ul id="dropdown" class="dropdown-content">
-            <li><a href="#">One</a></li>
-            <li><a href="#">Two</a></li>
-            <li><a href="#">Three</a></li>
-          </ul>
-          <ul class="dds">
-            <li>
-              <a
-                class="dropdown-trigger"
-                data-target="dropdown"
-                style="color: black"
-              >
-                Priority <i class="material-icons right">arrow_drop_down</i></a
-              >
-            </li>
-          </ul>
-        </div>
+          <div class="row">
+            <select>
+              <option value="0">Choose priority</option>
+              <option value="1">Critical</option>
+              <option value="2">Important</option>
+              <option value="3">Medium</option>
+              <option value="4">Not so important</option>
+              <option value="5">Optional</option>
+            </select>
+          </div>
+        </form>
       </div>
 
       <div class="row">
         <form
           action="#"
-          class="col s4 m4 l4 xl4 offset-s1 offset-m1 offset-l2 offset-xl2"
+          class="col s4 m4 l4 xl4 offset-s1 offset-m2 offset-l2 offset-xl2"
         >
           <label>
-            <input type="checkbox" class="filled-in" checked="checked" />
+            <input
+              type="checkbox"
+              class="filled-in checkbox-blue-grey"
+              style="color: black"
+            />
             <span style="color: black">Notification</span>
           </label>
         </form>
-
-        <div class="switch col s4 m4 l4 xl4">
+        <form
+          action="#"
+          class="col s4 m4 l4 xl4 offset-s1 offset-m2 offset-l2 offset-xl2"
+        >
           <label>
+            <input
+              type="checkbox"
+              class="filled-in checkbox-blue-grey"
+              style="color: black"
+            />
             <span style="color: black">Habit</span>
-            <input type="checkbox" />
-            <span class="lever"></span>
           </label>
-        </div>
+        </form>
       </div>
 
       <div class="row center mt-0 mb-0">

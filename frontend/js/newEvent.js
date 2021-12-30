@@ -12,3 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     twelveHour: false,
   });
 });
+document.addEventListener("DOMContentLoaded", function () {
+  var sel = document.querySelectorAll("select");
+  var instances = M.FormSelect.init(sel, {});
+});
