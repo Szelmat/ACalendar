@@ -493,7 +493,7 @@ function createSelEventsTable(eventsToDisplay) {
         let displayH = eventHours < 10 ? "0" + eventHours : eventHours;
         let displayM = eventMinutes < 10 ? "0" + eventMinutes : eventMinutes;
 
-        let displayText = eventToDisplay["event_title"].toUpperCase();
+        let displayText = eventToDisplay["title"].toUpperCase();
         
         let elementPadding = 1;
         let lastElementPadding = 3;
@@ -585,11 +585,14 @@ function createUpcomingEventsTable(eventsToDisplay) {
  * and the events belong to that date. The latest data comes from the backend through an API.
  * @param {Date} selectedDate 
  */
-function fillSelectedDaysDiv(selectedDate) {
+async function fillSelectedDaysDiv(selectedDate) {
     let selectedDaysTitleDiv = document.querySelector("#selectedDate");
 
 
-    let events = getGivenDaysEvent(selectedDate);
+    console.log("fillSelectedDaysDiv start getting events");
+    let events = await getGivenDaysEvent(selectedDate);
+    console.log("fillSelectedDaysDiv end getting events");
+    console.log("fillSelectedDaysDiv, events:", events);
 
     let year = selectedDate.getFullYear();
     let month = selectedDate.getMonth();
@@ -668,77 +671,49 @@ function deleteEvent(eventId) {
  * Those events will be returned whose date has the same value for year, month, day as the given date.
  * @param {Date} selectedDate 
  */
-function getGivenDaysEvent(selectedDate) {
+async function getGivenDaysEvent(selectedDate) {
 
     let uid = getAuthUserId();
     console.log(getAuthUserId());
-
-    fetch(`http://127.0.0.1:8000/api/users/${uid}/events`)
-        .then(response => response.json())
-        .then(data => console.log(data));
     
     // TODO: this will come from the backend
     // TODO: the API call should return only the events of a given day? 
     //       After that I don't have to filter
-    let events = [
-        {
-        "id": 10,
-        "start_time": "2021.12.08 10:00",
-        "event_title": "Computer Security practice assignment"
-        }, 
-        {
-        "id": 23,
-        "start_time": "2021.12.08 12:30",
-        "event_title": "Submit project work"
-        }, 
-        {
-        "id": 31,
-        "start_time": "2021.12.08 14:40",
-        "event_title": "Start working"
-        },
-        {
-        "id": 41,
-        "start_time": "2021.12.10 8:05",
-        "event_title": "Go to work"
-        },
-        {
-        "id": 45,
-        "start_time": "2021.12.10 16:25",
-        "event_title": "Stop working"
-        },
-        {
-        "id": 63,
-        "start_time": "2021.12.12 12:30",
-        "event_title": "Study to Software technology"
-        },
-    ];
-    
-    let year = selectedDate.getFullYear();
-    let month = selectedDate.getMonth() + 1;
-    let day = selectedDate.getDate();
+    let result;
+    await getUserEvents(uid)
+    .then(events => {
+        console.log("getGivenDaysEvent then", events);
 
-    let eventsToDisplay = [];
+        let year = selectedDate.getFullYear();
+        let month = selectedDate.getMonth() + 1;
+        let day = selectedDate.getDate();
 
-    events.forEach(calendarEvent => {
-        let startTime = calendarEvent["start_time"];
-        let startTimeDate = new Date(startTime);
-        
-        let eventYear = startTimeDate.getFullYear();
-        let eventMonth = startTimeDate.getMonth() + 1;
-        let eventDay = startTimeDate.getDate();
+        let eventsToDisplay = [];
 
-        if(year === eventYear && month === eventMonth && day === eventDay) {
-        // if today is the selected day
-            // let timeFormat = `${eventHours < 10 ? "0" + eventHours : eventHours}:${eventMinutes < 10 ? "0" + eventMinutes : eventMinutes}`;
-            // let eventTitle = `${calendarEvent["event_title"]}`;
-            // console.log(timeFormat, eventTitle);
+        events.forEach(calendarEvent => {
+            let startTime = calendarEvent["start_time"];
+            let startTimeDate = new Date(startTime);
+            
+            let eventYear = startTimeDate.getFullYear();
+            let eventMonth = startTimeDate.getMonth() + 1;
+            let eventDay = startTimeDate.getDate();
 
-            eventsToDisplay.push(calendarEvent)
-        }
-        
-    });
+            // if(year === eventYear && month === eventMonth && day === eventDay) {
+            // if today is the selected day
+                // let timeFormat = `${eventHours < 10 ? "0" + eventHours : eventHours}:${eventMinutes < 10 ? "0" + eventMinutes : eventMinutes}`;
+                // let eventTitle = `${calendarEvent["event_title"]}`;
+                // console.log(timeFormat, eventTitle);
 
-    return eventsToDisplay;
+                eventsToDisplay.push(calendarEvent)
+            // }
+            
+        });
+
+        result = eventsToDisplay;
+    })
+    .catch(error => console.log(error));
+
+    return result;
 }
 
 

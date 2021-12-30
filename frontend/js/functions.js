@@ -225,6 +225,19 @@ function getAuthUserId() {
 
 
 /**
+ * Get the events belong to user with given the id.
+ * @param {Number} userId 
+ * @returns 
+ */
+async function getUserEvents(userId) {
+    const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/events`)
+        .then(response => response.json())
+        .then(data => {return data});
+    
+    return response;
+        
+}
+/**
  * Log out the user. We simply delete the cookie which contains the jwt.
  */
 function logout() {
