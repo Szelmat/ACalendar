@@ -81,14 +81,15 @@ function loginUser(e) {
             password: loginPw
         })
         .then(result => {
-            if("jwt" in result) {
-                alert("ok, now you are logged in");
-                console.log(result["jwt"]);
+            if("access_token" in result) {
+                console.log("ok, now you are logged in");
+                console.log(result);
                 // JWT token
                 // check continuously if in the "auth" folder there are only authenticated users
                 // window.location.href = "/auth/monthly.html";
             } else {
-                alert("hehe, invalid login credentials");
+                console.log("hehe, invalid login credentials");
+                console.log(result);
             }
         })
         .catch(error => console.log(error));

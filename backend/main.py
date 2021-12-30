@@ -287,7 +287,7 @@ async def register_user(email_reg: str, password_reg: str, conf_password_reg: st
 # Login with a given user
 
 
-@app.post("/login", response_model=Token)
+@app.post("/api/login", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(
         get_users_as_dict(), form_data.username, form_data.password)
