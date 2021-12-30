@@ -306,6 +306,6 @@ async def read_user_date_events(id: int,  frdate: str, todate: str):
     i=0
     l = []
     for i in range(len(allevents)):
-            if str(allevents[i][5]) >= frdate and str(allevents[i][5]) <= todate:
+            if str(allevents[i][5]) >= frdate and str(allevents[i][5]) < todate:
                 l.append(allevents[i])
     return l
