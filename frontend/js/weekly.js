@@ -8,6 +8,7 @@ const eventTableContainer = document.querySelector("#eventTableContainer");
 const weekdaysTableRow = document.querySelector("#weekdays");
 const dayTableRows = document.querySelectorAll(".day");
 const selectedMonthDiv = document.querySelector("#selectedMonth");
+const logoutLink = document.querySelector("#logout");
 
 const dayTableRowsArray = Array.from(dayTableRows);
 const weekdaysLIsArray = Array.from(weekdaysLIs);
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", e => {
 
     weekStepBack.addEventListener("click", stepBackInWeeks);
     weekStepForward.addEventListener("click", stepForwardInWeeks);
+    logoutLink.addEventListener("click", e => logoutClicked(e))
 })
 
 
@@ -141,27 +143,6 @@ function getNextWeek(date) {
 }
 
 
-
-// /**
-//  * Convert moment date object into Date object.
-//  * @param {} moment 
-//  */
-// function momentToDate(moment) {
-//     let result = new Date(moment.unix() * 1000);
-//     return result;
-// }
-
-
-// /**
-//  * Convert Date object into moment object.
-//  * @param {Date} date 
-//  */
-// function dateToMoment(date) {
-//     let result = moment().unix(date.getTime());
-//     return result;
-// }
-
-
 /**
  * Returns the first day of the given date's week as Date.
  * @param {Date} date 
@@ -182,6 +163,11 @@ function stepBackInWeeks() {
 function stepForwardInWeeks() {
     currentDate = getNextWeek(currentDate);
     fillDays(currentDate);
+}
+
+function logoutClicked(e) {
+    e.preventDefault();
+    logout();
 }
 
 

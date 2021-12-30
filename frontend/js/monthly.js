@@ -7,6 +7,7 @@ const monthStepBack = document.querySelector("#monthStepBack");
 const monthStepForward = document.querySelector("#monthStepForward");
 const addEventToSelectedDay = document.querySelector("#addEventToSelectedDay");
 const addEventToUpcoming = document.querySelector("#addEventToUpcoming");
+const logoutLink = document.querySelector("#logout");
 
 const weekdaysLIsArray = Array.from(weekdaysLIs);
 const weekdays = getWeekdays();
@@ -39,6 +40,7 @@ function registerEventListeners() {
 
     addEventToSelectedDay.addEventListener("click", addNewEventToSelectedDate);
     addEventToUpcoming.addEventListener("click", addNewEventToUpcoming);
+    logoutLink.addEventListener("click", e => logoutClicked(e))
 }
 
 
@@ -766,4 +768,9 @@ function addNewEventToSelectedDate() {
 
 function addNewEventToUpcoming() {
     window.location.href = "/auth/new_edit_event.html";
+}
+
+function logoutClicked(e) {
+    e.preventDefault();
+    logout();
 }

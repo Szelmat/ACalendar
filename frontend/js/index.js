@@ -94,7 +94,7 @@ function loginUser(e) {
                 expireDate = new Date(Number.parseInt(expireDate) * 1000);
                 
                 // set the cookie 
-                document.cookie = `jwt=${result["access_token"]}; expires=${expireDate};`;
+                document.cookie = `acalendar-jwt=${result["access_token"]}; expires=${expireDate};`;
 
                 // by setting the cookie the user will be logged in
                 
