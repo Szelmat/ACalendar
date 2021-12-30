@@ -669,6 +669,13 @@ function deleteEvent(eventId) {
  * @param {Date} selectedDate 
  */
 function getGivenDaysEvent(selectedDate) {
+
+    let uid = getAuthUserId();
+    console.log(getAuthUserId());
+
+    fetch(`http://127.0.0.1:8000/api/users/${uid}/events`)
+        .then(response => response.json())
+        .then(data => console.log(data));
     
     // TODO: this will come from the backend
     // TODO: the API call should return only the events of a given day? 

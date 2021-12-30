@@ -198,6 +198,32 @@ function createJWT(header, payload, secret) {
 }
 
 
+function getAuthUserId() {
+    let cookie = document.cookie;
+    let cookies = cookie.split("; ");
+    const cookieKey = "acalendar-jwt";
+
+    for(let i = 0; i < cookies.length; i++) {
+        if(cookies[i].includes(cookieKey)) {
+            // cookies[i] is like: acalendar-jwt=header.payload.signature
+            // get jwt token value
+
+            let jwt = cookies[i].substring(cookieKey.length + 1);
+            if(jwt.length > 0) {   
+                // jwt components (header, payload, signature) are separated by dots
+                let jwtComponents = jwt.split(".");
+                
+                // the payload is the 2nd component of the JWT
+                let jwtPayload = JSON.parse(getBase64Decode(jwtComponents[1]));
+                return jwtPayload["uid"];
+            }
+
+            return null;
+        }
+    }
+}
+
+
 /**
  * Log out the user. We simply delete the cookie which contains the jwt.
  */
@@ -206,18 +232,15 @@ function logout() {
     let cookies = cookie.split("; ");
     const cookieKey = "acalendar-jwt";
 
-    cookies.forEach(currentCookie => {
-        if(currentCookie.includes(cookieKey)) {
-            // currentCookie is like: acalendar-jwt=header.payload.signature
+    for (let i = 0; i < cookies.length; i++) {
+        if(cookies[i].includes(cookieKey)) {
+            // cookies[i] is like: acalendar-jwt=header.payload.signature
             // get jwt token value
 
-            let jwt = currentCookie.substring(cookieKey.length + 1);
+            let jwt = cookies[i].substring(cookieKey.length + 1);
             if(jwt.length > 0) {   
                 // jwt components (header, payload, signature) are separated by dots
                 let jwtComponents = jwt.split(".");
-                
-                // the payload is the 2nd component of the JWT
-                let jwtPayload = JSON.parse(getBase64Decode(jwtComponents[1]));
                 
                 // the jwt "expire" time will be the cookie's expire time as well
                 let expireDate = new Date("1970.01.01");
@@ -226,8 +249,8 @@ function logout() {
                 // set the cookie 
                 document.cookie = `acalendar-jwt=; expires=-1; path=/`;
             }
-        }
-    })
+        }   
+    }
 
     window.location.href = "../index.html";
 }
