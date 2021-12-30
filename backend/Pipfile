@@ -10,7 +10,10 @@ fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 sqlalchemy = "*"
 pymysql = "*"
-pydantic = "*"
+pydantic = {extras = ["email"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
+python-multipart = "*"
+python-jose = "*"
 
 [requires]
 python_version = "3.8"

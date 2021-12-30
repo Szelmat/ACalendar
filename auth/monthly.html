@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACalendar</title>
+    <title>ACalendar - Monthly view</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="../frontend/css/materialize.min.css">
@@ -13,6 +13,12 @@
     
     <!-- Materialize Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- crypto js -->
+    <script src="../frontend/js/crypto-js/core.js"></script>
+    <script src="../frontend/js/crypto-js/enc-base64url.js"></script>
+    <script src="../frontend/js/crypto-js/hmac.js"></script>
+    <script src="../frontend/js/crypto-js/sha256.js"></script>
     
     <!-- Set favicon -->
     <link rel="icon" type="image/png" href="../ACalendar_logo.png"/>
@@ -26,20 +32,20 @@
             
             <!-- Content of hamburger icon when the page (navbar) is NOT minimized  -->
             <ul class="left hide-on-med-and-down">
-                <li><a href="#">Monthly view</a></li>
-                <li><a href="#">Weekly view</a></li>
-                <li><a href="#">Daily view</a></li>
+                <li><a href="./monthly.html" class="active-view">Monthly view</a></li>
+                <li><a href="./weekly.html">Weekly view</a></li>
+                <li><a href="./daily.html">Daily view</a></li>
             </ul>
 
-            <a href="#" class="right"><i class="material-icons mr-3">logout</i></a>
+            <a href id="logout" class="right"><i class="material-icons mr-3">logout</i></a>
         </div>
     </nav> <!-- End of navbar -->
     
     <!-- Content of hamburger icon when the page (navbar) is minimized  -->
     <ul class="sidenav" id="views_links">
-        <li><a href="#">Monthly view</a></li>
-        <li><a href="#">Weekly view</a></li>
-        <li><a href="#">Daily view</a></li>
+        <li><a href="./monthly.html" class="active-view">Monthly view</a></li>
+        <li><a href="./weekly.html">Weekly view</a></li>
+        <li><a href="./daily.html">Daily view</a></li>
     </ul>
 
     <div class="container">
@@ -95,7 +101,7 @@
                             2021 September 25
                         </div>
                         <div class="">
-                            <button class="btn-small white ml-5 primary-bg" id="addEventToSelectedDay">
+                            <button class="btn-small white ml-5 primary-bg waves-effect waves-purple" id="addEventToSelectedDay">
                                 NEW
                                 <i class="material-icons left">add</i>
                             </button>
@@ -116,7 +122,7 @@
                             Other upcoming events
                         </div>
                         <div class="">
-                            <button class="btn-small white ml-5 primary-bg" id="addEventToUpcoming">
+                            <button class="btn-small white ml-5 primary-bg waves-effect waves-purple" id="addEventToUpcoming">
                                 NEW
                                 <i class="material-icons left">add</i>
                             </button>

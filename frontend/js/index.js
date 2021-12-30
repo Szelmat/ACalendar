@@ -33,6 +33,27 @@ submitRegisterBtn.addEventListener("click", e => registerUser(e));
  * @param {Event} e 
  */
 function loginUser(e) {
+
+    // let temp = new Date().getTime() / 1000 + 10;
+
+    // let JWTheader = {
+    //     "alg": "HS256",
+    //     "typ": "JWT"
+    //     // "exp": temp
+    // };
+
+    // let JWTpayload = {
+    //     "sub": "1234567890",
+    //     "name": "John Doe",
+    //     "admin": true
+    // };
+
+    // let JWTsecret = "secret";
+    
+    // let resultJWT = createJWT(JWTheader, JWTpayload, JWTsecret);
+
+    // console.log(resultJWT);
+
     let error = false;
     const loginEmail = loginEmailInput.value;
     const loginPw = loginPwInput.value;
@@ -56,17 +77,33 @@ function loginUser(e) {
     // we can move on only if there was no error during the validation
     if(! error) {
         sendAjaxPostRequest(`${apiServerUri}/api/login`, {
-            email: loginEmail,
+            username: loginEmail,
             password: loginPw
         })
         .then(result => {
-            if(result === "okay") {
-                alert("ok, now you are logged in");
-                // JWT token
-                // check continuously if in the "auth" folder there are only authenticated users
+            if("access_token" in result) {
+
+                // jwt components (header, payload, signature) are separated by dots
+                let jwtComponents = result["access_token"].split(".");
+
+                // the payload is the 2nd component of the JWT
+                let jwtPayload = JSON.parse(getBase64Decode(jwtComponents[1]));
+
+                // the jwt "expire" time will be the cookie's expire time as well
+                let expireDate = jwtPayload["exp"];
+                expireDate = new Date(Number.parseInt(expireDate) * 1000);
+                
+                // set the cookie 
+                document.cookie = `acalendar-jwt=${result["access_token"]}; expires=${expireDate};`;
+
+                // by setting the cookie the user will be logged in
+                
+                // redirect the user to the monthly view
                 window.location.href = "/auth/monthly.html";
+
             } else {
-                alert("hehe, invalid login credentials");
+                alert("invalid login credentials, details are in the console");
+                console.log(result);
             }
         })
         .catch(error => console.log(error));
@@ -101,7 +138,7 @@ function registerUser(e) {
         insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", "The password field can not be empty!");
         error = true;
     } else if(! pwRegex.exec(registerPw)) {
-        insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", `The password most contain english letters, numbers, and special characters (!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?)!`);
+        insertInvalidMsg(registerPwDiv, "invalidPasswordFeedback", `The password must contain english letters, numbers, and special characters (!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?)!`);
         error = true;
     }
 
@@ -119,13 +156,14 @@ function registerUser(e) {
             confirm_password: confirmPw
         })
         .then(result => {
-            if(result === "okay") {
+            if(result["message"] === "Successful registration!") {
                 // JWT token
                 // etc..
                 // check continuously if in the "auth" folder there are only authenticated users
                 alert("Successful registration!");
             } else {
-                alert("hehe, invalid register credentials");
+                console.log(result["message"]);
+                alert("hehe, invalid register credentials, more details in the console");
             }
         })
         .catch(error => console.log(error));

@@ -18,9 +18,22 @@
     />
 
     <!-- Set favicon -->
+<<<<<<< HEAD
     <link rel="icon" type="image/png" href="ACalendar_logo.png" />
   </head>
   <body>
+=======
+    <link rel="icon" type="image/png" href="ACalendar_logo.png"/>
+
+    <!-- crypto js -->
+    <script src="./frontend/js/crypto-js/core.js"></script>
+    <script src="./frontend/js/crypto-js/enc-base64url.js"></script>
+    <script src="./frontend/js/crypto-js/hmac.js"></script>
+    <script src="./frontend/js/crypto-js/sha256.js"></script>
+    
+</head>
+<body>
+>>>>>>> b48b58605044197d12b4c0421ad2b73b8e1a0707
     <div class="container">
       <!-- Title -->
       <div class="row center">
@@ -50,11 +63,37 @@
             <h4 class="mt-5 mb-4">Login</h4>
           </div>
 
+<<<<<<< HEAD
           <div id="loginEmailContainer" class="rounded-1 pl-3 pr-3">
             <div class="input-field">
               <i class="material-icons prefix primary-color">mail_outline</i>
               <input id="loginEmail" type="email" />
               <label for="loginEmail">Email address</label>
+=======
+                <div id="loginEmailContainer" class="rounded-1 pl-3 pr-3">
+                    <div class="input-field">
+                        <i class="material-icons prefix primary-color">mail_outline</i>
+                        <input id="loginEmail" type="email" value="asdf@gmail.com">
+                        <label for="loginEmail">Email address</label>
+                    </div>
+                </div>
+
+                <div id="loginPwContainer" class="rounded-1 mt-5 pl-3 pr-3">
+                    <div class="input-field">
+                        <i class="material-icons prefix">lock_outline</i>
+                        <input id="loginPw" type="password" value="">
+                        <label for="loginPw">Password</label>
+                        <!-- <i class="material-icons">remove_red_eye</i> -->
+                    </div>
+                </div>
+                
+                <div class="row center mt-5">
+                    <button id="submitLoginForm" type="submit" class="btn primary-bg">
+                        <i class="material-icons left medium-sized-text">login</i>
+                        <span class="medium-sized-text">Login</span>
+                    </button>
+                </div>
+>>>>>>> b48b58605044197d12b4c0421ad2b73b8e1a0707
             </div>
           </div>
 
