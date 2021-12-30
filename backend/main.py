@@ -297,9 +297,12 @@ async def login_for_access_token(form_data: LoginCredentials):
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    
+    # the cookie's (where the jwt will be stored) expiration date/time will the same as the jwt's (ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
+        # the elements of data dictionary are critical, if there is some modification in that then the frontend must be modified as well.
+        data={"email": user.email, "uid": user.id}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 

@@ -82,13 +82,27 @@ function loginUser(e) {
         })
         .then(result => {
             if("access_token" in result) {
-                console.log("ok, now you are logged in");
-                console.log(result);
-                // JWT token
-                // check continuously if in the "auth" folder there are only authenticated users
-                // window.location.href = "/auth/monthly.html";
+
+                // jwt components (header, payload, signature) are separated by dots
+                let jwtComponents = result["access_token"].split(".");
+
+                // the payload is the 2nd component of the JWT
+                let jwtPayload = JSON.parse(getBase64Decode(jwtComponents[1]));
+
+                // the jwt "expire" time will be the cookie's expire time as well
+                let expireDate = jwtPayload["exp"];
+                expireDate = new Date(Number.parseInt(expireDate) * 1000);
+                
+                // set the cookie 
+                document.cookie = `jwt=${result["access_token"]}; expires=${expireDate};`;
+
+                // by setting the cookie the user will be logged in
+                
+                // redirect the user to the monthly view
+                window.location.href = "/auth/monthly.html";
+
             } else {
-                console.log("hehe, invalid login credentials");
+                alert("invalid login credentials, details are in the console");
                 console.log(result);
             }
         })
