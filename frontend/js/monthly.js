@@ -195,7 +195,8 @@ function fillCalendar(date = new Date()) {
                     tempCounter--;
                     btn.className += " notInSelectedMonth";
 
-                    if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
+                    if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay && Number.parseInt(btn.innerText) <= 7) {
+                    // the last condition is needed because without that in case of 2021 December the november 30th would have the "is-today" class as well (not just the December 30th)
                         btn.className += " is-today";
                         btn.className += " day-selected";
                     }
