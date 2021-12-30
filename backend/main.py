@@ -61,8 +61,8 @@ class RegisterCredentials(BaseModel):
 
 
 class LoginCredentials(BaseModel):
-    email_log: str
-    password_log: str
+    username: str
+    password: str
 
 
 # For the email validation
@@ -288,7 +288,7 @@ async def register_user(email_reg: str, password_reg: str, conf_password_reg: st
 
 
 @app.post("/api/login", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(form_data: LoginCredentials):
     user = authenticate_user(
         get_users_as_dict(), form_data.username, form_data.password)
     if not user:
