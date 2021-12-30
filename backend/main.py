@@ -55,9 +55,9 @@ app.add_middleware(
 
 
 class RegisterCredentials(BaseModel):
-    email_reg: str
-    password_reg: str
-    conf_password_reg: str
+    email: str
+    password: str
+    confirm_password: str
 
 
 class LoginCredentials(BaseModel):
@@ -99,13 +99,6 @@ def authenticate_user(db, email: str, password: str):
     return user
 
 
-def check(email):
-    if(re.search(regex, email)):
-        return False
-    else:
-        return True
-
-
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
@@ -130,9 +123,6 @@ def get_users_as_dict():
     return users_dict
 
 
-# For the password validation
-reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,64}$"
-pat = re.compile(reg)
 
 # Show all the data of a given id's user
 
@@ -249,40 +239,40 @@ async def update_habit(user_id: int, habit_id: int, habit: Habit):
     ).where(habits.c.user_id == user_id).where(habits.c.id == habit_id))
     return conn.execute(habits.select().where(habits.c.user_id == user_id).where(habits.c.id == habit_id)).fetchall()
 
-# Register a new user
 
 
+#Register a new user
 @app.post("/api/register")
-async def register_user(email_reg: str, password_reg: str, conf_password_reg: str):
-    if check(email_reg):
+async def register_user(user: RegisterCredentials):
+    if check(user.email):
         return {
-            "message": "Invalid Email!"
+        "message": "Invalid Email!"
         }
     registered = conn.execute(users.select()).fetchall()
     for i in range(len(registered)):
-        if registered[i][1] == email_reg:
+        if registered[i][1] == user.email:
             return {
-                "message": "They have already registered with this email!"
+            "message": "They have already registered with this email!"
             }
-    if (password_reg != conf_password_reg):
+    if (user.password != user.confirm_password):
         return {
-            "message": "The passwords you entered are not the same!"
+        "message": "The passwords you entered are not the same!"
         }
-    if(password_reg == "" or conf_password_reg == ""):
+    if(user.password =="" or user.confirm_password ==""):
         return {
-            "message": "The password fields can not be empty!"
+        "message": "The password fields can not be empty!"
         }
-    mat = re.search(pat, password_reg)
-    if (mat):
+    if re.fullmatch(r'[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]{8,64}', user.password):
         conn.execute(users.insert().values(
-            email=email_reg,
-            password=get_password_hash(password_reg),
+            email = user.email,
+            password = get_password_hash(user.password),
         ))
     else:
         return {
-            "message": "The password must contain at least one uppercase letter, one lowercase letter, numbers, and special characters, and the minimum lenght is 8 character, max. is 64 char!"
+        "message": "The password must contain english letters, optional numbers, and/or special characters!"
         }
     return {"message": "Successful registration!"}
+
 
 # Login with a given user
 
@@ -302,6 +292,7 @@ async def login_for_access_token(form_data: LoginCredentials):
         data={"sub": user.email}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
 
 
 '''
