@@ -294,66 +294,15 @@ async def login_for_access_token(form_data: LoginCredentials):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-
-'''
-#Show all data from the users table
-@app.get("/")
-async def read_data():
-    return conn.execute(users.select()).fetchall()
+# Show a given date's events of a given id's user
 
 
-#asd
-class LoginCredentials(BaseModel):
-    # this has to be the same name (and type (?)) as it's in the ajax request's body
-    email: EmailStr
-    password: str
-
-class RegisterCredentials(BaseModel):
-    # this has to be the same name (and type (?)) as it's in the ajax request's body
-    email: EmailStr
-    password: str
-    confirm_password: str
-
-
-@app.get("/")
-async def root():
-    return {
-        "message": "Hello Guys"
-    }
-
-@app.post("/api/login")
-async def user_login(loginCredentials: LoginCredentials):
-    #User login with the credentials given by AJAX request.
-
-    print("login credentials:", loginCredentials)
-    # check, validate, etc..
-
-    # template/example return value
-    if True:
-        return "okay"
-    else:
-        return "not okay (invalid email and/or password)"
-
-
-@app.post("/api/register")
-async def user_register(registerCredentials: RegisterCredentials):
-    # User register with the credentials given by AJAX request.
-    print("register credentials:", registerCredentials)
-    # check, validate, etc..
-
-    # template/example return value
-    if True:
-        return "okay"
-    else:
-        return "not okay (invalid email and/or password)"
-
-
-
-
-
-
-# @app.get("/items/{item_id}")
-# def read_item(item_id: int, q: Optional[str] = None):
-#     return {"item_id": item_id, "q": q}
-
-'''
+@app.get("/api/users/{id}/events/{frdate}/{todate}/")
+async def read_user_date_events(id: int,  frdate: str, todate: str):
+    allevents = conn.execute(events.select().where(events.c.user_id == id)).fetchall()
+    i=0
+    l = []
+    for i in range(len(allevents)):
+            if str(allevents[i][5]) >= frdate and str(allevents[i][5]) <= todate:
+                l.append(allevents[i])
+    return l
