@@ -73,6 +73,15 @@ class EventForm(BaseModel):
     end_time: str
     created_at: str
 
+class EventUpdateForm(BaseModel):
+    id: str
+    user_id: str
+    color_id: str
+    title: str
+    description: str
+    start_time: str
+    end_time: str
+
 # For the email validation
 regex = '^[a-z0-9]+[\._]?[ a-z0-9]+[@]\w+[. ]\w{2,3}$'
 
@@ -154,7 +163,7 @@ async def update_password(id: int, user: User):
 
 @app.get("/api/users/{id}/events")
 async def read_user_events(id: int):
-    return conn.execute(events.select().where(events.c.user_id == id)).fetchall()
+    return conn.execute(events.select().where(events.c.user_id == id).order_by(events.c.start_time)).fetchall()
 
 # Add a new event for a given id's user
 
@@ -170,7 +179,7 @@ async def add_user_event(event: EventForm):
         end_time=event.end_time,
         created_at=event.created_at
     ))
-    return conn.execute(events.select()).fetchall()
+    return conn.execute(events.select().where(events.c.user_id == id).order_by(events.c.start_time)).fetchall()
 
 # Show a given event of a given id's user
 
@@ -183,18 +192,22 @@ async def read_particular_user_event(user_id: int, event_id: int):
 
 
 @app.put("/api/users/{user_id}/events/{event_id}")
-async def update_particular_user_event(user_id: int, event_id: int, event: Event):
+async def update_particular_user_event(event: EventUpdateForm):
     conn.execute(events.update().values(
-        description=event.description
-    ).where(events.c.user_id == user_id).where(events.c.id == event_id))
-    return conn.execute(events.select().where(events.c.user_id == user_id).where(events.c.id == event_id)).fetchall()
+        color_id = event.color_id,
+        title = event.title,
+        description = event.description,
+        start_time = event.start_time,
+        end_time = event.end_time,
+    ).where(events.c.user_id == event.user_id).where(events.c.id == event.id))
+    return conn.execute(events.select().where(events.c.user_id == event.user_id).where(events.c.id == event.id)).fetchall()
 
 # Get a certain user's certain event's all notifications
 
 
 @app.get("/api/users/{user_id}/events/{event_id}/notifications")
 async def read_particular_user_event_notifications(user_id: int, event_id: int):
-    return conn.execute(notifications.select().distinct().where(notifications.c.event_id == event_id).join(events, events.c.user_id == user_id)).fetchall()
+    return conn.execute(notifications.select().distinct().where(notifications.c.event_id == event_id).join(events, events.c.user_id == user_id).order_by(notifications.c.trigger_time)).fetchall()
 
 # Delete a certain user's certain event's all notifications
 
@@ -203,14 +216,14 @@ async def read_particular_user_event_notifications(user_id: int, event_id: int):
 async def delete_particular_user_event_notifications(user_id: int, event_id: int):
     conn.execute(notifications.delete().where(
         notifications.c.event_id == event_id))
-    return conn.execute(notifications.select().distinct().where(notifications.c.event_id == event_id).join(events, events.c.user_id == user_id)).fetchall()
+    return conn.execute(notifications.select().distinct().where(notifications.c.event_id == event_id).join(events, events.c.user_id == user_id).order_by(notifications.c.trigger_time)).fetchall()
 
 # Show all the habits of a given id's user
 
 
 @app.get("/api/users/{id}/habits")
 async def read_user_habits(id: int):
-    return conn.execute(habits.select().where(habits.c.user_id == id)).fetchall()
+    return conn.execute(habits.select().where(habits.c.user_id == id).order_by(habits.c.day_of_the_week)).fetchall()
 
 # Add a new habit for a given id's user
 
@@ -224,7 +237,7 @@ async def add_user_habit(habit: Habit):
         description=habit.description,
         day_of_the_week=habit.day_of_the_week
     ))
-    return conn.execute(events.select()).fetchall()
+    return conn.execute(habits.select().where(habits.c.user_id == Habit.user_id).order_by(habits.c.day_of_the_week)).fetchall()
 
 # Show a given habit of a given id's user
 
@@ -237,14 +250,14 @@ async def read_particular_user_habit(user_id: int, habit_id: int):
 
 
 @app.put("/api/users/{user_id}/habits/{habit_id}")
-async def update_habit(user_id: int, habit_id: int, habit: Habit):
+async def update_habit(habit: Habit):
     conn.execute(habits.update().values(
         color_id=habit.color_id,
         title=habit.title,
         description=habit.description,
         day_of_the_week=habit.day_of_the_week
-    ).where(habits.c.user_id == user_id).where(habits.c.id == habit_id))
-    return conn.execute(habits.select().where(habits.c.user_id == user_id).where(habits.c.id == habit_id)).fetchall()
+    ).where(habits.c.user_id == habit.user_id).where(habits.c.id == habit.id))
+    return conn.execute(habits.select().where(habits.c.user_id == habit.user_id).where(habits.c.id == habit.id)).fetchall()
 
 
 
@@ -309,10 +322,4 @@ async def login_for_access_token(form_data: LoginCredentials):
 
 @app.get("/api/users/{id}/events/{frdate}/{todate}/")
 async def read_user_date_events(id: int,  frdate: str, todate: str):
-    allevents = conn.execute(events.select().where(events.c.user_id == id)).fetchall()
-    i=0
-    l = []
-    for i in range(len(allevents)):
-            if str(allevents[i][5]) >= frdate and str(allevents[i][5]) < todate:
-                l.append(allevents[i])
-    return l
+    return conn.execute(events.select().where(events.c.user_id == id).where(events.c.start_time >= frdate).where(events.c.start_time < todate).order_by(events.c.start_time)).fetchall()
