@@ -67,6 +67,6 @@ button.notInSelectedMonth {
 }
 
 /* Selected day's events title and upcoming events title*/
-.coming-event-title {
-    color: #651FFF;
+.coming-event-title a {
+    color: #651FFF !important;
 }
