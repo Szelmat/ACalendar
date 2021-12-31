@@ -271,6 +271,7 @@ async function fillUpcomingEvents() {
         createUpcomingEventsTable(events);
         
         // register click event listener to the EDIT ICONS and DELETE ICONS for the events in selected date's div
+        // register click event listener on the title of the events
         let upcomingEventTableRows = Array.from(document.querySelectorAll(".upcomingEventTableRow"));
 
         upcomingEventTableRows.forEach(upcomingEventTableRow => {
@@ -288,6 +289,14 @@ async function fillUpcomingEvents() {
 
                 deleteEvent(upcomingEventTableRow.id);
             });
+
+            let eventTitleLink = upcomingEventTableRow.firstElementChild.nextElementSibling.firstElementChild;
+            eventTitleLink.addEventListener("click", e => {
+                e.preventDefault();
+
+                showEvent(upcomingEventTableRow.id);
+            });
+
 
         });
     }
@@ -432,7 +441,7 @@ function createSelEventsTable(eventsToDisplay) {
         let trHTML = `
         <tr id="${eventToDisplay.id}" class="eventTableRow">
             <td class="coming-event-time ml-5 pl-3 pb-${isLastElement ? lastElementPadding : elementPadding}">${displayH}:${displayM}</td>
-            <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}">${displayText}</td>
+            <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}"><a href>${displayText}</a></td>
             <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
                 <a href class="">
                     <i class="material-icons color-grey">edit</i>
@@ -473,9 +482,6 @@ function createUpcomingEventsTable(eventsToDisplay) {
         let eventHours = startTimeDate.getHours();
         let eventMinutes = startTimeDate.getMinutes();
 
-        let displayH = eventHours < 10 ? "0" + eventHours : eventHours;
-        let displayM = eventMinutes < 10 ? "0" + eventMinutes : eventMinutes;
-
         let formattedStartTimeDate = formatDate(startTimeDate, true, true, separator='.')
 
         let displayText = eventToDisplay["title"].toUpperCase();
@@ -487,7 +493,7 @@ function createUpcomingEventsTable(eventsToDisplay) {
         let trHTML = `
         <tr id="${eventToDisplay.id}" class="upcomingEventTableRow">
             <td class="center coming-event-time ml-5 pl-1 pb-${isLastElement ? lastElementPadding : elementPadding}">${formattedStartTimeDate}</td>
-            <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}">${displayText}</td>
+            <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}"><a href>${displayText}</a></td>
             <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
                 <a href class="">
                     <i class="material-icons color-grey">edit</i>
@@ -562,6 +568,13 @@ async function fillSelectedDaysDiv(selectedDate) {
                 deleteEvent(eventTableRow.id);
             });
 
+            let eventTitleLink = eventTableRow.firstElementChild.nextElementSibling.firstElementChild;
+            eventTitleLink.addEventListener("click", e => {
+                e.preventDefault();
+
+                showEvent(eventTableRow.id);
+            });
+
         });
 
     }
@@ -590,6 +603,16 @@ function deleteEvent(eventId) {
     console.log(`somehow delete the event with id of: ${eventId}`);
 }
 
+
+/**
+ * Click event listener of the event title belong to given events.
+ * The parameter eventId is the id of the event in the corresponding database table.
+ * @param {Number} eventId 
+ */
+function showEvent(eventId) {
+    // TODO: redirect to detailed event view
+    console.log(`somehow show the event (detailed event view) with id of: ${eventId}`);
+}
 
 
 
