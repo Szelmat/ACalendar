@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACalendar</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="frontend/css/materialize.min.css" />
-    <link rel="stylesheet" href="frontend/css/custom.css" />
-    <link rel="stylesheet" href="frontend/css/index.css" />
-
+    <link rel="stylesheet" href="frontend/css/materialize.min.css">
+    <link rel="stylesheet" href="frontend/css/custom.css">
+    <link rel="stylesheet" href="frontend/css/index.css">
+    
     <!-- Materialize Icons -->
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Set favicon -->
-<<<<<<< HEAD
-    <link rel="icon" type="image/png" href="ACalendar_logo.png" />
-  </head>
-  <body>
-=======
     <link rel="icon" type="image/png" href="ACalendar_logo.png"/>
 
     <!-- crypto js -->
@@ -33,43 +25,21 @@
     
 </head>
 <body>
->>>>>>> b48b58605044197d12b4c0421ad2b73b8e1a0707
     <div class="container">
-      <!-- Title -->
-      <div class="row center">
-        <h3
-          id="homeTitle"
-          class="
-            card-panel
-            mt-0
-            pb-4
-            pt-3
-            col
-            s12
-            m10
-            l8
-            xl8
-            offset-m1 offset-l2 offset-xl2
-          "
-        >
-          ACalendar
-        </h3>
-      </div>
+        
+        <!-- Title -->
+        <div class="row center">
+            <h3 id="homeTitle" class="card-panel mt-0 pb-4 pt-3 col s12 m10 l8 xl8 offset-m1 offset-l2 offset-xl2">ACalendar</h3>
+        </div>
 
-      <!-- Login form -->
-      <div class="row">
-        <div class="col s12 m10 l8 xl8 offset-m1 offset-l2 offset-xl2">
-          <div>
-            <h4 class="mt-5 mb-4">Login</h4>
-          </div>
+        <!-- Login form -->
+        <div class="row">
+            <div class="col s12 m10 l8 xl8 offset-m1 offset-l2 offset-xl2">
 
-<<<<<<< HEAD
-          <div id="loginEmailContainer" class="rounded-1 pl-3 pr-3">
-            <div class="input-field">
-              <i class="material-icons prefix primary-color">mail_outline</i>
-              <input id="loginEmail" type="email" />
-              <label for="loginEmail">Email address</label>
-=======
+                <div>
+                    <h4 class="mt-5 mb-4">Login</h4>
+                </div>
+
                 <div id="loginEmailContainer" class="rounded-1 pl-3 pr-3">
                     <div class="input-field">
                         <i class="material-icons prefix primary-color">mail_outline</i>
@@ -93,84 +63,62 @@
                         <span class="medium-sized-text">Login</span>
                     </button>
                 </div>
->>>>>>> b48b58605044197d12b4c0421ad2b73b8e1a0707
             </div>
-          </div>
 
-          <div id="loginPwContainer" class="rounded-1 mt-5 pl-3 pr-3">
-            <div class="input-field">
-              <i class="material-icons prefix">lock_outline</i>
-              <input id="loginPw" type="password" />
-              <label for="loginPw">Password</label>
-              <!-- <i class="material-icons">remove_red_eye</i> -->
+        </div> <!-- End of Login form-->
+        <div class="row">
+            <div class="col s12 m10 l8 xl8 offset-m1 offset-l2 offset-xl2">
+                <hr id="loginRegisterSep">
             </div>
-          </div>
-
-          <div class="row center mt-5">
-            <button id="submitLoginForm" type="submit" class="btn primary-bg">
-              <i class="material-icons left medium-sized-text">login</i>
-              <span class="medium-sized-text">Login</span>
-            </button>
-          </div>
         </div>
-      </div>
-      <!-- End of Login form-->
-      <div class="row">
-        <div class="col s12 m10 l8 xl8 offset-m1 offset-l2 offset-xl2">
-          <hr id="loginRegisterSep" />
-        </div>
-      </div>
-      <!-- Register form -->
-      <div class="row">
-        <div class="col s12 m10 l8 xl8 offset-m1 offset-l2 offset-xl2">
-          <div>
-            <h4 class="mt-5 mb-4">Sign up</h4>
-          </div>
+        <!-- Register form -->
+        <div class="row">
+            <div class="col s12 m10 l8 xl8 offset-m1 offset-l2 offset-xl2">
 
-          <div id="registerEmailContainer" class="rounded-1 pl-3 pr-3">
-            <div class="input-field">
-              <i class="material-icons prefix">mail_outline</i>
-              <input id="registerEmail" type="email" />
-              <label for="registerEmail">Email address</label>
+                <div>
+                    <h4 class="mt-5 mb-4">Sign up</h4>
+                </div>
+
+                <div id="registerEmailContainer" class="rounded-1 pl-3 pr-3">
+                    <div class="input-field">
+                        <i class="material-icons prefix">mail_outline</i>
+                        <input id="registerEmail" type="email">
+                        <label for="registerEmail">Email address</label>
+                    </div>
+                </div>
+
+                <div id="registerPwContainer" class="rounded-1 mt-5 pl-3 pr-3">
+                    <div class="input-field">
+                        <i class="material-icons prefix">lock_outline</i>
+                        <input id="registerPw" type="password">
+                        <label for="registerPw">Password</label>
+                        <!-- <i class="material-icons">remove_red_eye</i> -->
+                    </div>
+                </div>
+
+                <div id="confirmPwContainer" class="rounded-1 mt-5 pl-3 pr-3">
+                    <div class="input-field">
+                        <i class="material-icons prefix">lock_outline</i>
+                        <input id="confirmPw" type="password">
+                        <label for="confirmPw">Confirm password</label>
+                        <!-- <i class="material-icons">remove_red_eye</i> -->
+                    </div>
+                </div>
+                
+                <div class="row center mt-5">
+                    <button id="submitRegisterForm" type="submit" class="btn primary-bg">
+                        <i class="material-icons left medium-sized-text">person_add</i>
+                        <span class="medium-sized-text">Sign up</span>
+                    </button>
+                </div>
             </div>
-          </div>
+        </div> <!-- End of Register form-->
+    
+    </div> <!-- End of (main) container-->
 
-          <div id="registerPwContainer" class="rounded-1 mt-5 pl-3 pr-3">
-            <div class="input-field">
-              <i class="material-icons prefix">lock_outline</i>
-              <input id="registerPw" type="password" />
-              <label for="registerPw">Password</label>
-              <!-- <i class="material-icons">remove_red_eye</i> -->
-            </div>
-          </div>
-
-          <div id="confirmPwContainer" class="rounded-1 mt-5 pl-3 pr-3">
-            <div class="input-field">
-              <i class="material-icons prefix">lock_outline</i>
-              <input id="confirmPw" type="password" />
-              <label for="confirmPw">Confirm password</label>
-              <!-- <i class="material-icons">remove_red_eye</i> -->
-            </div>
-          </div>
-
-          <div class="row center mt-5">
-            <button
-              id="submitRegisterForm"
-              type="submit"
-              class="btn primary-bg"
-            >
-              <i class="material-icons left medium-sized-text">person_add</i>
-              <span class="medium-sized-text">Sign up</span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- End of Register form-->
-    </div>
-    <!-- End of (main) container-->
 
     <script src="frontend/js/materialize.min.js"></script>
     <script src="frontend/js/functions.js"></script>
     <script src="frontend/js/index.js"></script>
-  </body>
+</body>
 </html>
