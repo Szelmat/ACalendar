@@ -18,7 +18,7 @@
 
 
 /**
- * Get the string format of the given date like "yyyy-mm-dd [hh:mm]" (the horus and the minutes are optional)
+ * Get the string format of the given date like "yyyy-mm-dd [hh:mm]" (the horus and the minutes are optional, by default they are not provided by this function)
  * @param {Date} date 
  */
 function formatDate(date, hours = false, minutes = false, separator="-") {
@@ -227,10 +227,12 @@ function getAuthUserId() {
 /**
  * Get the events belong to user with given the id.
  * @param {Number} userId 
+ * @param {String} fromDate
+ * @param {String} toDate
  * @returns 
  */
-async function getUserEvents(userId) {
-    const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/events`)
+async function getUserEvents(userId, fromDate, toDate) {
+    const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/events/${fromDate}/${toDate}`)
         .then(response => response.json())
         .then(data => {return data});
     

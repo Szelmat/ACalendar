@@ -245,122 +245,52 @@ function fillCalendar(date = new Date()) {
 
 
 /**
- * Fill the Other Upcoming Events div with the nearest events related to today.
- * This functions receives the event values from the backend through an API call.
+ * Fill the Other Upcoming Events div with the nearest events to today.
  */
-function fillUpcomingEvents() {
+async function fillUpcomingEvents() {
     let today = new Date();
-    let todayFormatted = formatDate(today, true, true);
-
-    // TODO: this must come from the backend
-    let events = [
-        {
-        "id": 1,
-        "start_time": "2021.12.20 10:00",
-        "event_title": "Computer Security practice assignment"
-        }, 
-        {
-        "id": 2,
-        "start_time": "2021.12.20 12:30",
-        "event_title": "Submit project work"
-        }, 
-        {
-        "id": 3,
-        "start_time": "2021.12.20 21:40",
-        "event_title": "Start working"
-        },
-        {
-        "id": 4,
-        "start_time": "2021.12.21 8:05",
-        "event_title": "Go to work"
-        },
-        {
-        "id": 5,
-        "start_time": "2021.12.30 16:00",
-        "event_title": "Get drunk"
-        },
-        {
-        "id": 6,
-        "start_time": "2022.01.02 12:00",
-        "event_title": "Sobriety"
-        },
-        {
-        "id": 7,
-        "start_time": "2022.01.03 05:30",
-        "event_title": "Go to wooork again"
-        },
-    ];
-
-    // TODO: refactor getGivenDaysEvent() function because this is very similar to that function
-    // TODO: do this in the backend with SQL query, WHERE _date_ > today ORDER BY _date_ ASC LIMIT = 5(?)
-
-    let year = today.getFullYear();
-    let month = today.getMonth() + 1;
-    let day = today.getDate();
-    let hours = today.getHours();
-    let minutes = today.getMinutes();
-
-    let eventsToDisplay = [];
-
-    events.forEach(calendarEvent => {
-        let startTime = calendarEvent["start_time"];
-        let startTimeDate = new Date(startTime);
-        
-        let eventYear = startTimeDate.getFullYear();
-        let eventMonth = startTimeDate.getMonth() + 1;
-        let eventDay = startTimeDate.getDate();
-        let eventHours = startTimeDate.getHours();
-        let eventMinutes = startTimeDate.getMinutes();
-
-        if(year <= eventYear && month <= eventMonth && day <= eventDay) {
-        // if today is the selected day
-            // let timeFormat = `${eventHours < 10 ? "0" + eventHours : eventHours}:${eventMinutes < 10 ? "0" + eventMinutes : eventMinutes}`;
-            // let eventTitle = `${calendarEvent["event_title"]}`;
-            // console.log(timeFormat, eventTitle);
-
-            eventsToDisplay.push(calendarEvent)
-        }
-
-        if(eventsToDisplay.length === 0) {
-            document.querySelector("#upcomingEventsDiv").innerHTML = `
-                <table id="upcomingEventsTable" class="mt-3">
-                    <tbody>
-                        <tr>
-                            <td class="center pb-4">
-                                <i>There are no upcoming events yet!</i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
-        } else {
-            createUpcomingEventsTable(eventsToDisplay);
-            
-            // register click event listener to the EDIT ICONS and DELETE ICONS for the events in selected date's div
-            let upcomingEventTableRows = Array.from(document.querySelectorAll(".upcomingEventTableRow"));
-
-            upcomingEventTableRows.forEach(upcomingEventTableRow => {
-                let editEventLinkTag = upcomingEventTableRow.lastElementChild.previousElementSibling.firstElementChild;
-
-                editEventLinkTag.addEventListener("click", e => {
-                    e.preventDefault();
-
-                    editEvent(upcomingEventTableRow.id);
-                });
-
-                let deleteEventLinkTag = upcomingEventTableRow.lastElementChild.firstElementChild;
-                deleteEventLinkTag.addEventListener("click", e => {
-                    e.preventDefault();
-
-                    deleteEvent(upcomingEventTableRow.id);
-                });
-
-            });
-        }
-        
-    });
-
+    let tomorrow = new Date(moment(today.getTime()).add(1, "days"));
+    tomorrow = new Date(`${tomorrow.getFullYear()}-${tomorrow.getMonth() + 1}-${tomorrow.getDate()} 00:00:00`);
     
+    let events = await getUpcomingEvents(tomorrow);
+    console.log("fillUpcomingEvents", events);
+
+    if(events.length === 0) {
+        document.querySelector("#upcomingEventsDiv").innerHTML = `
+            <table id="upcomingEventsTable" class="mt-3">
+                <tbody>
+                    <tr>
+                        <td class="center pb-4">
+                            <i>There are no upcoming events yet!</i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+    } else {
+        createUpcomingEventsTable(events);
+        
+        // register click event listener to the EDIT ICONS and DELETE ICONS for the events in selected date's div
+        let upcomingEventTableRows = Array.from(document.querySelectorAll(".upcomingEventTableRow"));
+
+        upcomingEventTableRows.forEach(upcomingEventTableRow => {
+            let editEventLinkTag = upcomingEventTableRow.lastElementChild.previousElementSibling.firstElementChild;
+
+            editEventLinkTag.addEventListener("click", e => {
+                e.preventDefault();
+
+                editEvent(upcomingEventTableRow.id);
+            });
+
+            let deleteEventLinkTag = upcomingEventTableRow.lastElementChild.firstElementChild;
+            deleteEventLinkTag.addEventListener("click", e => {
+                e.preventDefault();
+
+                deleteEvent(upcomingEventTableRow.id);
+            });
+
+        });
+    }
 }
 
 
@@ -548,7 +478,7 @@ function createUpcomingEventsTable(eventsToDisplay) {
 
         let formattedStartTimeDate = formatDate(startTimeDate, true, true, separator='.')
 
-        let displayText = eventToDisplay["event_title"].toUpperCase();
+        let displayText = eventToDisplay["title"].toUpperCase();
         
         let elementPadding = 1;
         let lastElementPadding = 3;
@@ -588,10 +518,7 @@ function createUpcomingEventsTable(eventsToDisplay) {
 async function fillSelectedDaysDiv(selectedDate) {
     let selectedDaysTitleDiv = document.querySelector("#selectedDate");
 
-
-    console.log("fillSelectedDaysDiv start getting events");
     let events = await getGivenDaysEvent(selectedDate);
-    console.log("fillSelectedDaysDiv end getting events");
     console.log("fillSelectedDaysDiv, events:", events);
 
     let year = selectedDate.getFullYear();
@@ -667,49 +594,45 @@ function deleteEvent(eventId) {
 
 
 /**
- * Get the corresponding events from the backend's database based on the given day.
- * Those events will be returned whose date has the same value for year, month, day as the given date.
+ * Get the corresponding events from the backend's database where the 'start_time' is on the given day.
  * @param {Date} selectedDate 
  */
 async function getGivenDaysEvent(selectedDate) {
 
     let uid = getAuthUserId();
-    console.log(getAuthUserId());
     
-    // TODO: this will come from the backend
-    // TODO: the API call should return only the events of a given day? 
-    //       After that I don't have to filter
-    let result;
-    await getUserEvents(uid)
+    let fromDate = selectedDate;
+    let toDate = new Date(moment(fromDate.getTime()).add(1, "days"));
+    let result = [];
+
+    await getUserEvents(uid, formatDate(fromDate, true, true), formatDate(toDate, true, true))
     .then(events => {
-        console.log("getGivenDaysEvent then", events);
+        result = events;
+    })
+    .catch(error => console.log(error));
 
-        let year = selectedDate.getFullYear();
-        let month = selectedDate.getMonth() + 1;
-        let day = selectedDate.getDate();
+    return result;
+}
 
-        let eventsToDisplay = [];
 
-        events.forEach(calendarEvent => {
-            let startTime = calendarEvent["start_time"];
-            let startTimeDate = new Date(startTime);
-            
-            let eventYear = startTimeDate.getFullYear();
-            let eventMonth = startTimeDate.getMonth() + 1;
-            let eventDay = startTimeDate.getDate();
+/**
+ * Get the corresponding events from the backend's database based on the given day.
+ * Those events will be returned which are the closest to today and not happens toda but in the next 30 days.
+ * @param {Date} selectedDate 
+ */
+ async function getUpcomingEvents(date) {
+    console.log("getUpcomingEvents, fromDate", date);
 
-            // if(year === eventYear && month === eventMonth && day === eventDay) {
-            // if today is the selected day
-                // let timeFormat = `${eventHours < 10 ? "0" + eventHours : eventHours}:${eventMinutes < 10 ? "0" + eventMinutes : eventMinutes}`;
-                // let eventTitle = `${calendarEvent["event_title"]}`;
-                // console.log(timeFormat, eventTitle);
+    let uid = getAuthUserId();
+    
+    let fromDate = date;
+    let toDate = new Date(moment(fromDate.getTime()).add(30, "days"));
+    console.log("getUpcomingEvents, toDate", toDate);
+    let result = [];
 
-                eventsToDisplay.push(calendarEvent)
-            // }
-            
-        });
-
-        result = eventsToDisplay;
+    await getUserEvents(uid, formatDate(fromDate, true, true), formatDate(toDate, true, true))
+    .then(events => {
+        result = events;
     })
     .catch(error => console.log(error));
 
