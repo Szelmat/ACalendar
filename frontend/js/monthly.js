@@ -692,11 +692,11 @@ function calendarDayClicked(btn) {
 }
 
 function addNewEventToSelectedDate() {
-    window.location.href = "/auth/new_edit_event.html";
+    window.location.href = "/auth/new_event.html";
 }
 
 function addNewEventToUpcoming() {
-    window.location.href = "/auth/new_edit_event.html";
+    window.location.href = "/auth/new_event.html";
 }
 
 function logoutClicked(e) {

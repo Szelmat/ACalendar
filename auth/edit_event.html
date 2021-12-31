@@ -21,35 +21,38 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- crypto js -->
+    <script src="../frontend/js/crypto-js/core.js"></script>
+    <script src="../frontend/js/crypto-js/enc-base64url.js"></script>
+    <script src="../frontend/js/crypto-js/hmac.js"></script>
+    <script src="../frontend/js/crypto-js/sha256.js"></script>
   </head>
 
   <body>
     <!-- Navbar for all authorized pages  -->
     <nav>
       <div class="nav-wrapper secondary-bg">
-        <a href="./new_edit_event.html" class="brand-logo center">ACalendar</a>
-        <a href="#" data-target="views_links" class="sidenav-trigger ml-3"
-          ><i class="material-icons">menu</i></a
-        >
+          <a href="./monthly.html" class="brand-logo center">ACalendar</a>
+          <a href="#" data-target="views_links" class="sidenav-trigger ml-3"><i class="material-icons">menu</i></a>
+          
+          <!-- Content of hamburger icon when the page (navbar) is NOT minimized  -->
+          <ul class="left hide-on-med-and-down">
+              <li><a href="./monthly.html" class="">Monthly view</a></li>
+              <li><a href="./weekly.html">Weekly view</a></li>
+              <li><a href="./daily.html">Daily view</a></li>
+          </ul>
 
-        <!-- Content of hamburger icon when the page (navbar) is NOT minimized  -->
-        <ul class="left hide-on-med-and-down">
-          <li><a href="#">Monthly view</a></li>
-          <li><a href="#">Weekly view</a></li>
-          <li><a href="#">Daily view</a></li>
-        </ul>
-
-        <a href="#" class="right"><i class="material-icons mr-3">logout</i></a>
+          <a href id="logout" class="right"><i class="material-icons mr-3">logout</i></a>
       </div>
-    </nav>
-    <!-- End of navbar -->
-
-    <!-- Content of hamburger icon when the page (navbar) is minimized  -->
-    <ul class="sidenav" id="views_links">
-      <li><a href="#">Monthly view</a></li>
-      <li><a href="#">Weekly view</a></li>
-      <li><a href="#">Daily view</a></li>
-    </ul>
+  </nav> <!-- End of navbar -->
+  
+  <!-- Content of hamburger icon when the page (navbar) is minimized  -->
+  <ul class="sidenav" id="views_links">
+      <li><a href="./monthly.html">Monthly view</a></li>
+      <li><a href="./weekly.html">Weekly view</a></li>
+      <li><a href="./daily.html>">Daily view</a></li>
+  </ul>
 
     <!-- Main container -->
     <div class="countainer">

@@ -1,4 +1,13 @@
 /**
+ * Returns the URL of the API server.
+ * @returns {String} URL of the API server
+ */
+function getApiServerUrl() {
+    return "http://127.0.0.1:8000";
+}
+
+
+/**
  * Send JSON data with asynchronous POST request to given URI. 
  * @param {String} uri API route
  * @param {Object<any>} data Object
