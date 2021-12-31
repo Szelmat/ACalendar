@@ -67,7 +67,7 @@ function saveEvent() {
         start_time: `${startDate} ${startTime}`,
         end_time: `${endDate} ${endTime}`,
         created_at: formatDate(new Date(), true, true)
-    })
+    }, true)
     .then(result => {
         console.log(result);
         // if("access_token" in result) {

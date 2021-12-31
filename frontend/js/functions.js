@@ -13,12 +13,21 @@ function getApiServerUrl() {
  * @param {Object<any>} data Object
  * @returns Promise
  */
- async function sendAjaxPostRequest(uri, data) {
+ async function sendAjaxPostRequest(uri, data, needAuth = false) {
+    let reqHeaders = {
+        'Content-Type': 'application/json'
+    };
+    
+    if(needAuth) {
+        jwt = getJwtFromCookie();
+        reqHeaders["Authorization"] = `Bearer ${jwt}`;
+    }
+
+    console.log("reqHeaders:", reqHeaders);
+
     const response = await fetch(uri, {
         method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: reqHeaders,
         body: JSON.stringify(data)
     });
     const result = await response.json();
@@ -277,4 +286,23 @@ function logout() {
     }
 
     window.location.href = "../index.html";
+}
+
+
+function getJwtFromCookie() {
+    let cookie = document.cookie;
+    let cookies = cookie.split("; ");
+    const cookieKey = "acalendar-jwt";
+
+    for (let i = 0; i < cookies.length; i++) {
+        if(cookies[i].includes(cookieKey)) {
+            // cookies[i] is like: acalendar-jwt=header.payload.signature
+            // get jwt token value
+
+            let jwt = cookies[i].substring(cookieKey.length + 1);
+            return jwt;
+        }   
+    }
+
+    return "";
 }
