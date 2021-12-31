@@ -64,6 +64,14 @@ class LoginCredentials(BaseModel):
     username: str
     password: str
 
+class EventForm(BaseModel):
+    user_id: str
+    color_id: str
+    title: str
+    description: str
+    start_time: str
+    end_time: str
+    created_at: str
 
 # For the email validation
 regex = '^[a-z0-9]+[\._]?[ a-z0-9]+[@]\w+[. ]\w{2,3}$'
@@ -152,9 +160,8 @@ async def read_user_events(id: int):
 
 
 @app.post("/api/users/{id}/events")
-async def add_user_event(event: Event):
+async def add_user_event(event: EventForm):
     conn.execute(events.insert().values(
-        id=event.id,
         user_id=event.user_id,
         color_id=event.color_id,
         title=event.title,
