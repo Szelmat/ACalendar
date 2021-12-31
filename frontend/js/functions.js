@@ -18,7 +18,7 @@
 
 
 /**
- * Get the string format of the given date like "yyyy-mm-dd [hh:mm]" (the horus and the minutes are optional)
+ * Get the string format of the given date like "yyyy-mm-dd [hh:mm]" (the horus and the minutes are optional, by default they are not provided by this function)
  * @param {Date} date 
  */
 function formatDate(date, hours = false, minutes = false, separator="-") {
@@ -198,6 +198,47 @@ function createJWT(header, payload, secret) {
 }
 
 
+function getAuthUserId() {
+    let cookie = document.cookie;
+    let cookies = cookie.split("; ");
+    const cookieKey = "acalendar-jwt";
+
+    for(let i = 0; i < cookies.length; i++) {
+        if(cookies[i].includes(cookieKey)) {
+            // cookies[i] is like: acalendar-jwt=header.payload.signature
+            // get jwt token value
+
+            let jwt = cookies[i].substring(cookieKey.length + 1);
+            if(jwt.length > 0) {   
+                // jwt components (header, payload, signature) are separated by dots
+                let jwtComponents = jwt.split(".");
+                
+                // the payload is the 2nd component of the JWT
+                let jwtPayload = JSON.parse(getBase64Decode(jwtComponents[1]));
+                return jwtPayload["uid"];
+            }
+
+            return null;
+        }
+    }
+}
+
+
+/**
+ * Get the events belong to user with given the id.
+ * @param {Number} userId 
+ * @param {String} fromDate
+ * @param {String} toDate
+ * @returns 
+ */
+async function getUserEvents(userId, fromDate, toDate) {
+    const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/events/${fromDate}/${toDate}`)
+        .then(response => response.json())
+        .then(data => {return data});
+    
+    return response;
+        
+}
 /**
  * Log out the user. We simply delete the cookie which contains the jwt.
  */
@@ -206,18 +247,15 @@ function logout() {
     let cookies = cookie.split("; ");
     const cookieKey = "acalendar-jwt";
 
-    cookies.forEach(currentCookie => {
-        if(currentCookie.includes(cookieKey)) {
-            // currentCookie is like: acalendar-jwt=header.payload.signature
+    for (let i = 0; i < cookies.length; i++) {
+        if(cookies[i].includes(cookieKey)) {
+            // cookies[i] is like: acalendar-jwt=header.payload.signature
             // get jwt token value
 
-            let jwt = currentCookie.substring(cookieKey.length + 1);
+            let jwt = cookies[i].substring(cookieKey.length + 1);
             if(jwt.length > 0) {   
                 // jwt components (header, payload, signature) are separated by dots
                 let jwtComponents = jwt.split(".");
-                
-                // the payload is the 2nd component of the JWT
-                let jwtPayload = JSON.parse(getBase64Decode(jwtComponents[1]));
                 
                 // the jwt "expire" time will be the cookie's expire time as well
                 let expireDate = new Date("1970.01.01");
@@ -226,8 +264,8 @@ function logout() {
                 // set the cookie 
                 document.cookie = `acalendar-jwt=; expires=-1; path=/`;
             }
-        }
-    })
+        }   
+    }
 
     window.location.href = "../index.html";
 }
