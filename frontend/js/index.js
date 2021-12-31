@@ -19,7 +19,7 @@ const registerEmailInput = document.querySelector("#registerEmail");
 const registerPwInput = document.querySelector("#registerPw");
 const confirmPwInput = document.querySelector("#confirmPw");
 
-const apiServerUri = "http://127.0.0.1:8000";
+const apiServerUrl = getApiServerUrl();
 
 
 /* register all the event listeners */
@@ -76,7 +76,7 @@ function loginUser(e) {
 
     // we can move on only if there was no error during the validation
     if(! error) {
-        sendAjaxPostRequest(`${apiServerUri}/api/login`, {
+        sendAjaxPostRequest(`${apiServerUrl}/api/login`, {
             username: loginEmail,
             password: loginPw
         })
@@ -150,7 +150,7 @@ function registerUser(e) {
 
     // we can move on only if there was no error during the validation
     if(! error) {
-        sendAjaxPostRequest(`${apiServerUri}/api/register`, {
+        sendAjaxPostRequest(`${apiServerUrl}/api/register`, {
             email: registerEmail,
             password: registerPw,
             confirm_password: confirmPw

@@ -64,6 +64,7 @@ class LoginCredentials(BaseModel):
     username: str
     password: str
 
+
 class EventForm(BaseModel):
     user_id: str
     color_id: str
@@ -138,7 +139,6 @@ def get_users_as_dict():
             "password": user[2]
         }
     return users_dict
-
 
 
 # Show all the data of a given id's user
@@ -260,36 +260,35 @@ async def update_habit(habit: Habit):
     return conn.execute(habits.select().where(habits.c.user_id == habit.user_id).where(habits.c.id == habit.id)).fetchall()
 
 
-
-#Register a new user
+# Register a new user
 @app.post("/api/register")
 async def register_user(user: RegisterCredentials):
     if check(user.email):
         return {
-        "message": "Invalid Email!"
+            "message": "Invalid Email!"
         }
     registered = conn.execute(users.select()).fetchall()
     for i in range(len(registered)):
         if registered[i][1] == user.email:
             return {
-            "message": "They have already registered with this email!"
+                "message": "They have already registered with this email!"
             }
     if (user.password != user.confirm_password):
         return {
-        "message": "The passwords you entered are not the same!"
+            "message": "The passwords you entered are not the same!"
         }
-    if(user.password =="" or user.confirm_password ==""):
+    if(user.password == "" or user.confirm_password == ""):
         return {
-        "message": "The password fields can not be empty!"
+            "message": "The password fields can not be empty!"
         }
     if re.fullmatch(r'[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]{8,64}', user.password):
         conn.execute(users.insert().values(
-            email = user.email,
-            password = get_password_hash(user.password),
+            email=user.email,
+            password=get_password_hash(user.password),
         ))
     else:
         return {
-        "message": "The password must contain english letters, optional numbers, and/or special characters!"
+            "message": "The password must contain english letters, optional numbers, and/or special characters!"
         }
     return {"message": "Successful registration!"}
 
@@ -307,7 +306,7 @@ async def login_for_access_token(form_data: LoginCredentials):
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     # the cookie's (where the jwt will be stored) expiration date/time will the same as the jwt's (ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(

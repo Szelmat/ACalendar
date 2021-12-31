@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ACalendar</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../frontend/css/materialize.min.css" />
+    <link rel="stylesheet" href="../frontend/css/custom.css" />
+    <!-- Materialize Icons -->
+    <!-- https://fonts.google.com/icons?selected=Material+Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- Set favicon -->
+    <link rel="icon" type="image/png" href="../ACalendar_logo.png" />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- crypto js -->
+    <script src="../frontend/js/crypto-js/core.js"></script>
+    <script src="../frontend/js/crypto-js/enc-base64url.js"></script>
+    <script src="../frontend/js/crypto-js/hmac.js"></script>
+    <script src="../frontend/js/crypto-js/sha256.js"></script>
+  </head>
+
+  <body>
+    <!-- Navbar for all authorized pages  -->
+    <nav>
+      <div class="nav-wrapper secondary-bg">
+          <a href="./monthly.html" class="brand-logo center">ACalendar</a>
+          <a href="#" data-target="views_links" class="sidenav-trigger ml-3"><i class="material-icons">menu</i></a>
+          
+          <!-- Content of hamburger icon when the page (navbar) is NOT minimized  -->
+          <ul class="left hide-on-med-and-down">
+              <li><a href="./monthly.html" class="">Monthly view</a></li>
+              <li><a href="./weekly.html">Weekly view</a></li>
+              <li><a href="./daily.html">Daily view</a></li>
+          </ul>
+
+          <a href id="logout" class="right"><i class="material-icons mr-3">logout</i></a>
+      </div>
+  </nav> <!-- End of navbar -->
+  
+  <!-- Content of hamburger icon when the page (navbar) is minimized  -->
+  <ul class="sidenav" id="views_links">
+      <li><a href="./monthly.html">Monthly view</a></li>
+      <li><a href="./weekly.html">Weekly view</a></li>
+      <li><a href="./daily.html>">Daily view</a></li>
+  </ul>
+
+    <!-- Main container -->
+    <div class="countainer">
+      <!-- Beginning  container -->
+      <div class="countainer">
+        <div class="row">
+          <div
+            class="col s8 m8 l8 xl8 offset-s1 offset-m2 offset-l2 offset-xl2"
+          >
+            <h5 class="mt-5 mb-0">Beginning</h5>
+          </div>
+        </div>
+
+        <div class="row">
+          <div
+            class="col s4 m2 l2 xl2 offset-s1 offset-m2 offset-l2 offset-xl2"
+          >
+            <div>
+              <h6>Event date</h6>
+            </div>
+          </div>
+
+          <div class="col s6 m6 l6 xl6">
+            <div>
+              <input type="text" class="datepicker" id="startDate" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div
+            class="col s4 m2 l2 xl2 offset-s1 offset-m2 offset-l2 offset-xl2"
+          >
+            <div>
+              <h6>Event time</h6>
+            </div>
+          </div>
+
+          <div class="col s6 m6 l6 xl6">
+            <div>
+              <input type="text" class="timepicker" id="startTime" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- The end of Beginning container -->
+
+      <!-- End date and time container -->
+      <div class="countainer">
+        <div class="row">
+          <div
+            class="col s8 m8 l8 xl8 offset-s1 offset-m2 offset-l2 offset-xl2"
+          >
+            <h5 class="mt-0 mb-0">End</h5>
+          </div>
+        </div>
+
+        <div class="row">
+          <div
+            class="col s4 m2 l2 xl2 offset-s1 offset-m2 offset-l2 offset-xl2"
+          >
+            <div>
+              <h6>Event date</h6>
+            </div>
+          </div>
+
+          <div class="col s6 m6 l6 xl6">
+            <div>
+              <input type="text" class="datepicker" id="endDate" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div
+            class="col s4 m2 l2 xl2 offset-s1 offset-m2 offset-l2 offset-xl2"
+          >
+            <div>
+              <h6>Event time</h6>
+            </div>
+          </div>
+
+          <div class="col s6 m6 l6 xl6">
+            <div>
+              <input type="text" class="timepicker" id="endTime" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- The end of end date and time container -->
+
+      <div class="row center">
+        <div class="col s10 m8 l8 xl8 offset-s1 offset-m2 offset-l2 offset-xl2">
+          <div class="rounded-1">
+            <div class="input-field">
+              <input id="enevtTiltle" type="text" />
+              <label for="enevtTiltle">Event Title</label>
+            </div>
+          </div>
+
+          <div class="rounded-1 mt-5">
+            <div class="input-field">
+              <textarea id="enevtDesc" class="materialize-textarea"></textarea>
+              <label for="enevtDesc">Event Description</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <form
+          class="col s10 m8 l8 xl8 offset-s1 offset-m2 offset-l2 offset-xl2"
+        >
+          <div class="row">
+            <select>
+              <option value="0">Choose priority</option>
+              <option value="1">Critical</option>
+              <option value="2">Important</option>
+              <option value="3">Medium</option>
+              <option value="4">Not so important</option>
+              <option value="5">Optional</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="row">
+        <form
+          action="#"
+          class="col s4 m4 l4 xl4 offset-s1 offset-m2 offset-l2 offset-xl2"
+        >
+          <label>
+            <input
+              type="checkbox"
+              class="filled-in checkbox-blue-grey"
+              style="color: black"
+            />
+            <span style="color: black">Notification</span>
+          </label>
+        </form>
+        <form action="#" class="col s4 m4 l4 xl4 offset-s1">
+          <label>
+            <input
+              type="checkbox"
+              class="filled-in checkbox-blue-grey"
+              style="color: black"
+            />
+            <span style="color: black">Habit</span>
+          </label>
+        </form>
+      </div>
+
+      <div class="row center mt-0 mb-0">
+        <button
+          id="saveEvent"
+          type="submit"
+          class="
+            waves-effect waves-dark
+            btn
+            primary-bg
+            col
+            s12
+            m8
+            l8
+            xl8
+            offset-m2 offset-l2 offset-xl2
+          "
+        >
+          <span class="medium-sized-text">SAVE</span>
+        </button>
+      </div>
+    </div>
+    <!-- The end of the Main container -->
+
+    <script src="../frontend/js/jquery-3.6.0.min.js"></script>
+    <script src="../frontend/js/init_navbar.js"></script>
+    <script src="../frontend/js/materialize.min.js"></script>
+    <script src="../frontend/js/functions.js"></script>
+    <script src="../frontend/js/edit_event.js"></script>
+  </body>
+</html>

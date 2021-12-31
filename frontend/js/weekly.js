@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", e => {
     weekStepBack.addEventListener("click", stepBackInWeeks);
     weekStepForward.addEventListener("click", stepForwardInWeeks);
     logoutLink.addEventListener("click", e => logoutClicked(e))
-})
+});
 
 
 /**
