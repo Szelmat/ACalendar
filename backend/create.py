@@ -32,7 +32,7 @@ if __name__ == '__main__':
     colors = Table(
         'colors', metadata_obj,
         Column('id', SmallInteger, nullable=False, primary_key=True, index=True),
-        Column('code', String(100), nullable=False)
+        Column('code', String(100), nullable=False),
         Column('description', String(100), nullable=False)
     )
 
