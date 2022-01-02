@@ -483,3 +483,7 @@ input {
 .pl-5 {
   padding-left: 2rem !important;
 }
+
+.text-primary {
+  color: #fff !important;
+}
