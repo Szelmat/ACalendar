@@ -250,7 +250,8 @@ function getAuthUserId() {
  * @returns 
  */
 async function getUserEvents(userId, fromDate, toDate) {
-    const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}/events/${fromDate}/${toDate}`)
+    let apiUrl = getApiServerUrl();
+    const response = await fetch(`${apiUrl}/api/users/${userId}/events/${fromDate}/${toDate}`)
         .then(response => response.json())
         .then(data => {return data});
     

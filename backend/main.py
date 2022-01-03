@@ -335,7 +335,7 @@ async def read_user_date_events(id: int,  frdate: str, todate: str):
 
 @app.get("/api/users/{id}/latest_event")
 async def read_user_latest_event(id: int):
-    return conn.execute(events.select().where(events.c.user_id == id).order_by(desc(events.c.created_at)).limit(1)).fetchall()
+    return conn.execute(events.select().where(events.c.user_id == id).order_by(desc(events.c.id)).limit(1)).fetchall()
 
 
 # Add a notification for a given id's user for a given id's event

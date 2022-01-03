@@ -15,30 +15,14 @@ const priorities = [1, 2, 3, 4, 5];
 
 
 document.addEventListener("DOMContentLoaded", e => {
-
-    // fill the date input fields with experimental data for testing purpose
-    // startDateInput.value = "2022-01-01";
-    // startTimeInput.value = "08:00"
-    // endDateInput.value = "2022-01-01";
-    // endTimeInput.value = "12:00";
-    // eventTitleInput.value = "Test event title" + new Date().getMilliseconds();
-    // eventDescriptionTa.value = "Test event description" + new Date().getMilliseconds();
-    // prioritySelect.value = 3;
-
     saveEventBtn.addEventListener("click", saveEvent);
-    
     logoutLink.addEventListener("click", e => logoutClicked(e))
 });
 
 
-// function validateInputs() {
-
-//     return true;
-// }
-
-
 /* Implement event listeners */
-function saveEvent() {
+
+async function saveEvent() {
 
     let startDate = startDateInput.value
     let startTime = startTimeInput.value
@@ -72,37 +56,53 @@ function saveEvent() {
         created_at: formatDate(new Date(), true, true)
     }, true)
     .then(result => {
+
+        // save to notifications table if it's set
+        if(notification) {
+
+            
+            let triggerTime = new Date(`${startDate} ${startTime}`);
+            
+            // the trigger time will be 5 minutes earlier then the actual event's start time
+            let triggerTimeSeconds = triggerTime.getTime() / 1000 - 5 * 60
+            let trigger = formatDate(new Date(triggerTimeSeconds * 1000), true, true);
+            
+            saveToNotifications(uid, trigger);
+            
+        } else {
+            alert("The event has been successfully saved!");
+        }
+
+    })
+    .catch(error => console.log(error));
+}
+
+
+async function saveToNotifications(uid, trigger) {
+    let latestEvent = await getLatestEvent(uid);
+    let latestEventId = latestEvent[0]["id"];
+
+    sendAjaxPostRequest(`${apiServerUrl}/api/users/${uid}/events/${latestEventId}/notifications`, {
+        user_id: uid,
+        event_id: latestEventId,
+        type_id: 2,
+        trigger_time: trigger
+    }, true)
+    .then(result => {
         // console.log(result);
-        alert("The event has been successfully saved!");
-
-        // save to notifications table
-        // for this first we have to get the eventId
-        // TODO: after the previous post request (in the RESULT variable)
-        // the saved event object should be returned and after that it would be easy to get it's id in order to save into the notification's table
-
-        console.log(result);
-
-        let eventId = result["id"];
-        let triggerTime = new Date(`${startDate} ${startTime}`);
-        
-        // the trigger time will be 5 minutes earlier then the actual event's start time
-        let triggerTimeSeconds = triggerTime.getTime() / 1000 - 5 * 60
-        let trigger = formatDate(new Date(triggerTimeSeconds * 1000), true, true);
-        console.log(trigger);
-
-        // sendAjaxPostRequest(`${apiServerUrl}/api/events/${eventId}/notifications`, {
-        //     event_id: eventId,
-        //     type_id: 2,
-        //     trigger_time: trigger
-        // }, true)
-        // .then(result => {
-        //     // console.log(result);
-        //     alert("The event has been successfully saved!");
-        // })
-        // .catch(error => console.log(error));
+        alert("The event with the notification has been successfully saved!");
     })
     .catch(error => console.log(error));
 
+}
+
+
+async function getLatestEvent(uid) {
+    const response = await fetch(`${apiServerUrl}/api/users/${uid}/latest_event`)
+        .then(response => response.json())
+        .then(data => {return data});
+    
+    return response;
 }
 
 
