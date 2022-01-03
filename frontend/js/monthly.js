@@ -429,14 +429,18 @@ function getSelectedDayAsDate(btn) {
  */
 function createSelEventsTable(eventsToDisplay) {
     let container = document.querySelector("#eventsInSelectedDateDiv");
-    
-    let contentHTML = `
-        <table id="eventsInSelectedDateTable" class="mt-3">
-            <tbody>`;
 
+    let table = document.createElement("table");
+    table.id = "eventsInSelectedDateTable";
+    table.className = "mt-3";
+    let tbody = document.createElement("tbody");
+    table.appendChild(tbody);
+    
     eventsToDisplay.forEach((eventToDisplay, index) => {
         let startTime = eventToDisplay["start_time"];
         let startTimeDate = new Date(startTime);
+
+        let color = getColorBasedOnPriority(eventToDisplay["color_id"]);
         
         let eventHours = startTimeDate.getHours();
         let eventMinutes = startTimeDate.getMinutes();
@@ -450,8 +454,11 @@ function createSelEventsTable(eventsToDisplay) {
         let lastElementPadding = 3;
         let isLastElement = (eventsToDisplay.length - 1 === index);
 
-        let trHTML = `
-        <tr id="${eventToDisplay.id}" class="eventTableRow">
+        let tr = document.createElement("tr");
+        tr.id = eventToDisplay.id;
+        tr.className = "eventTableRow";
+
+        tr.innerHTML = `
             <td class="coming-event-time ml-5 pl-3 pb-${isLastElement ? lastElementPadding : elementPadding}">${displayH}:${displayM}</td>
             <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}"><a href>${displayText}</a></td>
             <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
@@ -463,15 +470,17 @@ function createSelEventsTable(eventsToDisplay) {
                     <i class="material-icons color-red">delete</i>
                 </a>
             </td>
-        </tr>
         `;
 
-        contentHTML += "\n" + trHTML + "\n";
+        
+        tr.firstElementChild.nextElementSibling.style.backgroundColor = color;
+
+        tbody.appendChild(tr);
+
     });
 
-    contentHTML += "\n</tbody></table>"
-
-    container.innerHTML = contentHTML;
+    container.innerHTML = "";
+    container.appendChild(table);
 
 }
 
@@ -483,11 +492,15 @@ function createSelEventsTable(eventsToDisplay) {
 function createUpcomingEventsTable(eventsToDisplay) {
     let container = document.querySelector("#upcomingEventsDiv");
     
-    let contentHTML = `
-        <table id="upcomingEventsTable" class="mt-3">
-            <tbody>`;
+    let table = document.createElement("table");
+    table.id = "eventsInSelectedDateTable";
+    table.className = "mt-3";
+    let tbody = document.createElement("tbody");
+    table.appendChild(tbody);
 
     eventsToDisplay.forEach((eventToDisplay, index) => {
+        let color = getColorBasedOnPriority(eventToDisplay["color_id"]);
+
         let startTime = eventToDisplay["start_time"];
         let startTimeDate = new Date(startTime);
         
@@ -502,8 +515,11 @@ function createUpcomingEventsTable(eventsToDisplay) {
         let lastElementPadding = 3;
         let isLastElement = (eventsToDisplay.length - 1 === index);
 
-        let trHTML = `
-        <tr id="${eventToDisplay.id}" class="upcomingEventTableRow">
+        let tr = document.createElement("tr");
+        tr.id = eventToDisplay.id;
+        tr.className = "upcomingEventTableRow";
+
+        tr.innerHTML = `
             <td class="center coming-event-time ml-5 pl-1 pb-${isLastElement ? lastElementPadding : elementPadding}">${formattedStartTimeDate}</td>
             <td class="center coming-event-title pb-${isLastElement ? lastElementPadding : elementPadding}"><a href>${displayText}</a></td>
             <td class="pb-${isLastElement ? lastElementPadding : elementPadding}">
@@ -515,15 +531,17 @@ function createUpcomingEventsTable(eventsToDisplay) {
                     <i class="material-icons color-red">delete</i>
                 </a>
             </td>
-        </tr>
         `;
 
-        contentHTML += "\n" + trHTML + "\n";
+        tr.firstElementChild.nextElementSibling.style.backgroundColor = color;
+
+
+        tbody.appendChild(tr);
+        
     });
 
-    contentHTML += "\n</tbody></table>"
-
-    container.innerHTML = contentHTML;
+    container.innerHTML = "";
+    container.appendChild(table);
 }
 
 
