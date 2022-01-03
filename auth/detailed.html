@@ -9,7 +9,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../frontend/css/materialize.min.css" />
     <link rel="stylesheet" href="../frontend/css/custom.css" />
-    <link rel="stylesheet" href="../frontend/css/monthly.css" />
+    <link rel="stylesheet" href="../frontend/css/detailed.css">
 
     <!-- Materialize Icons -->
     <link
@@ -19,24 +19,33 @@
 
     <!-- Set favicon -->
     <link rel="icon" type="image/png" href="../ACalendar_logo.png" />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- crypto js -->
+    <script src="../frontend/js/crypto-js/core.js"></script>
+    <script src="../frontend/js/crypto-js/enc-base64url.js"></script>
+    <script src="../frontend/js/crypto-js/hmac.js"></script>
+    <script src="../frontend/js/crypto-js/sha256.js"></script>
   </head>
   <body>
     <!-- Navbar for all authorized pages  -->
     <nav>
       <div class="nav-wrapper secondary-bg">
-        <a href="./detailed.html" class="brand-logo center">ACalendar</a>
+        <a href="./monthly.html" class="brand-logo center">ACalendar</a>
         <a href="#" data-target="views_links" class="sidenav-trigger ml-3"
           ><i class="material-icons">menu</i></a
         >
 
         <!-- Content of hamburger icon when the page (navbar) is NOT minimized  -->
         <ul class="left hide-on-med-and-down">
-          <li><a href="#">Monthly view</a></li>
-          <li><a href="#">Weekly view</a></li>
-          <li><a href="#">Daily view</a></li>
+          <li><a href="./monthly.html" class="">Monthly view</a></li>
+          <li><a href="./weekly.html">Weekly view</a></li>
+          <li><a href="./daily.html">Daily view</a></li>
         </ul>
 
-        <a href="#" class="right"><i class="material-icons mr-3">logout</i></a>
+        <a href id="logout" class="right"><i class="material-icons mr-3">logout</i></a>
       </div>
     </nav>
     <!-- End of navbar -->
@@ -48,22 +57,19 @@
       <li><a href="#">Daily view</a></li>
     </ul>
 
-    <script src="../frontend/js/jquery-3.6.0.min.js"></script>
-    <script src="../frontend/js/init_navbar.js"></script>
-    <script src="../frontend/js/materialize.min.js"></script>
-    <script src="../frontend/js/functions.js"></script>
+    
 
     <!-- Main container -->
     <div class="container">
       <div class="container">
         <div class="row">
-          <a href="./detailed.html" class="left"
+          <a href="./monthly.html" class="left"
             ><i class="material-icons" style="color: black"
               >arrow_back_ios_new</i
             ></a
           >
           <div>
-            <h5 class="center-align">German Lesson</h5>
+            <h5 class="center-align" id="eventTitle">German Lesson</h5>
           </div>
         </div>
       </div>
@@ -76,9 +82,8 @@
               class="card red center-align"
               style="border-radius: 4px; margin: 0%"
             >
-              <span class="card-title" style="color: white; font-size: large"
-                >Event</span
-              >
+              <span id="eventType" class="card-title" style="color: white; font-size: large"
+                >Event</span>
             </div>
           </div>
         </div>
@@ -97,11 +102,13 @@
                 style="vertical-align: text-bottom"
                 >date_range</i
               >
-              <span style="color: black; font-size: 100%"
-                >2021.11.01 9.00
-                <span style="color: black; font-weight: bold"> To </span>
-                2021.11.01 11.00</span
-              >
+              <span id="fromDate" style="color: black; font-size: 100%">
+                2021.11.01 9.00
+              </span>
+              <span style="color: black; font-weight: bold"> TO </span>
+              <span id="toDate">
+                2021.11.01 11.00
+              </span>
             </div>
           </div>
         </div>
@@ -126,10 +133,11 @@
 
           <div class="col s5 m5 l5 xl5 offset-m2 offset-l2 offset-xl2">
             <div
+              id="priorityContainer"
               class="card red center-align"
               style="border-radius: 10px; margin: 0rem 0 0rem 0"
             >
-              <span style="color: black; font-size: 100%">Important</span>
+              <span id="priority" style="color: black; font-size: 100%">Important</span>
             </div>
           </div>
         </div>
@@ -155,87 +163,7 @@
                 margin-right: 10px;
               "
             >
-              <span style="color: black; font-size: 50%">NOTIFICATION</span>
-            </p>
-
-            <p
-              style="
-                margin-top: 0;
-                margin-bottom: 0;
-                margin-left: 10px;
-                margin-right: 10px;
-              "
-            >
-              <span style="color: black; font-size: 100%">Desktop</span>
-            </p>
-            <p
-              style="
-                margin-top: 0;
-                margin-bottom: 0;
-                margin-left: 10px;
-                margin-right: 10px;
-              "
-            >
-              <span style="color: black; font-size: 50%"
-                >At 2021.11.01. 8:30</span
-              >
-            </p>
-          </div>
-        </div>
-        <div class="row" style="border: 1px solid black">
-          <div
-            class="card white left-align"
-            style="border-radius: 0px; margin: 0rem 0 0rem 0"
-          >
-            <p
-              style="
-                margin-top: 0;
-                margin-bottom: 0;
-                margin-left: 10px;
-                margin-right: 10px;
-              "
-            >
-              <span style="color: black; font-size: 50%">NOTIFICATION</span>
-            </p>
-
-            <p
-              style="
-                margin-top: 0;
-                margin-bottom: 0;
-                margin-left: 10px;
-                margin-right: 10px;
-              "
-            >
-              <span style="color: black; font-size: 100%">Desktop</span>
-            </p>
-            <p
-              style="
-                margin-top: 0;
-                margin-bottom: 0;
-                margin-left: 10px;
-                margin-right: 10px;
-              "
-            >
-              <span style="color: black; font-size: 50%"
-                >At 2021.10.31. 20:00</span
-              >
-            </p>
-          </div>
-        </div>
-        <div class="row" style="border: 1px solid black">
-          <div
-            class="card white left-align"
-            style="border-radius: 0px; margin: 0rem 0 0rem 0"
-          >
-            <p
-              style="
-                margin-top: 0;
-                margin-bottom: 0;
-                margin-left: 10px;
-                margin-right: 10px;
-              "
-            >
-              <span style="color: black; font-size: 50%">NOTIFICATION</span>
+              <span style="color: black; font-size: 60%">NOTIFICATION</span>
             </p>
 
             <p
@@ -256,8 +184,8 @@
                 margin-right: 10px;
               "
             >
-              <span style="color: black; font-size: 50%"
-                >At 2021.10.31. 12:30</span
+              <span style="color: black; font-size: 70%"
+                >At <span id="notificationDateTime">2021.10.31. 12:30</span></span
               >
             </p>
           </div>
@@ -266,7 +194,7 @@
       <div class="container">
         <div class="row center mt-0 mb-0">
           <button
-            id="saveEvent"
+            id="deleteEvent"
             type="submit"
             class="waves-effect waves-dark btn red col s6 m6 l6 xl6"
           >
@@ -274,7 +202,7 @@
             <span class="medium-sized-text">DELETE</span>
           </button>
           <button
-            id="saveEvent"
+            id="editEvent"
             type="submit"
             class="waves-effect waves-dark btn primary-bg col s6 m6 l6 xl6"
           >
@@ -284,6 +212,12 @@
         </div>
       </div>
     </div>
+
+    <script src="../frontend/js/jquery-3.6.0.min.js"></script>
+    <script src="../frontend/js/init_navbar.js"></script>
+    <script src="../frontend/js/materialize.min.js"></script>
+    <script src="../frontend/js/functions.js"></script>
+    <script src="../frontend/js/detailed.js"></script>
     <!-- The end of the Main container -->
   </body>
 </html>
