@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
-from sqlalchemy.sql.expression import distinct
+from sqlalchemy.sql.expression import distinct, desc
 from connect import conn
 from models import users, User, events, Event, notifications, Notification, habits, Habit
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -82,6 +82,12 @@ class EventUpdateForm(BaseModel):
     description: str
     start_time: str
     end_time: str
+
+class NotificationForm(BaseModel):
+    user_id: str
+    event_id: str
+    type_id: str
+    trigger_time: str
 
 # For the email validation
 regex = '^[a-z0-9]+[\._]?[ a-z0-9]+[@]\w+[. ]\w{2,3}$'
@@ -322,3 +328,24 @@ async def login_for_access_token(form_data: LoginCredentials):
 @app.get("/api/users/{id}/events/{frdate}/{todate}/")
 async def read_user_date_events(id: int,  frdate: str, todate: str):
     return conn.execute(events.select().where(events.c.user_id == id).where(events.c.start_time >= frdate).where(events.c.start_time < todate).order_by(events.c.start_time)).fetchall()
+
+
+# Show the latest event of a given id's user
+
+
+@app.get("/api/users/{id}/latest_event")
+async def read_user_latest_event(id: int):
+    return conn.execute(events.select().where(events.c.user_id == id).order_by(desc(events.c.created_at)).limit(1)).fetchall()
+
+
+# Add a notification for a given id's user for a given id's event
+
+
+@app.post("/api/users/{user_id}/events/{event_id}/notifications")
+async def add_user_notification(notification: NotificationForm):
+    conn.execute(notifications.insert().values(
+        event_id = notification.event_id,
+        type_id = notification.type_id,
+        trigger_time = notification.trigger_time
+    ))
+    return conn.execute(notifications.select().distinct().where(notifications.c.event_id == notification.event_id).join(events, events.c.user_id == notification.user_id).order_by(desc(notifications.c.id)).limit(1)).fetchall()

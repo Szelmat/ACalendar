@@ -14,6 +14,8 @@ pydantic = {extras = ["email"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
 python-multipart = "*"
 python-jose = "*"
+mailjet = "*"
+mailjet-rest = "*"
 
 [requires]
 python_version = "3.8"
