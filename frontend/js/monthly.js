@@ -24,6 +24,7 @@ let todayWeekDayLi = null;
 let calendarMonth = new Date();
 
 document.addEventListener("DOMContentLoaded", e => {
+    clearLS();
     fillDaysOfWeek();
     fillCalendar(calendarMonth);
     fillUpcomingEvents();
@@ -257,7 +258,6 @@ async function fillUpcomingEvents() {
     tomorrow = new Date(`${tomorrow.getFullYear()}-${tomorrow.getMonth() + 1}-${tomorrow.getDate()} 00:00:00`);
     
     let events = await getUpcomingEvents(tomorrow);
-    console.log("fillUpcomingEvents", events);
 
     if(events.length === 0) {
         document.querySelector("#upcomingEventsDiv").innerHTML = `
@@ -529,7 +529,6 @@ async function fillSelectedDaysDiv(selectedDate) {
     let selectedDaysTitleDiv = document.querySelector("#selectedDate");
 
     let events = await getGivenDaysEvent(selectedDate);
-    console.log("fillSelectedDaysDiv, events:", events);
 
     let year = selectedDate.getFullYear();
     let month = selectedDate.getMonth();
@@ -594,6 +593,8 @@ async function fillSelectedDaysDiv(selectedDate) {
 function editEvent(eventId) {
     // TODO: redirect to /user/edit/2...
     console.log(`redirect to [..]/edit/${eventId}[/..]`);
+    storeInLS("edit_event", eventId);
+    window.location.href = "/auth/edit_event.html";
 }
 
 
@@ -644,17 +645,15 @@ async function getGivenDaysEvent(selectedDate) {
 
 /**
  * Get the corresponding events from the backend's database based on the given day.
- * Those events will be returned which are the closest to today and not happens toda but in the next 30 days.
+ * Those events will be returned which are the closest to today and not happens today but in the next 30 days.
  * @param {Date} selectedDate 
  */
  async function getUpcomingEvents(date) {
-    console.log("getUpcomingEvents, fromDate", date);
 
     let uid = getAuthUserId();
     
     let fromDate = date;
     let toDate = new Date(moment(fromDate.getTime()).add(30, "days"));
-    console.log("getUpcomingEvents, toDate", toDate);
     let result = [];
 
     await getUserEvents(uid, formatDate(fromDate, true, true), formatDate(toDate, true, true))

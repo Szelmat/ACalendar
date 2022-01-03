@@ -25,6 +25,7 @@ const apiServerUrl = getApiServerUrl();
 /* register all the event listeners */
 submitLoginBtn.addEventListener("click", e => loginUser(e));
 submitRegisterBtn.addEventListener("click", e => registerUser(e));
+clearLS();
 
 /* implement all the event listeners */
 

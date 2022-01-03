@@ -18,6 +18,7 @@ const monthNames = getMonthNames();
 let currentDate = new Date();
 
 document.addEventListener("DOMContentLoaded", e => {
+    clearLS();
     completeMainEventTable();
     fillWeekdays();
 

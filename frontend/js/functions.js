@@ -7,6 +7,36 @@ function getApiServerUrl() {
 }
 
 
+function getPriorities() {
+    return [1, 2, 3, 4, 5];
+}
+
+function getPriorityName(prioNumber) {
+    let name = "";
+    switch (prioNumber) {
+        case 1:
+            name = "Critical";
+            break;
+        case 2:
+            name = "Important";
+            break;
+        case 3:
+            name = "Medium";
+            break;
+        case 4:
+            name = "Not so important";
+            break;
+        case 5:
+            name = "Optional";
+            break;
+        default:
+            break;
+    }    
+
+    return name;
+}
+
+
 /**
  * Send JSON data with asynchronous POST request to given URI. 
  * @param {String} uri API route
@@ -25,6 +55,58 @@ function getApiServerUrl() {
 
     const response = await fetch(uri, {
         method: "POST",
+        headers: reqHeaders,
+        body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    return result;
+}
+
+
+/**
+ * Send JSON data with asynchronous DELETE request to given URI. 
+ * @param {String} uri API route
+ * @param {Object<any>} data Object
+ * @returns Promise
+ */
+ async function sendAjaxDeleteRequest(uri, data, needAuth = false) {
+    let reqHeaders = {
+        'Content-Type': 'application/json'
+    };
+    
+    if(needAuth) {
+        jwt = getJwtFromCookie();
+        reqHeaders["Authorization"] = `Bearer ${jwt}`;
+    }
+
+    const response = await fetch(uri, {
+        method: "DELETE",
+        headers: reqHeaders,
+        body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    return result;
+}
+
+
+/**
+ * Send JSON data with asynchronous PUT request to given URI. 
+ * @param {String} uri API route
+ * @param {Object<any>} data Object
+ * @returns Promise
+ */
+ async function sendAjaxPutRequest(uri, data, needAuth = false) {
+    let reqHeaders = {
+        'Content-Type': 'application/json'
+    };
+    
+    if(needAuth) {
+        jwt = getJwtFromCookie();
+        reqHeaders["Authorization"] = `Bearer ${jwt}`;
+    }
+
+    const response = await fetch(uri, {
+        method: "PUT",
         headers: reqHeaders,
         body: JSON.stringify(data)
     });
@@ -306,4 +388,45 @@ function getJwtFromCookie() {
     }
 
     return "";
+}
+
+
+/**
+ * Redirect to error page based on the given httpCode.
+ * @param {Number} httpCode 
+ */
+function redirectToErrorPage(httpCode) {
+    window.location.href = `../../error_pages/error${httpCode}.html`;
+}
+
+
+/**
+ * Store items in LocalStorage.
+ * @param {String} key 
+ * @param {String|Number} value 
+ */
+function storeInLS(key, value) {
+    localStorage.setItem(key, value);
+}
+
+
+/**
+ * Get items from LocalStorage.
+ * @param {String} key 
+ */
+function getFromLS(key) {
+    let item = localStorage.getItem(key);
+    return item;
+}
+
+
+function removeFromLS(key) {
+    localStorage.removeItem(key);
+}
+
+/**
+ * Clear LocalStorage.
+ */
+function clearLS() {
+    localStorage.clear();
 }

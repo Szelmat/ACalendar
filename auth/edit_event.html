@@ -148,15 +148,15 @@
         <div class="col s10 m8 l8 xl8 offset-s1 offset-m2 offset-l2 offset-xl2">
           <div class="rounded-1">
             <div class="input-field">
-              <input id="enevtTiltle" type="text" />
-              <label for="enevtTiltle">Event Title</label>
+              <input id="eventTitle" type="text" />
+              <label for="eventTitle">Event Title</label>
             </div>
           </div>
 
           <div class="rounded-1 mt-5">
             <div class="input-field">
-              <textarea id="enevtDesc" class="materialize-textarea"></textarea>
-              <label for="enevtDesc">Event Description</label>
+              <textarea id="eventDescription" class="materialize-textarea"></textarea>
+              <label for="eventDescription">Event Description</label>
             </div>
           </div>
         </div>
@@ -167,7 +167,7 @@
           class="col s10 m8 l8 xl8 offset-s1 offset-m2 offset-l2 offset-xl2"
         >
           <div class="row">
-            <select>
+            <select id="prioritySelect">
               <option value="0">Choose priority</option>
               <option value="1">Critical</option>
               <option value="2">Important</option>
@@ -186,6 +186,7 @@
         >
           <label>
             <input
+              id = "notificationCheckbox"
               type="checkbox"
               class="filled-in checkbox-blue-grey"
               style="color: black"
@@ -214,16 +215,27 @@
             btn
             primary-bg
             col
-            s12
+            s10
             m8
             l8
             xl8
-            offset-m2 offset-l2 offset-xl2
+            offset-s1 offset-m2 offset-l2 offset-xl2
           "
         >
           <span class="medium-sized-text">SAVE</span>
         </button>
       </div>
+
+      <div class="row center mt-4 mb-0">
+        <button
+            id="deleteEvent"
+            type="submit"
+            class="waves-effect waves-dark btn red col s10 m8 l8 xl8 offset-s1 offset-m2 offset-l2 offset-xl2"
+          >
+            <span class="medium-sized-text">DELETE</span>
+          </button>
+      </div>
+
     </div>
     <!-- The end of the Main container -->
 

@@ -11,10 +11,11 @@ const habitCheckbox = document.querySelector("#habitCheckbox");
 const prioritySelect = document.querySelector("#prioritySelect");
 
 const apiServerUrl = getApiServerUrl();
-const priorities = [1, 2, 3, 4, 5];
+const priorities = getPriorities();
 
 
 document.addEventListener("DOMContentLoaded", e => {
+    clearLS();
     saveEventBtn.addEventListener("click", saveEvent);
     logoutLink.addEventListener("click", e => logoutClicked(e))
 });
@@ -24,11 +25,11 @@ document.addEventListener("DOMContentLoaded", e => {
 
 async function saveEvent() {
 
-    let startDate = startDateInput.value
-    let startTime = startTimeInput.value
-    let endDate = endDateInput.value
-    let endTime = endTimeInput.value
-    let eventTitle = eventTitleInput.value
+    let startDate = startDateInput.value;
+    let startTime = startTimeInput.value;
+    let endDate = endDateInput.value;
+    let endTime = endTimeInput.value;
+    let eventTitle = eventTitleInput.value;
     let eventDescription = eventDescriptionTa.value;
     let notification = notificationCheckbox.checked;
     let habit = habitCheckbox.checked;
@@ -43,7 +44,6 @@ async function saveEvent() {
     }
 
     // TODO: post request to events API endpoint if it's an event and not a habit
-    // TODO: post request to notification API endpoint if it's checked
 
     // save the event
     sendAjaxPostRequest(`${apiServerUrl}/api/users/${uid}/events`, {
@@ -59,7 +59,6 @@ async function saveEvent() {
 
         // save to notifications table if it's set
         if(notification) {
-
             
             let triggerTime = new Date(`${startDate} ${startTime}`);
             
@@ -68,7 +67,7 @@ async function saveEvent() {
             let trigger = formatDate(new Date(triggerTimeSeconds * 1000), true, true);
             
             saveToNotifications(uid, trigger);
-            
+
         } else {
             alert("The event has been successfully saved!");
         }
