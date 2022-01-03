@@ -110,7 +110,7 @@ function validateInputFields(uid, priority, startDate, startTime, endDate, endTi
 
     if(uid === null) {
     // there is no authenticated user
-        window.location.href = "../error_pages/error401.html";
+        redirectToErrorPage(401);
     }
 
     if(! priorities.includes(priority)) {

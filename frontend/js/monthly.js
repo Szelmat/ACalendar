@@ -13,6 +13,7 @@ const weekdaysLIsArray = Array.from(weekdaysLIs);
 const weekdays = getWeekdays();
 const monthNames = getMonthNames();
 
+const apiServerUrl = getApiServerUrl();
 const longMonths = [1, 3, 5, 7, 8, 10, 12]; // 1: January, 3: March, etc... They have 31 days
 const shortMonths = [4, 6, 9, 11]; // 4: April, 6: June, etc... They have 30 days
 const febMonth = 2; // February, which can have 28 or 29 days (depends on the leap years)
@@ -23,7 +24,14 @@ let todayWeekDayLi = null;
 // represents the currently selected month in the calendar (by default it's the current date)
 let calendarMonth = new Date();
 
+let uid = null;
+
 document.addEventListener("DOMContentLoaded", e => {
+    uid = getAuthUserId();
+    if(uid === null) {
+        redirectToErrorPage(401);
+    }
+
     clearLS();
     fillDaysOfWeek();
     fillCalendar(calendarMonth);
@@ -602,8 +610,24 @@ function editEvent(eventId) {
  * @param {Number} eventId 
  */
 function deleteEvent(eventId) {
-    // TODO: redirect to /user/edit/2...
-    console.log(`somehow delete the event with id of: ${eventId}`);
+    if(window.confirm("Do you really want to delete the event?")) {
+        sendAjaxDeleteRequest(`${apiServerUrl}/api/users/${uid}/events/${eventId}/notifications`, {
+            user_id: uid,
+            event_id: eventId
+        }, true)
+        .then(result => {
+            sendAjaxDeleteRequest(`${apiServerUrl}/api/users/${uid}/events/${eventId}`, {
+                id: eventId,
+                user_id: uid,
+            }, true)
+            .then(any => {
+                alert("The event was successfully deleted!");
+                window.location.reload();
+            })
+            .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
+    }
 }
 
 

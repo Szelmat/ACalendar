@@ -11,6 +11,8 @@ function getPriorities() {
     return [1, 2, 3, 4, 5];
 }
 
+
+// TODO: this should come from database
 function getPriorityName(prioNumber) {
     let name = "";
     switch (prioNumber) {
@@ -34,6 +36,33 @@ function getPriorityName(prioNumber) {
     }    
 
     return name;
+}
+
+
+// TODO: this should come from database
+function getColorBasedOnPriority(prioNumber) {
+    let color = "";
+    switch (prioNumber) {
+        case 1:
+            color = "#D50000";
+            break;
+        case 2:
+            color = "#E65000";
+            break;
+        case 3:
+            color = "#FFEA00";
+            break;
+        case 4:
+            color = "#4CAF50";
+            break;
+        case 5:
+            color = "#42A5F5";
+            break;
+        default:
+            break;
+    }    
+
+    return color;
 }
 
 
