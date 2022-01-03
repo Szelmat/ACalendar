@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", e => {
     logoutLink.addEventListener("click", e => logoutClicked(e));
     saveEventBtn.addEventListener("click", saveEvent);
     deleteEventBtn.addEventListener("click", deleteEvent);
-
     fillInputValues();
 });
 

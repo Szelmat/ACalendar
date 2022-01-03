@@ -591,8 +591,6 @@ async function fillSelectedDaysDiv(selectedDate) {
  * @param {Number} eventId 
  */
 function editEvent(eventId) {
-    // TODO: redirect to /user/edit/2...
-    console.log(`redirect to [..]/edit/${eventId}[/..]`);
     storeInLS("edit_event", eventId);
     window.location.href = "/auth/edit_event.html";
 }
@@ -615,8 +613,8 @@ function deleteEvent(eventId) {
  * @param {Number} eventId 
  */
 function showEvent(eventId) {
-    // TODO: redirect to detailed event view
-    console.log(`somehow show the event (detailed event view) with id of: ${eventId}`);
+    storeInLS("show_event", eventId);
+    window.location.href = "/auth/detailed.html";
 }
 
 
