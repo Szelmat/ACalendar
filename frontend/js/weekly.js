@@ -15,6 +15,8 @@ const weekdaysLIsArray = Array.from(weekdaysLIs);
 const weekdays = getWeekdays();
 const monthNames = getMonthNames();
 
+// const dayComponents = [1, 2, 3, 4, 5, 6, 7];
+
 let currentDate = new Date();
 
 document.addEventListener("DOMContentLoaded", e => {
@@ -51,38 +53,115 @@ document.addEventListener("DOMContentLoaded", e => {
  * Fill the table row which contains the days/dates of the selected week.
  * @param {Date} date 
  */
-function fillDays(date) {
+async function fillDays(date) {
+
+    removeColors();
 
     week = getWeek(date)
 
     let givenMonth = date.getMonth();
     let givenMonthName = monthNames[givenMonth];
-    // let givenYear = date.getFullYear();
-    
-    // let today = new Date();
-    // let todayDay = today.getDate();
-    // let todayWeek = getDayOfWeek(today);
 
-    // if the today's date (year, month) is the given 'date', then, just in this case
-    // we should mark the today's day
-    // let currentDateIsTheGivenDate = today.getFullYear() === date.getFullYear() 
-    //     && today.getMonth() === date.getMonth();
-    
-    // set the selected month (the format is: yyyy Month_name)
     setSelectedWeekDate(date, week, givenMonthName);
 
     let weekDayDate = date;
+    let weekDayDateArray = [];
 
+    let fromDate;
+    let toDate;
+
+    let nextDayUnixSeconds = date.getTime() / 1000;
     for(let i = 0; i < 7; i++) {
         dayTableRowsArray[i].innerHTML = weekDayDate.getDate();
+
+        weekDayDateArray.push(weekDayDate);
         
         // add some hours to the given date in order to step into the next day
-        let nextDayUnixSeconds = moment(weekDayDate.getTime()).add(1, "day").unix();
+        if(i === 0) {
+            fromDate = weekDayDate;
+        } else if(i === 6) {
+            toDate = weekDayDate;
+        }
+        nextDayUnixSeconds = moment(weekDayDate.getTime()).add(1, "day").unix();
         weekDayDate = new Date(nextDayUnixSeconds * 1000);
     }
 
+    // add the first day of the next week to the array in order to get the events of the current week's last day
+    weekDayDateArray.push(weekDayDate);
+
     // TODO: get the events for the days/dates
-    // TODO: "display" the events
+    
+    await getUserEvents(uid, formatDate(fromDate, true, true), formatDate(toDate, true, true))
+    .then(events => {
+        console.log(events);
+
+        for(let j = 0; j < weekDayDateArray.length; j++) {
+            // console.log(weekDayDateArray[j]);
+        }
+
+        // iterate over all the events
+        for(let i = 0; i < events.length; i++) {
+            let indexOfSeparator = events[i]["start_time"].indexOf("T");
+            
+            let start = events[i]["start_time"];
+            let startDate = start.substring(0, indexOfSeparator);
+            let startTime =  start.substring(indexOfSeparator + 1, start.length - 3);
+
+            let end = events[i]["end_time"];
+            let endDate = end.substring(0, indexOfSeparator);
+            let endTime =  end.substring(indexOfSeparator + 1, end.length - 3);
+
+            let priority = events[i]["color_id"];
+            let color = getColorBasedOnPriority(priority);
+
+            let eventDateTime = new Date(events[i]["start_time"]);
+
+            // iterate over all the days of the current week
+            for(let j = 0; j < weekDayDateArray.length - 1; j++) {
+                if(weekDayDateArray[j] <= eventDateTime && eventDateTime < weekDayDateArray[j+1]) {
+                    let startHourOfEvent = startTime.substring(0, 2) + "00";
+                    let goalTr = document.getElementById(`${startHourOfEvent}`);
+
+                    // iterate over the child nodes of the goalTableRow and find the correct one
+                    Array.from(goalTr.childNodes).forEach(item => {
+                        if(typeof item.className !== "undefined" && item.className.includes(`d${j+1}`)) {
+                            item.style.backgroundColor = color;
+                            item.className += " colored";
+                            item.id = events[i]["id"];
+
+                            item.removeEventListener("mouseenter", e => getEventInfo(events[i]));
+                            item.removeEventListener("click", e => showEvent(events[i]));
+
+
+                            item.addEventListener("mouseenter", e => getEventInfo(events[i]));
+                            item.addEventListener("click", e => showEvent(events[i]));
+                        }
+                    });
+                }
+            }
+        }
+        
+    })
+    .catch(error => console.log(error));
+}
+
+
+function getEventInfo(event) {
+    console.log(event);
+}
+
+function showEvent(event) {
+    let eventId = event["id"];
+    storeInLS("show_event", eventId);
+    window.location.href = "/auth/detailed.html";
+}
+
+
+function removeColors() {
+    Array.from(document.querySelectorAll(".colored")).forEach(item => {
+        item.classList.remove("colored");
+        item.style.backgroundColor = "";
+    });
 
 }
 
@@ -94,6 +173,7 @@ function completeMainEventTable() {
     for(let i = 0; i < 24; i++) {  
         let tr = document.createElement("tr");
         let hourString = i < 10 ? "0" + i : i; 
+        tr.id = hourString + "00";
         let trContentHTML = `
             <td class="event-time">${hourString}:00</td>
             <td class="event-component d1"></td>

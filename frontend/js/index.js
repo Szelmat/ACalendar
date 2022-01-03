@@ -35,26 +35,6 @@ clearLS();
  */
 function loginUser(e) {
 
-    // let temp = new Date().getTime() / 1000 + 10;
-
-    // let JWTheader = {
-    //     "alg": "HS256",
-    //     "typ": "JWT"
-    //     // "exp": temp
-    // };
-
-    // let JWTpayload = {
-    //     "sub": "1234567890",
-    //     "name": "John Doe",
-    //     "admin": true
-    // };
-
-    // let JWTsecret = "secret";
-    
-    // let resultJWT = createJWT(JWTheader, JWTpayload, JWTsecret);
-
-    // console.log(resultJWT);
-
     let error = false;
     const loginEmail = loginEmailInput.value;
     const loginPw = loginPwInput.value;

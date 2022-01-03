@@ -35,7 +35,6 @@ th, td {
 .event-component {
     width: 11.5% !important;
     color: rgb(0, 0, 130) !important;
-    background-color: crimson;
     text-align: center;
     font-weight: normal;
 }

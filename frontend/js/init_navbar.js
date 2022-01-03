@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   $('.sidenav').sidenav();
 
+  $('.modal').modal();
+
   let dates = document.querySelectorAll(".datepicker");
   M.Datepicker.init(dates, {
     autoClose: true,
