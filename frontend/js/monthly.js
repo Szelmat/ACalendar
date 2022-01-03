@@ -190,6 +190,10 @@ function fillCalendar(date = new Date()) {
                 // these are the days which are in the selected month
                     btn.innerText = dayOfTheMonth < 10 ? "0" + dayOfTheMonth : dayOfTheMonth;
                     dayOfTheMonth++;
+                    if (currentDateIsTheGivenDate && Number.parseInt(btn.innerText) === todayDay) {
+                        btn.className += " is-today";
+                        btn.className += " day-selected";
+                    }
                 } else {
                     btn.innerText = prevMonthMaxDays - tempCounter + 1;
                     tempCounter--;

@@ -23,8 +23,6 @@ function getApiServerUrl() {
         reqHeaders["Authorization"] = `Bearer ${jwt}`;
     }
 
-    console.log("reqHeaders:", reqHeaders);
-
     const response = await fetch(uri, {
         method: "POST",
         headers: reqHeaders,
@@ -239,6 +237,8 @@ function getAuthUserId() {
             return null;
         }
     }
+
+    return null;
 }
 
 
