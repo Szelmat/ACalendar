@@ -18,6 +18,10 @@ const monthNames = getMonthNames();
 let currentDate = new Date();
 
 document.addEventListener("DOMContentLoaded", e => {
+    uid = getAuthUserId();
+    if(uid === null) {
+        redirectToErrorPage(401);
+    }
     clearLS();
     completeMainEventTable();
     fillWeekdays();

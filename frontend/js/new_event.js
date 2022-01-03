@@ -13,8 +13,14 @@ const prioritySelect = document.querySelector("#prioritySelect");
 const apiServerUrl = getApiServerUrl();
 const priorities = getPriorities();
 
+let uid = null;
+
 
 document.addEventListener("DOMContentLoaded", e => {
+    uid = getAuthUserId();
+    if(uid === null) {
+        redirectToErrorPage(401);
+    }
     clearLS();
     saveEventBtn.addEventListener("click", saveEvent);
     logoutLink.addEventListener("click", e => logoutClicked(e))
@@ -34,8 +40,6 @@ async function saveEvent() {
     let notification = notificationCheckbox.checked;
     let habit = habitCheckbox.checked;
     let priority = Number.parseInt(prioritySelect.value);
-
-    let uid = getAuthUserId();
 
     removeInvalidMsgs();
 
@@ -112,6 +116,7 @@ function validateInputFields(uid, priority, startDate, startTime, endDate, endTi
     // there is no authenticated user
         redirectToErrorPage(401);
     }
+    console.log("uid:", uid);
 
     if(! priorities.includes(priority)) {
         errorMsgs.push("The chosen priority is not valid!");
