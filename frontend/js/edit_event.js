@@ -240,11 +240,24 @@ function removeInvalidMsgs() {
 
 
 async function deleteEvent() {
-    console.log(`DELETE: ${eventId} of ${uid}, it's not implemented yet...`);
-    // await sendAjaxDeleteRequest(`${apiServerUrl}/api/users/${uid}/events/${eventId}`, {
-    //     id: eventId,
-    //     user_id: uid,
-    // }, true);
+    if(window.confirm("Do you really want to delete the event?")) {
+        sendAjaxDeleteRequest(`${apiServerUrl}/api/users/${uid}/events/${eventId}/notifications`, {
+            user_id: uid,
+            event_id: eventId
+        }, true)
+        .then(result => {
+            sendAjaxDeleteRequest(`${apiServerUrl}/api/users/${uid}/events/${eventId}`, {
+                id: eventId,
+                user_id: uid,
+            }, true)
+            .then(any => {
+                alert("The event was successfully deleted! Going back to monthly view..");
+                window.location.href = "/auth/monthly.html";
+            })
+            .catch(error => console.log(error));
+        })
+        .catch(error => console.log(error));
+    }
 }
 
 
