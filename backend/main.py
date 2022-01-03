@@ -349,3 +349,13 @@ async def add_user_notification(notification: NotificationForm):
         trigger_time = notification.trigger_time
     ))
     return conn.execute(notifications.select().distinct().where(notifications.c.event_id == notification.event_id).join(events, events.c.user_id == notification.user_id).order_by(desc(notifications.c.id)).limit(1)).fetchall()
+
+
+# Delete a given event of a user
+
+
+@app.delete("/api/users/{user_id}/events/{id}")
+async def delete_particular_user_event(user_id: int, id: int):
+    conn.execute(events.delete().where(
+        events.c.id == id))
+    return conn.execute(events.select().distinct().where(events.c.user_id == user_id).order_by(events.c.created_at)).fetchall()
